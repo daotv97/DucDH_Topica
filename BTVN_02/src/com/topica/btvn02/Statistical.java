@@ -1,11 +1,14 @@
 package com.topica.btvn02;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Statistical {
     private Map<String, Integer> numberOfWords;
@@ -14,27 +17,31 @@ public class Statistical {
         numberOfWords = new HashMap<>();
     }
 
-    public void readFile(String path) throws IOException{
-        String content = new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8)
-                .replaceAll("[,.;]", "");
-        String[] listWords = content.split(" ");
-        String key="";
+    public String readFileAndGetContent(String path) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(path)), StandardCharsets.UTF_8)
+                .replaceAll("\\W", " ");
+    }
+
+    public void statistical(String content) {
+        String[] listWords = content.split("\\s+");
+        String key = "";
         Integer value;
-        for (int i = 0; i<=listWords.length; i++) {
+        for (int i = 0; i < listWords.length; i++) {
             key = listWords[i];
-            if(numberOfWords.containsKey(key)){
-                value =  numberOfWords.get(key);
+            if (numberOfWords.containsKey(key)) {
+                value = numberOfWords.get(key);
                 numberOfWords.remove(key);
-                numberOfWords.put(key, value+1);
-            } else{
+                numberOfWords.put(key, value + 1);
+            } else {
                 numberOfWords.put(key, new Integer(1));
             }
         }
-        System.out.println("haa");
-
     }
 
-    public int statistical() {
-        return 0;
+    public void sort() {
+        numberOfWords.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(System.out::println);
     }
 }
