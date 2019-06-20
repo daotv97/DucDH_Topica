@@ -35,7 +35,7 @@ public class Statistical {
         }
     }
 
-    public void sort() {
+    public void sortAndShow() {
         numberOfWords.entrySet()
                 .stream()
                 .sorted(Map.Entry.comparingByValue())
