@@ -2,6 +2,7 @@ package com.topica.btvn02;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Optional;
 
 public class Main {
@@ -9,17 +10,19 @@ public class Main {
 
     public static void main(String[] args) {
         Long start = Calendar.getInstance().getTimeInMillis();
-        Statistical statistical = new Statistical();
+        WordReader statistical = new WordReader();
         try {
-            Optional.ofNullable(statistical.readFileAndGetContent(PATH_FILE))
+            Optional.ofNullable(statistical.read(PATH_FILE))
                     .ifPresent(s -> {
-                        statistical.statistical(s);
-                        statistical.sort();
+                        Map<String, Integer> map = statistical.filterWords(s);
+                        statistical.sortByFrequencyAsc(map).forEach((e, v) -> {
+                            System.out.println(e + ": " + v);
+                        });
                     });
         } catch (IOException e) {
             e.printStackTrace();
         }
         Long end = Calendar.getInstance().getTimeInMillis();
-        System.out.println("=> Time: "+(end-start)*1.0/1000);
+        System.out.println("=> Time: " + (end - start) * 1.0 / 1000);
     }
 }
