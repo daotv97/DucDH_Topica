@@ -8,12 +8,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WordReader extends FileTxtReader implements WordProcessor {
-
-    @Override
-    public void close() throws IOException {
-
-    }
-
     @Override
     public Map<String, Integer> filterWords(String content) {
         Map<String, Integer> numberOfWords = new HashMap<>();

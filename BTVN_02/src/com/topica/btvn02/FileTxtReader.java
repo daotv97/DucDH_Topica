@@ -4,11 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public abstract class FileTxtReader implements Cloneable {
+public abstract class FileTxtReader {
 
     public String read(String path) throws IOException {
         return new String(Files.readAllBytes(Paths.get(path))).replaceAll("\\W", " ");
     }
 
-    abstract public void close() throws IOException;
 }
