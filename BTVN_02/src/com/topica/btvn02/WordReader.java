@@ -7,10 +7,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WordReader extends FileTxtReader implements WordProcessor {
+    private static final String REGEX_REPLACE_SPACE = "\\s+";
+
     @Override
     public Map<String, Integer> filterWords(String content) {
         Map<String, Integer> numberOfWords = new HashMap<>();
-        String[] listWords = content.split("\\s+");
+        String[] listWords = content.split(REGEX_REPLACE_SPACE);
         Integer value;
         for (String word : listWords) {
             if (numberOfWords.containsKey(word)) {

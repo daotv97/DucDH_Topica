@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 public abstract class FileTxtReader {
 
     public String read(String path) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(path))).replaceAll("\\W", " ");
+        return new String(Files.readAllBytes(Paths.get(path)));
     }
 
 }

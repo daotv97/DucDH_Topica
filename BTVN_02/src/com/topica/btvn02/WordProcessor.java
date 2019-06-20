@@ -1,5 +1,4 @@
 package com.topica.btvn02;
-
 import java.util.Map;
 
 public interface WordProcessor {
