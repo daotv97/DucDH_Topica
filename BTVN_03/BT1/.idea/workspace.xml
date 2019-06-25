@@ -2,15 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1bae5dda-3070-4580-bcc0-1f2b16d59929" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/com/topica/annotation/Column.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/topica/annotation/Entity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/topica/annotation/Id.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/topica/annotation/Info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/topica/annotation/Table.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/topica/lab/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/com/topica/lab/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../BTVN_02/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../BTVN_02/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../BTVN_02/src/com/topica/btvn02/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../BTVN_02/src/com/topica/btvn02/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/topica/lab/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/topica/lab/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/topica/lab/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/topica/lab/Student.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,11 +20,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Student.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="859">
-              <caret line="79" column="20" lean-forward="true" selection-start-line="79" selection-start-column="20" selection-end-line="79" selection-end-column="20" />
+            <state relative-caret-position="-576">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
               <folding>
                 <element signature="e#417#418#0" expanded="true" />
                 <element signature="e#442#443#0" expanded="true" />
@@ -60,11 +55,20 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1198">
+              <caret line="70" column="37" selection-start-line="70" selection-start-column="37" selection-end-line="70" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="347">
-              <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
+            <state relative-caret-position="126">
+              <caret line="27" column="50" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -114,18 +118,11 @@
         <option value="$PROJECT_DIR$/src/com/topica/annotation/Setter.java" />
         <option value="$PROJECT_DIR$/src/com/topica/annotation/Func.java" />
         <option value="$PROJECT_DIR$/src/com/topica/lab/constant.java" />
-        <option value="$PROJECT_DIR$/src/com/topica/lab/Main.java" />
         <option value="$PROJECT_DIR$/src/com/topica/annotation/Construct.java" />
         <option value="$PROJECT_DIR$/src/com/topica/annotation/Action.java" />
+        <option value="$PROJECT_DIR$/src/com/topica/lab/Main.java" />
         <option value="$PROJECT_DIR$/src/com/topica/lab/Student.java" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectConfigurationFiles">
-    <option name="files">
-      <list>
-        <option value="$PROJECT_DIR$/.idea/vcs.xml" />
-        <option value="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -148,24 +145,6 @@
               <item name="BT1" type="b2602c69:ProjectViewProjectNode" />
               <item name="BT1" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="BT1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BT1" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BT1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BT1" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="topica" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BT1" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BT1" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="topica" type="462c0819:PsiDirectoryNode" />
-              <item name="annotation" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
@@ -175,6 +154,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -222,12 +202,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1561435143042</updated>
-      <workItem from="1561435148716" duration="13798000" />
+      <workItem from="1561435148716" duration="14165000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13798000" />
+    <option name="totallyTimeSpent" value="14165000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -379,16 +359,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="347">
-          <caret line="28" column="31" lean-forward="true" selection-start-line="28" selection-start-column="31" selection-end-line="28" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/topica/annotation/Info.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="198">
@@ -399,10 +369,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="27" column="50" selection-start-line="27" selection-start-column="50" selection-end-line="27" selection-end-column="50" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Student.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="859">
-          <caret line="79" column="20" lean-forward="true" selection-start-line="79" selection-start-column="20" selection-end-line="79" selection-end-column="20" />
+        <state relative-caret-position="-576">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
           <folding>
             <element signature="e#417#418#0" expanded="true" />
             <element signature="e#442#443#0" expanded="true" />
@@ -429,6 +409,13 @@
             <element signature="e#1134#1135#0" expanded="true" />
             <element signature="e#1168#1169#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1198">
+          <caret line="70" column="37" selection-start-line="70" selection-start-column="37" selection-end-line="70" selection-end-column="37" />
         </state>
       </provider>
     </entry>

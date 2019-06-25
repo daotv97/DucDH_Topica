@@ -24,8 +24,8 @@ public class Main {
                     }
                 });
 
-        System.out.printf("\n- Static final: \n");
         // Get attributes static final
+        System.out.printf("\n- Static final: \n");
         Arrays.stream(studentClass.getDeclaredFields()).forEach(field -> {
             if (Modifier.isFinal(field.getModifiers())) {
 
