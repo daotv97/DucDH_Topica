@@ -6,7 +6,7 @@ import com.topica.annotation.*;
 @Table
 public class Student {
 
-    private static final Integer other = 200;
+    private static final Integer OTHER = 200;
     @Id
     private Long id;
     @Column
