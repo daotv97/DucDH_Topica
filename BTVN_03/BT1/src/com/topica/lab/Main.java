@@ -42,16 +42,6 @@ public class Main {
             }
         });
 
-//        Student student = new Student();
-//        try {
-//            Field f = student.getClass().getDeclaredField("OTHER");
-//            f.setAccessible(true);
-//
-//        } catch (NoSuchFieldException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
     }
 
 }
