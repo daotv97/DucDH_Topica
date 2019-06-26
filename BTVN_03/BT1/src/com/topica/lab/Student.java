@@ -7,16 +7,22 @@ import com.topica.annotation.*;
 public class Student {
 
     private static final Integer OTHER = 200;
+
     @Id
     private Long id;
+
     @Column
     private String name;
+
     @Column
     private Integer age;
+
     @Column
     private String email;
+
     @Column
     private String address;
+
     private String phone;
 
     public Long getId() {
