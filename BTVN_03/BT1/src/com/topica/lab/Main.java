@@ -19,7 +19,7 @@ public class Main {
         System.out.printf("\n- Methods: \n");
         getMethodName(studentClass);
 
-        // The attribute field is "final"
+        // The attribute is "final"
         System.out.printf("\n- Static final: \n");
         getAttributeNameIsFinal(studentClass);
 
