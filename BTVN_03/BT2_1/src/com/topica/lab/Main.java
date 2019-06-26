@@ -1,6 +1,6 @@
 package com.topica.lab;
 
-import org.jetbrains.annotations.NotNull;
+import com.sun.istack.internal.NotNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;

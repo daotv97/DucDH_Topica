@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1bae5dda-3070-4580-bcc0-1f2b16d59929" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/com/topica/lab/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/topica/lab/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BT2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../BT2/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="1bae5dda-3070-4580-bcc0-1f2b16d59929" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,8 +50,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="185">
-              <caret line="50" column="24" lean-forward="true" selection-start-line="50" selection-start-column="24" selection-end-line="50" selection-end-column="24" />
+            <state relative-caret-position="666">
+              <caret line="45" column="73" selection-start-line="45" selection-start-column="73" selection-end-line="45" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -178,16 +175,15 @@
       <option name="presentableId" value="Default" />
       <updated>1561435143042</updated>
       <workItem from="1561435148716" duration="18712000" />
-      <workItem from="1561517650109" duration="1458000" />
+      <workItem from="1561517650109" duration="2021000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20170000" />
+    <option name="totallyTimeSpent" value="20733000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Designer" order="0" />
       <window_info id="UI Designer" order="1" />
@@ -203,7 +199,7 @@
       <window_info anchor="bottom" id="Event Log" order="4" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="5" />
       <window_info anchor="bottom" id="Find" order="6" weight="0.3289689" />
-      <window_info active="true" anchor="bottom" id="Run" order="7" visible="true" weight="0.32405892" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.32405892" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.39934534" />
       <window_info anchor="bottom" id="Cvs" order="9" weight="0.25" />
       <window_info anchor="bottom" id="Messages" order="10" weight="0.3289689" />
@@ -311,8 +307,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/topica/lab/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="50" column="24" lean-forward="true" selection-start-line="50" selection-start-column="24" selection-end-line="50" selection-end-column="24" />
+        <state relative-caret-position="666">
+          <caret line="45" column="73" selection-start-line="45" selection-start-column="73" selection-end-line="45" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
