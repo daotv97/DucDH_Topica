@@ -24,7 +24,7 @@ public class Main {
         Field field = clazz.getDeclaredField(attributeName);
         field.setAccessible(true);
 
-        // modify field
+        // Modify field
         modifyField(field);
         System.out.println("Before change: " + attributeName + " = " + field.get(clazz));
 
