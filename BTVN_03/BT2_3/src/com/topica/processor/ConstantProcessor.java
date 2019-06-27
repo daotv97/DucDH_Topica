@@ -33,7 +33,7 @@ public class ConstantProcessor extends AbstractProcessor {
                 Set<Modifier> modifiers = e2.getModifiers();
                 if (!((modifiers.contains(Modifier.STATIC) && (modifiers.contains(Modifier.FINAL))))) {
                     messager.printMessage(Diagnostic.Kind.ERROR,
-                            "Method/field wasn't public and final", e2);
+                            "Field wasn't static and final", e2);
 
                 }
             }
