@@ -6,8 +6,8 @@ import com.topica.annotation.*;
 @Table
 public class Student {
 
-    private static final Integer OTHER_ONE = 200;
-    private static final String OTHER_TWO = "I CAN FLY!";
+    private static final Integer OTHER_FIELD_ONE = 200;
+    private static final String OTHER_FIELD_TWO = "I CAN FLY!";
 
     @Id
     private Long id;

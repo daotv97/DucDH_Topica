@@ -46,12 +46,10 @@ public class Main {
         Arrays.stream(clazz.getDeclaredFields()).forEach(field -> {
             if (Modifier.isFinal(field.getModifiers())) {
                 try {
-                    Field f = clazz.getDeclaredField(field.getName());
-                    f.setAccessible(true);
-                    System.out.println("+ " + field.getName() + " = " + f.get(new Student()));
-                } catch (NoSuchFieldException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
+                    Field clazzDeclaredField = clazz.getDeclaredField(field.getName());
+                    clazzDeclaredField.setAccessible(true);
+                    System.out.println("+ " + field.getName() + " = " + clazzDeclaredField.get(new Student()));
+                } catch (NoSuchFieldException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
             }
