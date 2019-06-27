@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Student implements Serializable {
 
     @Constant
-    private String IDENTITY_CARD = "175077295";
+    private static final String IDENTITY_CARD = "175077295";
 
     private Long id;
     private String name;
