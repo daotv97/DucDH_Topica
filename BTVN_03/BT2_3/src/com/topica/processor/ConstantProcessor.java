@@ -29,11 +29,12 @@ public class ConstantProcessor extends AbstractProcessor {
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         for (TypeElement ann : annotations) {
             Set<? extends Element> e2s = roundEnv.getElementsAnnotatedWith(ann);
+
             for (Element e2 : e2s) {
                 Set<Modifier> modifiers = e2.getModifiers();
                 if (!((modifiers.contains(Modifier.STATIC) && (modifiers.contains(Modifier.FINAL))))) {
                     messager.printMessage(Diagnostic.Kind.ERROR,
-                            "Field wasn't static and final", e2);
+                            "Method/field wasn't public and final!", e2);
 
                 }
             }

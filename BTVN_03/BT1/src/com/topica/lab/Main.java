@@ -11,15 +11,15 @@ public class Main {
     public static void main(String[] args) {
         Class<?> studentClass = Student.class;
 
-        // The attribute have annotations
+        // Attribute
         System.out.println("- Attributes: ");
         getAttributeName(studentClass);
 
-        // The method have annotations
+        // Method
         System.out.printf("\n- Methods: \n");
         getMethodName(studentClass);
 
-        // The attribute is "final"
+        // Static final
         System.out.printf("\n- Static final: \n");
         getAttributeNameIsFinal(studentClass);
     }

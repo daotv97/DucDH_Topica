@@ -4,10 +4,10 @@ import com.topica.annotations.*;
 
 @Entity
 @Table(name = "student")
-@Serializable
 public class Student {
 
     @Id
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "name")
