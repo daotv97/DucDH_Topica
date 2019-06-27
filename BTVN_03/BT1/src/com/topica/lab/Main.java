@@ -22,7 +22,6 @@ public class Main {
         // The attribute is "final"
         System.out.printf("\n- Static final: \n");
         getAttributeNameIsFinal(studentClass);
-
     }
 
     private static void getAttributeName(@NotNull Class<?> clazz) {

@@ -2,7 +2,7 @@ package com.topica.lab;
 
 public class Student {
 
-    private static final String IDENTITY_CARD_NUMBER = "175077295";
+    public static final int IDENTITY_CARD_NUMBER = 12;
     private String name;
     private Integer age;
     private String address;

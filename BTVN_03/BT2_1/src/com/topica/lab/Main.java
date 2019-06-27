@@ -29,7 +29,7 @@ public class Main {
         System.out.println("Before change: " + attributeName + " = " + field.get(clazz));
 
         // Change value
-        field.set(null, "172009990");
+        field.set(null, 14);
         System.out.println("After change: " + attributeName + " = " + field.get(clazz));
     }
 
