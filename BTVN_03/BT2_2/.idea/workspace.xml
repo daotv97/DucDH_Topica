@@ -2,8 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f12ceb0c-b90e-44be-89bf-3337d39035f9" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../../BTVN_02/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../BTVN_02/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_1/src/com/topica/lab/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BT2_1/src/com/topica/lab/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_3/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_3/BT2_3.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_3/src/com/topica/annotation/Constant.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_3/src/com/topica/bean/Student.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_3/src/com/topica/lab/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../BT2_3/src/com/topica/processor/ConstantProcessor.java" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -147,7 +152,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -170,7 +175,7 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -245,17 +250,17 @@
       <workItem from="1561625660255" duration="2681000" />
       <workItem from="1561633101794" duration="80000" />
       <workItem from="1561654900673" duration="121000" />
+      <workItem from="1561691949485" duration="89000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="39972000" />
+    <option name="totallyTimeSpent" value="40061000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21482602" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21785174" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />

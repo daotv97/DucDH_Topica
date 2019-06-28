@@ -12,30 +12,30 @@ public class Main {
     public static void main(String[] args) {
         Class<?> studentClass = Student.class;
         try {
-            changeAttributeValue(studentClass, ATTRIBUTE_NAME);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+            changeAttributeValue(studentClass);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    private static void changeAttributeValue(@NotNull Class<?> clazz, String attributeName) throws NoSuchFieldException, IllegalAccessException {
-        Field field = clazz.getDeclaredField(attributeName);
+    private static void changeAttributeValue(@NotNull Class<?> clazz) throws NoSuchFieldException, IllegalAccessException {
+        Field field = clazz.getDeclaredField(Main.ATTRIBUTE_NAME);
         field.setAccessible(true);
 
         // Modify field
         modifyField(field);
-        System.out.println("Before change: " + attributeName + " = " + field.get(clazz));
+        System.out.printf("Before change: %s = %s%n", Main.ATTRIBUTE_NAME, field.get(clazz));
 
         // Change value
         field.set(null, 14);
-        System.out.println("After change: " + attributeName + " = " + field.get(clazz));
+        System.out.printf("After change: %s = %s%n", Main.ATTRIBUTE_NAME, field.get(clazz));
     }
 
     private static void modifyField(Field field) throws NoSuchFieldException, IllegalAccessException {
         Field modifiersField = Field.class.getDeclaredField(MODIFIERS);
-        modifiersField.setAccessible(true);
+        if (!modifiersField.isAccessible()) {
+            modifiersField.setAccessible(true);
+        }
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
     }
 }
