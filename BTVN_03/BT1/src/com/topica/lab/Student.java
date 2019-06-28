@@ -5,7 +5,7 @@ import com.topica.annotation.*;
 @Entity
 @Table
 public class Student {
-
+    
     private static final Integer OTHER_FIELD_ONE = 200;
     private static final String OTHER_FIELD_TWO = "I CAN FLY!";
 

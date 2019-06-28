@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="98dc74c3-0291-473f-9dee-6862e2864e19" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/com/topica/btvn02/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/topica/btvn02/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BTVN_03/BT1/src/com/topica/lab/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BTVN_03/BT1/src/com/topica/lab/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../BTVN_03/BT1/src/com/topica/lab/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/../BTVN_03/BT1/src/com/topica/lab/Student.java" afterDir="false" />
-    </list>
+    <list default="true" id="98dc74c3-0291-473f-9dee-6862e2864e19" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,8 +17,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/topica/btvn02/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="299">
-              <caret line="20" column="27" lean-forward="true" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+            <state relative-caret-position="223">
+              <caret line="17" column="73" selection-start-line="17" selection-start-column="73" selection-end-line="17" selection-end-column="73" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -178,12 +174,12 @@
       <workItem from="1560961432765" duration="9000000" />
       <workItem from="1561110617539" duration="6750000" />
       <workItem from="1561298814643" duration="1073000" />
-      <workItem from="1561632893753" duration="95000" />
+      <workItem from="1561632893753" duration="191000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43720000" />
+    <option name="totallyTimeSpent" value="43816000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -198,7 +194,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.20458265" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.20458265" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.41898528" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -453,8 +449,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/topica/btvn02/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="20" column="27" lean-forward="true" selection-start-line="20" selection-start-column="27" selection-end-line="20" selection-end-column="27" />
+        <state relative-caret-position="223">
+          <caret line="17" column="73" selection-start-line="17" selection-start-column="73" selection-end-line="17" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
