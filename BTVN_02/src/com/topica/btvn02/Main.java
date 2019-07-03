@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Main {
-    private static final String PATH_FILE = "E:\\Topica\\DucDH_Topica\\BTVN_02\\BTVN-5.txt";
+    private static final String PATH_FILE = "/home/duchuy/Sources/Topica/DucDH_Topica/BTVN_02/BTVN-5.txt";
     private static final String REGEX_REPLACE_SPECIAL_CHARACTER = "\\W+";
 
     public static void main(String[] args) {
@@ -14,12 +14,8 @@ public class Main {
         WordReader statistical = new WordReader();
         try {
             Optional.ofNullable(statistical.read(PATH_FILE))
-                    .ifPresent(s -> {
-                        Map<String, Integer> map = statistical.filterWords(s.replaceAll(REGEX_REPLACE_SPECIAL_CHARACTER, " "));
-                        statistical.sortByFrequencyAsc(map).forEach((e, v) -> {
-                            System.out.println(e + ": " + v);
-                        });
-                    });
+                    .map(s -> statistical.filterWords(s.replaceAll(REGEX_REPLACE_SPECIAL_CHARACTER, " ")))
+                    .ifPresent(map -> statistical.sortByFrequencyDesc(map).forEach((e, v) -> System.out.println(e + ": " + v)));
         } catch (IOException e) {
             e.printStackTrace();
         }
