@@ -20,14 +20,14 @@ public class WordReader extends FileTxtReader implements WordProcessor {
                 numberOfWords.remove(word);
                 numberOfWords.put(word, value + 1);
             } else {
-                numberOfWords.put(word, new Integer(1));
+                numberOfWords.put(word, 1);
             }
         }
         return numberOfWords;
     }
 
     @Override
-    public Map<String, Integer> sortByFrequencyAsc(Map<String, Integer> mapWorks) {
+    public Map<String, Integer> sortByFrequencyDesc(Map<String, Integer> mapWorks) {
         return mapWorks.entrySet().stream()
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue,
