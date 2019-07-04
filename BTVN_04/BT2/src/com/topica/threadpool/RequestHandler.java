@@ -2,7 +2,6 @@ package com.topica.threadpool;
 
 
 public class RequestHandler implements Runnable {
-    private static final Integer TIME_SLEEP = 6000;
     private String nameRequest;
     private String nameThread;
 
@@ -17,7 +16,7 @@ public class RequestHandler implements Runnable {
             System.out.println("Start name request :"
                             + this.nameRequest);
 
-            Thread.sleep(TIME_SLEEP);
+            Thread.sleep(Constant.TIME_RUNNING);
 
             System.out.println("Finish name request :"
                     + this.nameRequest

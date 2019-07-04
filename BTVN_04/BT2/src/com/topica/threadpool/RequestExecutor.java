@@ -1,7 +1,7 @@
 package com.topica.threadpool;
 
 public class RequestExecutor extends Thread {
-    private RequestHandler requestHandler = null;
+    private RequestHandler requestHandler;
     private String nameThread;
 
     public RequestExecutor(String nameThread) {
@@ -13,11 +13,11 @@ public class RequestExecutor extends Thread {
         synchronized (this) {
             while (true) {
                 try {
-                    if (requestHandler != null) {
+                    if (requestHandler == null) {
+                        this.wait();
+                    } else {
                         this.requestHandler.run();
                         this.requestHandler = null;
-                    } else {
-                        this.wait();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

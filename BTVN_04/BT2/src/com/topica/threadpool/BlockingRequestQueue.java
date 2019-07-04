@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class BlockingRequestQueue {
-    private static final Integer EMPTY = 0;
     private static Queue<Runnable> queue;
     private static Integer maxSizeQueue;
 
@@ -21,19 +20,19 @@ public class BlockingRequestQueue {
         return false;
     }
 
+    public static synchronized Runnable dequeue() {
+        if (queue.size() > Constant.EMPTY_QUEUE) {
+            return queue.poll();
+        }
+        return null;
+    }
+
     public static Boolean isFullQueue() {
         return queue.size() == maxSizeQueue;
     }
 
     public static Boolean isEmptyQueue() {
         return queue.isEmpty();
-    }
-
-    public static synchronized Runnable dequeue() {
-        if (queue.size() > EMPTY) {
-            return queue.poll();
-        }
-        return null;
     }
 
     public static Queue<Runnable> getQueue() {

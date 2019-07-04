@@ -14,10 +14,11 @@ public class BlockingThreadList {
     }
 
     public static synchronized Boolean addThreadToFactory(RequestExecutor thread, RequestHandler requestHandler) throws InterruptedException {
-        if (requestExecutors.size() < maxSize) {
+        if (requestExecutors.size() >= coreSize && requestExecutors.size() < maxSize) {
             requestExecutors.add(thread);
             requestHandler.setNameThread(thread.getNameThread());
             thread.setRequestHandler(requestHandler);
+            thread.start();
             return true;
         }
         return false;
@@ -35,12 +36,12 @@ public class BlockingThreadList {
         return requestExecutors.size() == maxSize;
     }
 
-    public Boolean shutdown() {
-        for (int index = 0; index < maxSize; index++) {
-            if (!requestExecutors.get(index).getState().toString().equals("WAITING")) {
-                return false;
+    public static void resetPoolSize() {
+        for (int index = 0; requestExecutors.size() > Constant.CORE_THREAD_SIZE; index++) {
+            if (Constant.STATUS_WAITING.equals(requestExecutors.get(index).getState().toString())) {
+                requestExecutors.get(index).interrupt();
+                requestExecutors.remove(index);
             }
         }
-        return true;
     }
 }
