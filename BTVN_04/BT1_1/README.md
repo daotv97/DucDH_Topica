@@ -74,5 +74,12 @@ private static class Thread2 extends Thread {
 	Cop: Waiting for criminal release hostage...
 	Criminal: Waiting for cop release friend...
 
+Tình hình có vẻ căng thẳng nhỉ! Cả 2 đều đang chờ nhau và không bên nào chịu thả con tin hay nói cách khác là mỗi “Lock” cần sử dụng đều đang bị thread khác chiếm giữ.
+
+**Để giải quyết trường hợp này. Chúng ta có 2 cách:**
+
+1. Chỉ sử dụng 1 lock-object (objectidentifier) để synchronized tất cả các đoạn hoặc block code cần synchronization. (Trong ví dụ trên thì chỉ sử dụng Lock1 hoặc Lock2.  Nếu có thể thì không nên sử dụng cùng lúc 2 lock-object)
+
+2. Sử dụng lock-object (objectidentifier) theo thứ tự giống nhau với các block synchorined. Khi các lock-object được sử dụng để synchronization theo thứ tự thì sẽ ngăn được tình trạng các thread giữ nhiều “lock” khi thực hiện mà không cho phép thread khác sử dụng. (Tương tự ví dụ trên thì Thread1 synchronized với Lock1 & Lock thì Thread2 cũng synchronized với thứ tự Lock1 & Lock2)
 
 
