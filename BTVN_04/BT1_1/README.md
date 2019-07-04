@@ -11,7 +11,11 @@ Tạm dịch có nghĩa là deadlock mô tả trạng thái khi mà 2 hoặc nhi
 
 - Khi có **thread (1)** đang giữ tài nguyên (A) và cần truy cập tài nguyên(B) để tiếp tục xử lý (call method xử lý…) nhưng tài nguyên (B) đang được **thread (2)** sử dụng, trong lúc này thì **thread (2)** cũng đang cần truy cập vào tài nguyên (A) mà **thread (1)** đang sử dụng. Lúc này thì cả 2 thread đều không thể tiếp tục thực hiện mà đều phải “chờ” nhau nhưng không biết khi nào thì sẽ kết thúc.
 
-- Điều cuối cùng là **deadlock** xảy ra chúng ta sử dụng **synchronization** với mục đích đảm bảo **thread-safe** nhưng nếu không cẩn thận khi sử dụng **lock-object** (objectidentifier) thì sẽ dễ dẫn đến deadlock.
+-  **Deadlock** xảy ra chúng ta sử dụng **synchronization** với mục đích đảm bảo **thread-safe** nhưng nếu không cẩn thận khi sử dụng **lock-object** (objectidentifier) thì sẽ dễ dẫn đến deadlock.
+
+Khi sử dụng **synchronization**, thread sẽ chiếm giữ lock object để đảm bảo tại 1 thời điểm, chỉ có 1 thread được thực thi đoạn block code. Vấn đề nảy sinh khi 2 hoặc nhiều thread giữ block object mà thread kia đang cần, dẫn đến tình trạng lock lẫn nhau.
+
+[![](http://thachleblog.com/wp-content/uploads/2016/10/java-thread-deadlock-crunchify-tutorial.jpg)](http://thachleblog.com/wp-content/uploads/2016/10/java-thread-deadlock-crunchify-tutorial.jpg)
 
 ##### Để làm rõ hơn về deadlock thì chúng ta sẽ tìm hiểu ví dụ ở dưới sau đây.
 ------------
