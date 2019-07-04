@@ -9,22 +9,22 @@ public class BlockingRequestQueue {
 
     public BlockingRequestQueue(int size) {
         maxSizeQueue = size;
-        queue = new LinkedList<Runnable>();
+        queue = new LinkedList<>();
     }
 
-    public static synchronized boolean enqueue(Runnable request) throws InterruptedException {
-        if (queue.size() < maxSizeQueue) {
-            queue.offer(request);
-            return true;
+    public static synchronized Boolean enqueue(Runnable request) {
+        if (queue.size() >= maxSizeQueue) {
+            return false;
         }
-        return false;
+        queue.offer(request);
+        return true;
     }
 
     public static synchronized Runnable dequeue() {
-        if (queue.size() > Constant.EMPTY_QUEUE) {
-            return queue.poll();
+        if (queue.size() <= Constant.EMPTY_QUEUE) {
+            return null;
         }
-        return null;
+        return queue.poll();
     }
 
     public static Boolean isFullQueue() {

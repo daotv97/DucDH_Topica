@@ -7,8 +7,8 @@ public class ThreadPool {
 
     public ThreadPool(int requestQueueSize, int coreThreadSize, int maxThreadSize) {
         ThreadPool.coreThreadSize = coreThreadSize;
-        blockingRequestQueue = new BlockingRequestQueue(requestQueueSize);
-        blockingThreadList = new BlockingThreadList(coreThreadSize, maxThreadSize);
+        this.blockingRequestQueue = new BlockingRequestQueue(requestQueueSize);
+        this.blockingThreadList = new BlockingThreadList(coreThreadSize, maxThreadSize);
         init();
     }
 
@@ -20,11 +20,7 @@ public class ThreadPool {
         }
     }
 
-    public void request(int sizeRequest) {
-        try {
-            new CreateRequest().create(sizeRequest);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public void request(int sizeRequest) throws InterruptedException {
+        new CreateRequest().create(sizeRequest);
     }
 }

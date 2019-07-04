@@ -11,17 +11,15 @@ public class RequestExecutor extends Thread {
     @Override
     public void run() {
         synchronized (this) {
-            while (true) {
-                try {
-                    if (requestHandler == null) {
-                        this.wait();
-                    } else {
-                        this.requestHandler.run();
-                        this.requestHandler = null;
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            while (true) try {
+                if (requestHandler == null) {
+                    this.wait();
+                } else {
+                    this.requestHandler.run();
+                    this.requestHandler = null;
                 }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

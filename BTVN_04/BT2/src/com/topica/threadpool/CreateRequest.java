@@ -1,25 +1,30 @@
 package com.topica.threadpool;
 
 public class CreateRequest {
-    private static Integer listSizeThread = BlockingThreadList.getRequestExecutors().size();
+    private static Integer listSizeThread;
     private static RequestExecutor executor;
 
-    private static void handleThreadWaiting(RequestHandler requestHandler) throws InterruptedException {
+    public CreateRequest() {
+        CreateRequest.listSizeThread = BlockingThreadList.getRequestExecutors().size();
+    }
+
+    private static void handleThreadWaiting(RequestHandler requestHandler) {
         synchronized (executor) {
             executor.notify();
-            if (!BlockingRequestQueue.isEmptyQueue()) {
+            if (BlockingRequestQueue.isEmptyQueue()) {
+                requestHandler.setNameThread(executor.getNameThread());
+                executor.setRequestHandler(requestHandler);
+            } else {
                 RequestHandler request = (RequestHandler) BlockingRequestQueue.dequeue();
                 request.setNameThread(executor.getNameThread());
                 executor.setRequestHandler(request);
+
                 BlockingRequestQueue.enqueue(requestHandler);
-            } else {
-                requestHandler.setNameThread(executor.getNameThread());
-                executor.setRequestHandler(requestHandler);
             }
         }
     }
 
-    private static void handleThreadRunning(RequestHandler requestHandler) throws InterruptedException {
+    private static void handleThreadRunning(RequestHandler requestHandler) {
         if (!BlockingRequestQueue.isFullQueue()) BlockingRequestQueue.enqueue(requestHandler);
         else {
             RequestExecutor thread = new RequestExecutor("Thread-" + listSizeThread);
@@ -36,9 +41,9 @@ public class CreateRequest {
                 executor = BlockingThreadList.getRequestExecutors().get(index);
                 if (isWaiting()) {
                     synchronized (executor) {
+                        executor.notify();
                         RequestHandler requestHandler = (RequestHandler) BlockingRequestQueue.dequeue();
                         requestHandler.setNameThread(executor.getNameThread());
-                        executor.notify();
                         executor.setRequestHandler(requestHandler);
                     }
                     break;
@@ -64,20 +69,11 @@ public class CreateRequest {
                     handleThreadWaiting(requestHandler);
                     break;
                 }
-                if (index == listSizeThread - 1) {
-                    handleThreadRunning(requestHandler);
-                }
+                if (index == listSizeThread - 1) handleThreadRunning(requestHandler);
             }
             Thread.sleep(Constant.TIME_CREATING);
         }
         System.out.println("Size queue :" + BlockingRequestQueue.getQueue().size());
         getRequestFromQueue();
-
-        // Test code
-        for (int i = 0; i < listSizeThread; i++) {
-            System.out.println(BlockingThreadList.getRequestExecutors().get(i).getNameThread()
-                    + " - "
-                    + BlockingThreadList.getRequestExecutors().get(i).getState());
-        }
     }
 }

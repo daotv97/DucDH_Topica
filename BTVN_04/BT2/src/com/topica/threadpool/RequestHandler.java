@@ -13,22 +13,22 @@ public class RequestHandler implements Runnable {
     public void run() {
         // Processing time
         try {
-            System.out.println("Start name request :"
-                            + this.nameRequest);
+            System.out.println("Start name request : " +
+                    this.nameRequest);
 
             Thread.sleep(Constant.TIME_RUNNING);
 
-            System.out.println("Finish name request :"
-                    + this.nameRequest
-                    + "--"
-                    + "Name thread :"
-                    + this.nameThread
-                    + "--"
-                    + " Size Array thread :"
-                    + BlockingThreadList.getRequestExecutors().size()
-                    + "--"
-                    + " Size queue :"
-                    + BlockingRequestQueue.getQueue().size());
+            System.out.println("Finish name request : " +
+                    this.nameRequest +
+                    "--" +
+                    "Name thread :" +
+                    this.nameThread +
+                    "--" +
+                    " Size array thread :" +
+                    BlockingThreadList.getRequestExecutors().size() +
+                    "--" +
+                    " Size queue :" +
+                    BlockingRequestQueue.getQueue().size());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
