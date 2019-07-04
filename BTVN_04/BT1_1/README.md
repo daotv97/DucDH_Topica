@@ -97,51 +97,6 @@ public static void main(String[] args) {
     wifeThread.start();
 }
 ```
-#### Mô tả rõ hơn bằng code trong java tình huống trên:
-```java
-public static Object Lock1 = new Object();
-public static Object Lock2 = new Object();
-
-public static void main(String args[]) {
-    Thread1 T1 = new Thread1();
-    Thread2 T2 = new Thread2();
-    T1.start();
-    T2.start();
-}
-
-private static class Thread1 extends Thread {
-    public void run() {
-        synchronized(Lock1) {
-            System.out.println("Cop: Holding criminal's friend...");
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {}
-            System.out.println("Cop: Waiting for criminal release hostage...");
-
-            synchronized(Lock2) {
-                System.out.println("Cop 1: Holding criminal's friend...");
-            }
-        }
-    }
-}
-private static class Thread2 extends Thread {
-    public void run() {
-        synchronized(Lock2) {
-            System.out.println("Criminal: Holding hostage...");
-
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {}
-            System.out.println("Criminal: Waiting for cop release friend...");
-            synchronized(Lock1) {
-                System.out.println("Criminal: Holding friend...");
-            }
-        }
-    }
-}
-```
-
 ### Output
 	Husband's Account withdrawing...
 	Wife's Account withdrawing...
