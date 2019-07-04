@@ -9,7 +9,7 @@ Tạm dịch có nghĩa là deadlock mô tả trạng thái khi mà 2 hoặc nhi
 - Deadlock xảy ra trong môi trường **multi-thread** (Tất nhiên vì nếu có 1 thread thì chẳng cần phải đợi thằng thread nào nữa, thích thằng nào thì gọi thằng đó trả lời ngay lập tức).
 
 
-- Khi có **thread (1) **đang giữ tài nguyên (A) và cần truy cập tài nguyên(B) để tiếp tục xử lý (call method xử lý…) nhưng tài nguyên (B) đang được **thread (2)** sử dụng, trong lúc này thì **thread (2)** cũng đang cần truy cập vào tài nguyên (A) mà **thread (1)** đang sử dụng. Lúc này thì cả 2 thread đều không thể tiếp tục thực hiện mà đều phải “chờ” nhau nhưng không biết khi nào thì sẽ kết thúc.
+- Khi có **thread (1)** đang giữ tài nguyên (A) và cần truy cập tài nguyên(B) để tiếp tục xử lý (call method xử lý…) nhưng tài nguyên (B) đang được **thread (2)** sử dụng, trong lúc này thì **thread (2)** cũng đang cần truy cập vào tài nguyên (A) mà **thread (1)** đang sử dụng. Lúc này thì cả 2 thread đều không thể tiếp tục thực hiện mà đều phải “chờ” nhau nhưng không biết khi nào thì sẽ kết thúc.
 
 - Điều cuối cùng là **deadlock** xảy ra chúng ta sử dụng **synchronization** với mục đích đảm bảo **thread-safe** nhưng nếu không cẩn thận khi sử dụng **lock-object** (objectidentifier) thì sẽ dễ dẫn đến deadlock.
 
@@ -68,6 +68,11 @@ private static class Thread2 extends Thread {
 }
 ```
 
+### Output
+	Cop: Holding criminal's friend...
+	Criminal: Holding hostage...
+	Cop: Waiting for criminal release hostage...
+	Criminal: Waiting for cop release friend...
 
 
 
