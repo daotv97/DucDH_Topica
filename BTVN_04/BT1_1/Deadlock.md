@@ -5,7 +5,7 @@
 Theo như docs từ **Oracle** thì: <br />
 `Deadlock describes a situation where two or more threads are blocked forever, waiting for each other.` <br />
 
-Tạm dịch có nghĩa là deadlock mô tả một tình huống khi mà 2 hoặc nhiều thread bị blvĩnh viễn, chờ đợi lẫn nhau. Nói rõ hơn thì: 
+Tạm dịch có nghĩa là deadlock mô tả một tình huống khi mà 2 hoặc nhiều thread bị block vĩnh viễn, chờ đợi lẫn nhau. Nói rõ hơn thì: 
 - Deadlock xảy ra trong môi trường **multi-thread** (Tất nhiên vì nếu có 1 thread thì chẳng cần phải đợi thằng thread nào nữa, thích thằng nào thì gọi thằng đó trả lời ngay lập tức).
 
 
