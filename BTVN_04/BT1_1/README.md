@@ -21,12 +21,82 @@ Khi sử dụng **synchronization**, thread sẽ chiếm giữ lock object để
 ------------
 
 ### 2. Ví dụ về deadlock trong Java.
-Hình dưới là cảnh một cảnh sát đang nắm giữ một tên cướp. Anh cảnh sát muốn tên cướp còn lại phải trao trả con tin trước thì ảnh mới thả tên cướp đang nắm giữ. Trong khi đó, tên cướp kia thì nhất định không trả con tin, buộc anh cảnh sát phải thả đồng bọn của hắn ra trước.
+Chúng ta vẫn sẽ đến với kịch bản xây dựng ứng dụng ngân hàng. Giả sử hôm nay sếp ngân hàng đến nói với dev rằng hãy xây dựng thêm chức năng chuyển khoản giữa các tài khoản với nhau. Sau khi chức năng xây dựng xong, ở một gia đình nọ có hai vợ chồng mỗi người đều có 1 tài khoản riêng tại ngân hàng. Một ngày đẹp trời do không hiểu ý nhau, anh chồng vô tài khoản của ảnh chuyển cho cô vợ 3 triệu VND, đồng thời cùng lúc đó, cô vợ cũng vô tài khoản của cổ chuyển cho anh chồng 2 triệu VND. Vấn đề trớ trêu là 2 người này cùng gần như thực hiện đồng thời lệnh chuyển tiền. Và một điều kỳ lạ đã xảy ra, ứng dụng bị treo, có nghĩa là 2 vợ chồng họ đợi hoài mà lệnh chuyển tiền vẫn không thành công. 
 
-[![](https://danlaptrinh.files.wordpress.com/2017/11/3xvzk.png)](https://danlaptrinh.files.wordpress.com/2017/11/3xvzk.png)
+Giả sử lớp BankAccount có sẵn các phương thức rút (withdraw) và nạp (deposit).
 
-Vậy là, mỗi phe trong tình huống này đều nắm giữ riêng con tin của họ, và không phe nào chịu trao trả con tin về cho phe kia cả. Tình huống này rõ ràng là sẽ khó có một thỏa hiệp đạt được trong một thời gian ngắn. **Deadlock khi này đã xảy ra**.
+```java
+public class BankAccount extends Object {
+     
+    long amount = 5000000; // Số tiền có trong tài khoản
+    String accountName = "";
+     
+    public BankAccount(String accountName) {
+        this.accountName = accountName;
+    }
+ 
+    public synchronized void withdraw(long withdrawAmount) {
+        // In ra trạng thái bắt đầu trừ tiền
+        System.out.println(accountName + " withdrawing...");
+         
+        // Trừ tiền
+        amount -= withdrawAmount;
+    }
+     
+    public synchronized void deposit(long depositAmount) {
+        // In ra trạng thái bắt đầu nạp tiền
+        System.out.println(accountName + " depositting...");
+         
+        // Nạp tiền
+        amount += depositAmount;
+    }
+     
+	// Chuyển tiền
+    public void transferTo(BankAccount toAccount, long transferAmount) {
+        synchronized(this) {
+            // Rút tiền từ tài khoản này
+            this.withdraw(transferAmount);
+             
+            synchronized(toAccount) {
+                // Nạp tiền vào toAccount
+                toAccount.deposit(transferAmount);
+            }
+             
+            // In số dư tài khoản khi kết thúc quá trình chuyển tiền
+            System.out.println("The amount of " + accountName + " is: " + amount);
+        }
+    }
+}
+```
+#### Ở phương thức main() chỉ việc gọi các lệnh chuyển khoản như sau.
 
+```java
+public static void main(String[] args) {
+    // Khai báo tài khoản của anh chồng và cô vợ riêng
+    BankAccount husbandAccount = new BankAccount("Husband's Account");
+    BankAccount wifeAccount = new BankAccount("Wife's Account");
+ 
+    // Anh chồng muốn chuyển 3 triệu từ tài khoản của ảnh qua tài khoản cô vợ
+    Thread husbandThread = new Thread() {
+        @Override
+        public void run() {
+            husbandAccount.transferTo(wifeAccount, 3000000);
+        }
+    };
+ 
+    // Cô vợ muốn chuyển 2 triệu từ tài khoản của cổ qua tài khoản của anh chồng
+    Thread wifeThread = new Thread() {
+        @Override
+        public void run() {
+            wifeAccount.transferTo(husbandAccount, 2000000);
+        }
+    };
+ 
+    // Hai người thực hiện lệnh chuyển tiền gần như đồng thời
+    husbandThread.start();
+    wifeThread.start();
+}
+```
 #### Mô tả rõ hơn bằng code trong java tình huống trên:
 ```java
 public static Object Lock1 = new Object();
@@ -73,17 +143,9 @@ private static class Thread2 extends Thread {
 ```
 
 ### Output
-	Cop: Holding criminal's friend...
-	Criminal: Holding hostage...
-	Cop: Waiting for criminal release hostage...
-	Criminal: Waiting for cop release friend...
+	Husband's Account withdrawing...
+	Wife's Account withdrawing...
 
-Tình hình có vẻ căng thẳng nhỉ! Cả 2 đều đang chờ nhau và không bên nào chịu thả con tin hay nói cách khác là mỗi “Lock” cần sử dụng đều đang bị thread khác chiếm giữ.
-
-**Để giải quyết trường hợp này. Chúng ta có 2 cách:**
-
-1. Chỉ sử dụng 1 lock-object (objectidentifier) để synchronized tất cả các đoạn hoặc block code cần synchronization. (Trong ví dụ trên thì chỉ sử dụng Lock1 hoặc Lock2.  Nếu có thể thì không nên sử dụng cùng lúc 2 lock-object)
-
-2. Sử dụng lock-object (objectidentifier) theo thứ tự giống nhau với các block synchorined. Khi các lock-object được sử dụng để synchronization theo thứ tự thì sẽ ngăn được tình trạng các thread giữ nhiều “lock” khi thực hiện mà không cho phép thread khác sử dụng. (Tương tự ví dụ trên thì Thread1 synchronized với Lock1 & Lock thì Thread2 cũng synchronized với thứ tự Lock1 & Lock2)
+Cả 2 Thread khi được khởi chạy, chỉ làm được mỗi thao tác trừ tiền của chính tài khoản nguồn. Còn sau đó đến phương thức nạp tiền cho tài khoản đích thì… không thể gọi đến được. Ứng dụng lúc này vẫn đang chạy. Cái sự ứng dụng mãi mãi không thể kết thúc được là vì khi này bản thân mỗi Thread khi được khởi tạo đã giữ lấy Lock trên Monitor của một tài khoản, các Thread khác không thể can thiệp vào tài khoản mà mỗi Thread đang giữ được. Việc mỗi Thread đều giữ một tài khoản và chờ đến lượt sử dụng tài khoản khác (cũng đang bị giữ bởi một Thread khác) như vậy được gọi là Deadlock.
 
 
