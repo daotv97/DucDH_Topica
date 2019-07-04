@@ -7,7 +7,7 @@ Có năm nhà triết gia, vừa suy nghĩ vừa ăn tối. Các triết gia ng�
 
 ### 1. Phát biểu bài toán.
 
-**Bài toán được phát biểu** : "5 nhà triết học cùng ngồi ăn tối với món spaghetti nổi tiếng. Mỗi nhà triết học cần dùng 2 cái nĩa để có thể ăn spaghetti . Nhưng trên bàn chỉ có tổng cộng 5 cái nĩa để xen kẽ với 5 cái đĩa. Mỗi nhà triết học sẽ suy ngẫm các triết lý của mình đến khi cảm thấy đói thì dự định lần lượt cầm 1 cái nĩa bên trái và 1 cái nĩa bên phải để ăn. Nếu cả 5 nhà triết học đều cầm cái nĩa bên trái cùng lúc, thì sẽ không có ai có được cái nĩa bên phải để có thể bắt đầu thưởng thức spaghetti". 
+**Bài toán được phát biểu** : "5 nhà triết học cùng ngồi ăn tối với món spaghetti nổi tiếng. Mỗi nhà triết học cần dùng 2 chiếc  để có thể ăn spaghetti . Nhưng trên bàn chỉ có tổng cộng 5 chiếc đũa để xen kẽ với 5 cái đĩa. Mỗi nhà triết học sẽ suy ngẫm các triết lý của mình đến khi cảm thấy đói thì dự định lần lượt cầm 1 chiếc đũa bên trái và 1 cái đũa bên phải để ăn. Nếu cả 5 nhà triết học đều cầm chiếc đũa bên trái cùng lúc, thì sẽ không có ai có được chiếc đũa bên phải để có thể bắt đầu thưởng thức spaghetti". 
 Tìm cách để không ai phải chết đói là vấn đề của bài toán.
 
 ------------
