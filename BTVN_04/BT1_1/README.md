@@ -46,7 +46,7 @@ private static class Thread1 extends Thread {
             System.out.println("Cop: Waiting for criminal release hostage...");
 
             synchronized(Lock2) {
-                System.out.println("Cop 1: Holding criminal's friend &amp;amp;amp;amp;amp;amp;amp;amp; hostage...");
+                System.out.println("Cop 1: Holding criminal's friend...");
             }
         }
     }
@@ -61,7 +61,7 @@ private static class Thread2 extends Thread {
             } catch (InterruptedException e) {}
             System.out.println("Criminal: Waiting for cop release friend...");
             synchronized(Lock1) {
-                System.out.println("Criminal: Holding friend &amp;amp;amp;amp;amp;amp;amp;amp; hostage...");
+                System.out.println("Criminal: Holding friend...");
             }
         }
     }
