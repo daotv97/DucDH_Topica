@@ -6,19 +6,27 @@ import java.util.Queue;
 public class BlockingRequestQueue {
     private static final Integer EMPTY = 0;
     private static Queue<Runnable> queue;
-    private static int maxRequestInQueue;
+    private static Integer maxSizeQueue;
 
     public BlockingRequestQueue(int size) {
-        maxRequestInQueue = size;
+        maxSizeQueue = size;
         queue = new LinkedList<Runnable>();
     }
 
     public static synchronized boolean enqueue(Runnable request) throws InterruptedException {
-        if (queue.size() < maxRequestInQueue - 1) {
+        if (queue.size() < maxSizeQueue) {
             queue.offer(request);
             return true;
         }
         return false;
+    }
+
+    public static Boolean isFullQueue() {
+        return queue.size() == maxSizeQueue;
+    }
+
+    public static Boolean isEmptyQueue() {
+        return queue.isEmpty();
     }
 
     public static synchronized Runnable dequeue() {
@@ -35,4 +43,5 @@ public class BlockingRequestQueue {
     public static void setQueue(Queue<Runnable> queue) {
         BlockingRequestQueue.queue = queue;
     }
+
 }

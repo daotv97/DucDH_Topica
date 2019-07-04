@@ -3,32 +3,44 @@ package com.topica.threadpool;
 import java.util.ArrayList;
 
 public class BlockingThreadList {
-    private static ArrayList<FactoryThread> factoryThreads = new ArrayList();
-    private static int coreSize;
-    private static int maxSize = 5;
+    private static ArrayList<RequestExecutor> requestExecutors;
+    private static Integer coreSize;
+    private static Integer maxSize;
 
     public BlockingThreadList(int core, int max) {
+        requestExecutors = new ArrayList();
         coreSize = core;
         maxSize = max;
     }
 
-    public static synchronized Boolean addThreadToQueue(FactoryThread thread, RequestHandler requestHandler) throws InterruptedException {
-        if (BlockingThreadList.factoryThreads.size() < maxSize) {
-            factoryThreads.add(thread);
-            factoryThreads.get(factoryThreads.size() - 1).setRequestHandler(requestHandler);
-
+    public static synchronized Boolean addThreadToFactory(RequestExecutor thread, RequestHandler requestHandler) throws InterruptedException {
+        if (requestExecutors.size() < maxSize) {
+            requestExecutors.add(thread);
             requestHandler.setNameThread(thread.getNameThread());
-            factoryThreads.get(factoryThreads.size() - 1).start();
+            thread.setRequestHandler(requestHandler);
             return true;
         }
         return false;
     }
 
-    public static ArrayList<FactoryThread> getFactoryThreads() {
-        return factoryThreads;
+    public static ArrayList<RequestExecutor> getRequestExecutors() {
+        return requestExecutors;
     }
 
-    public static void setFactoryThreads(ArrayList<FactoryThread> factoryThreads) {
-        BlockingThreadList.factoryThreads = factoryThreads;
+    public static void setRequestExecutors(ArrayList<RequestExecutor> requestExecutors) {
+        BlockingThreadList.requestExecutors = requestExecutors;
+    }
+
+    public static Boolean isFullThread() {
+        return requestExecutors.size() == maxSize;
+    }
+
+    public Boolean shutdown() {
+        for (int index = 0; index < maxSize; index++) {
+            if (!requestExecutors.get(index).getState().toString().equals("WAITING")) {
+                return false;
+            }
+        }
+        return true;
     }
 }

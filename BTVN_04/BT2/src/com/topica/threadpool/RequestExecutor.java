@@ -1,10 +1,10 @@
 package com.topica.threadpool;
 
-public class FactoryThread extends Thread {
-    private RequestHandler requestHandler;
+public class RequestExecutor extends Thread {
+    private RequestHandler requestHandler = null;
     private String nameThread;
 
-    public FactoryThread(String nameThread) {
+    public RequestExecutor(String nameThread) {
         this.nameThread = nameThread;
     }
 

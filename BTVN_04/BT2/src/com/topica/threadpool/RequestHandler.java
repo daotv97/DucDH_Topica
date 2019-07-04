@@ -1,8 +1,7 @@
 package com.topica.threadpool;
 
 
-public class RequestHandler extends Thread implements Runnable {
-
+public class RequestHandler implements Runnable {
     private static final Integer TIME_SLEEP = 6000;
     private String nameRequest;
     private String nameThread;
@@ -11,31 +10,23 @@ public class RequestHandler extends Thread implements Runnable {
         this.nameRequest = nameRequest;
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
     @Override
     public void run() {
+        // Processing time
         try {
+            System.out.println("Start name request :"
+                            + this.nameRequest);
 
-            // Processing Time
             Thread.sleep(TIME_SLEEP);
-            System.out.println("Name request :"
+
+            System.out.println("Finish name request :"
                     + this.nameRequest
                     + "--"
                     + "Name thread :"
                     + this.nameThread
                     + "--"
                     + " Size Array thread :"
-                    + BlockingThreadList.getFactoryThreads().size()
+                    + BlockingThreadList.getRequestExecutors().size()
                     + "--"
                     + " Size queue :"
                     + BlockingRequestQueue.getQueue().size());
@@ -46,6 +37,10 @@ public class RequestHandler extends Thread implements Runnable {
 
     public String getNameRequest() {
         return this.nameRequest;
+    }
+
+    public String getNameThread() {
+        return nameThread;
     }
 
     public void setNameThread(String nameThread) {

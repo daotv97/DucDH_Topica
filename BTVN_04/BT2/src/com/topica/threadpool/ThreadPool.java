@@ -1,16 +1,30 @@
 package com.topica.threadpool;
 
 public class ThreadPool {
+    private static Integer coreThreadSize;
     private BlockingRequestQueue blockingRequestQueue;
+    private BlockingThreadList blockingThreadList;
 
-    public ThreadPool(int requestQueueSize, int coreThreadSize) {
+    public ThreadPool(int requestQueueSize, int coreThreadSize, int maxThreadSize) {
+        ThreadPool.coreThreadSize = coreThreadSize;
         blockingRequestQueue = new BlockingRequestQueue(requestQueueSize);
-        String threadName = "";
-        for (int count = 0; count < coreThreadSize; count++) {
-            threadName = "Thread-" + count;
-            FactoryThread thread = new FactoryThread(threadName);
-            BlockingThreadList.getFactoryThreads().add(thread);
-            BlockingThreadList.getFactoryThreads().get(count).start();
+        blockingThreadList = new BlockingThreadList(coreThreadSize, maxThreadSize);
+        init();
+    }
+
+    private static void init() {
+        for (int index = 0; index < coreThreadSize; index++) {
+            RequestExecutor executor = new RequestExecutor("Thread-" + index);
+            BlockingThreadList.getRequestExecutors().add(executor);
+            BlockingThreadList.getRequestExecutors().get(index).start();
+        }
+    }
+
+    public void request(int sizeRequest) {
+        try {
+            new CreateRequest().create(sizeRequest);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
