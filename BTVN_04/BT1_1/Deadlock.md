@@ -6,7 +6,9 @@ Theo như docs từ **Oracle** thì: <br />
 `Deadlock describes a situation where two or more threads are blocked forever, waiting for each other.` <br />
 
 Tạm dịch có nghĩa là deadlock mô tả một tình huống khi mà 2 hoặc nhiều thread bị block vĩnh viễn, chờ đợi lẫn nhau. Nói rõ hơn thì: 
-- Deadlock xảy ra trong môi trường **multi-thread** (Tất nhiên vì nếu có 1 thread thì chẳng cần phải đợi thằng thread nào nữa, thích thằng nào thì gọi thằng đó trả lời ngay lập tức).
+- **Deadlock** là một trạng thái mà ở đó một tập các tiến trình bị chặn vì mỗi tiến trình đang **chiếm giữ tài nguyên** và chờ đợi được cấp phát tài nguyên khác được giữ bởi tiến trình khác. Nói cách khác, mỗi tiến trình trong hệ thống đang chờ để được cấp phát tài nguyên đang bị chiếm giữ bởi tài nguyên khác. Nếu tài nguyên đó không được giải phóng để tiến trình khác có thể sử dụng, thì tiến trình đang chờ lấy tài nguyên sẽ chờ mãi, chờ mãi dẫn tới Khóa chết ( Deadlock )
+
+- Deadlock xảy ra trong môi trường **multi-thread** (Tất nhiên vì nếu có 1 thread thì chẳng cần phải đợi thằng thread nào c, thích thằng nào thì gọi thằng đó trả lời ngay lập tức).
 
 
 - Khi có **thread (1)** đang giữ tài nguyên (A) và cần truy cập tài nguyên(B) để tiếp tục xử lý (call method xử lý…) nhưng tài nguyên (B) đang được **thread (2)** sử dụng, trong lúc này thì **thread (2)** cũng đang cần truy cập vào tài nguyên (A) mà **thread (1)** đang sử dụng. Lúc này thì cả 2 thread đều không thể tiếp tục thực hiện mà đều phải “chờ” nhau nhưng không biết khi nào thì sẽ kết thúc.
