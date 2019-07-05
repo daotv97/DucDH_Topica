@@ -41,7 +41,7 @@ Vấn đề là giả sử có hơn 31 request tới cùng lúc thì sao? rất 
 
 - **Single-threaded pool**: chỉ giữ một Thread thực thi một nhiệm vụ một lúc.
 
-- ** Fork/Join pool**: một Thread đặc biệt sử dụng Fork/ Join Framework bằng cách tự động chia nhỏ công việc tính toán cho các core xử lý. (Tính toán song song).
+- **Fork/Join pool**: một Thread đặc biệt sử dụng Fork/ Join Framework bằng cách tự động chia nhỏ công việc tính toán cho các core xử lý. (Tính toán song song).
 
 Trong thực tế, **ThreadPool** được sử dụng rộng rãi trong các máy chủ web, nơi một ThreadPool được sử dụng để phục vụ các yêu cầu của khách hàng. Thread pool cũng được sử dụng trong các ứng dụng cơ sở dữ liệu nơi mà một ThreadPool được sử dụng để duy trì các kết nối mở với cơ sở dữ liệu.
 
