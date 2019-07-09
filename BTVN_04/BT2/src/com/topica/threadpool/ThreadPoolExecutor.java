@@ -1,57 +1,99 @@
 package com.topica.threadpool;
 
-/**
- * <h1>ThreadPoolExecutor</h1>
- * This ThreadPoolExecutor program will <b>builds</b>, <b>initializes</b> threads.
- * Initialize the list of the threads in standby mode.
- * Call threads to handle tasks when it is in standby mode.
- *
- * @author Dao Huy Duc, Mai Trong Nghia, Nguyen Tien Duy.
- * @version 1.2
- * @since 2019-07-04
- */
-public class ThreadPoolExecutor {
-    private static Integer coreThreadSize;
+import com.topica.threadpool.AbstractExecutorService;
 
-    /**
-     * <b>Constructor</b> for the ThreadPoolExecutor class.
-     * This method is responsible for <b>initializing</b> the list of threads and queues that contain the requests.
-     * It will call 'init' method to <b>initialize</b> thread and <code>run</code> in standby mode.
-     *
-     * @param coreThreadSize
-     * @param maxThreadSize
-     * @return Nothing.
-     */
-    public ThreadPoolExecutor(int coreThreadSize, int maxThreadSize) {
-        ThreadPoolExecutor.coreThreadSize = coreThreadSize;
-        new BlockingThreadList(coreThreadSize, maxThreadSize);
-        init();
+import java.util.ArrayList;
+import java.util.concurrent.BlockingQueue;
+import java.util.stream.IntStream;
+
+public class ThreadPoolExecutor extends AbstractExecutorService {
+
+    private final BlockingQueue<Runnable> workQueue;
+    private final ArrayList<Worker> workers;
+    private volatile int corePoolSize;
+    private volatile int maximumPoolSize;
+
+    public ThreadPoolExecutor(int corePoolSize,
+                              int maximumPoolSize,
+                              BlockingQueue<Runnable> workQueue) {
+        if (corePoolSize < 0 ||
+                maximumPoolSize <= 0 ||
+                maximumPoolSize < corePoolSize
+        ) {
+            throw new IllegalArgumentException();
+        }
+        if (workQueue == null) {
+            throw new NullPointerException();
+        }
+        this.corePoolSize = corePoolSize;
+        this.maximumPoolSize = maximumPoolSize;
+        this.workQueue = workQueue;
+        workers = new ArrayList<>();
+        initializeThread(workers, corePoolSize);
     }
 
-    /**
-     * This method will <b>initialize threads</b>, then </code>add</code> them to the list of threads
-     * and let them </code>work</code> in standby mode.
-     *
-     * @return Nothing.
-     */
-    private static void init() {
-        for (int index = 0; index < coreThreadSize; index++) {
-            RequestExecutor executor = new RequestExecutor("Thread-" + index);
-            executor.start();
-            BlockingThreadList.getRequestExecutors().add(executor);
+    private void initializeThread(ArrayList<Worker> workers, int corePoolSize) {
+        IntStream.range(0, corePoolSize).forEach(index -> {
+            workers.add(new Worker());
+            workers.get(index).start();
+        });
+    }
+
+    public void execute(Runnable task) {
+        if (task == null) {
+            throw new NullPointerException();
+        }
+        synchronized (workQueue) {
+            workQueue.add(task);
+            workQueue.notify();
         }
     }
 
-    /**
-     * If this method is called, it will call the <b>'handle'</b> method
-     * in the RequestHandler class to handle the task.
-     *
-     * @param sizeRequest
-     * @return Nothing.
-     * @throws InterruptedException
-     * @see InterruptedException
-     */
-    public void request(int sizeRequest) throws InterruptedException {
-        new RequestHandler().handle(sizeRequest);
+    @Override
+    public void shutdown() {
+        System.out.println("Shutting down thread pool");
+        IntStream.range(0, corePoolSize).forEach(index -> {
+            workers.add(index, null);
+        });
+    }
+
+    public int getCorePoolSize() {
+        return corePoolSize;
+    }
+
+    public void setCorePoolSize(int corePoolSize) {
+        this.corePoolSize = corePoolSize;
+    }
+
+    public int getMaximumPoolSize() {
+        return maximumPoolSize;
+    }
+
+    public void setMaximumPoolSize(int maximumPoolSize) {
+        this.maximumPoolSize = maximumPoolSize;
+    }
+
+    private class Worker extends Thread {
+        public void run() {
+            Runnable task;
+
+            while (true) {
+                synchronized (workQueue) {
+                    while (workQueue.isEmpty()) {
+                        try {
+                            workQueue.wait();
+                        } catch (InterruptedException e) {
+                            System.out.println("An error occurred while queue is waiting: " + e.getMessage());
+                        }
+                    }
+                    task = workQueue.poll();
+                }
+                try {
+                    task.run();
+                } catch (RuntimeException e) {
+                    System.out.println("Thread pool is interrupted due to an issue: " + e.getMessage());
+                }
+            }
+        }
     }
 }
