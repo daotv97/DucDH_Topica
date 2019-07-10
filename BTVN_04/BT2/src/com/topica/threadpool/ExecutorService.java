@@ -2,7 +2,7 @@ package com.topica.threadpool;
 
 public interface ExecutorService {
 
-    void execute(Runnable task);
+    void execute(Task task);
 
     void shutdown();
 

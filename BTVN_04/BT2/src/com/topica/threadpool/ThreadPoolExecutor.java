@@ -32,19 +32,66 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
     private void initializeThread(ArrayList<Worker> workers, int corePoolSize) {
         IntStream.range(0, corePoolSize).forEach(index -> {
-            workers.add(new Worker());
-            workers.get(index).run();
+            workers.add(new Worker("Thread-" + index));
+            workers.get(index).start();
         });
     }
 
+    private boolean isWaiting(Worker worker) {
+        return worker.getState().toString().equals(Constant.STATUS_WAITING);
+    }
+
+    private void handleThreadIsWaiting(Worker worker, Task task) {
+        synchronized (worker) {
+            worker.notify();
+            worker.setTask(task);
+        }
+    }
+
+    private void handleThreadIsRunningAll(Task task, int index) {
+        int workThreadSize = workers.size();
+        System.out.println("Size: " + workThreadSize);
+        if (workThreadSize < maximumPoolSize) {
+            workers.add(new Worker("Thread-" + index));
+            workers.get(workThreadSize).start();
+        }
+        if (workThreadSize == maximumPoolSize) {
+            try {
+                workQueue.add(task);
+            } catch (Exception e) {
+                System.out.println("Task " + task.getName() + " bi tu choi truy cap");
+            }
+        }
+    }
+
+    private void handleExecute(Task task) {
+        System.out.println("Size thread: " + workers.size() + "-- Size queue: " + workQueue.size());
+        int sizeCurrentThread = workers.size();
+        for (int index = 0; index < sizeCurrentThread; index++) {
+            Worker worker = workers.get(index);
+
+            if (isWaiting(worker)) {
+                handleThreadIsWaiting(worker, task);
+                break;
+            }
+
+            if (index == sizeCurrentThread - 1) {
+                handleThreadIsRunningAll(task, index);
+            }
+        }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
-    public void execute(Runnable task) {
+    public void execute(Task task) {
         if (task == null) {
             throw new NullPointerException();
-        }
-        synchronized (workQueue) {
-            workQueue.add(task);
-            workQueue.notify();
+        } else {
+            handleExecute(task);
         }
     }
 
@@ -80,27 +127,46 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         this.maximumPoolSize = maximumPoolSize;
     }
 
-    private final class Worker implements Runnable {
+    private final class Worker extends Thread {
+        private String nameThread;
+        private Task task;
+
+        public Worker(String nameThread) {
+            this.nameThread = nameThread;
+        }
+
         public void run() {
-            Runnable task;
 
             while (true) {
-                synchronized (workQueue) {
-                    while (workQueue.isEmpty()) {
-                        try {
-                            workQueue.wait();
-                        } catch (InterruptedException e) {
-                            System.out.println("An error occurred while queue is waiting: " + e.getMessage());
+                synchronized (this) {
+                    try {
+                        if (task == null) {
+                            this.wait();
+                        } else {
+                            this.task.run();
+                            this.task = null;
                         }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                    task = workQueue.poll();
-                }
-                try {
-                    task.run();
-                } catch (RuntimeException e) {
-                    System.out.println("Thread pool is interrupted due to an issue: " + e.getMessage());
                 }
             }
+        }
+
+        public Task getTask() {
+            return task;
+        }
+
+        public void setTask(Task task) {
+            this.task = task;
+        }
+
+        public String getNameThread() {
+            return nameThread;
+        }
+
+        public void setNameThread(String nameThread) {
+            this.nameThread = nameThread;
         }
     }
 }

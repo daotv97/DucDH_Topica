@@ -1,19 +1,11 @@
 package com.topica.threadpool;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
-
 class Task implements Runnable {
-    private static final Long TIME_SLEEP = 1000L;
+    private static final Long TIME_SLEEP = 6000L;
     private String name;
 
     public Task(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     /**
@@ -29,12 +21,17 @@ class Task implements Runnable {
      */
     @Override
     public void run() {
-        System.out.println("Start task: " + name + "-- time: " + Calendar.getInstance().getTime());
+        System.out.println("Thread: " + Thread.currentThread().getName() + " Start task: " + name);
         try {
             Thread.sleep(TIME_SLEEP);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Finish task: " + name + "-- time: " + Calendar.getInstance().getTime());
+        System.out.println("Thread: " + Thread.currentThread().getName() + " Finish task: " + name);
     }
+
+    public String getName() {
+        return name;
+    }
+
 }
