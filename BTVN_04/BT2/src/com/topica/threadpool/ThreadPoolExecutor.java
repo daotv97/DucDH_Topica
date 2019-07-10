@@ -38,8 +38,15 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
     private void handleThreadIsWaiting(Worker worker, Task task) {
         synchronized (worker) {
-            worker.notify();
-            worker.setTask(task);
+            if (workQueue.isEmpty()) {
+                worker.notify();
+                worker.setTask(task);
+            } else {
+                Task taskInQueue = (Task) workQueue.poll();
+                workQueue.add(task);
+                worker.notify();
+                worker.setTask(taskInQueue);
+            }
         }
     }
 
@@ -47,20 +54,23 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         int workThreadSize = workers.size();
         System.out.println("Size: " + workThreadSize);
         if (workThreadSize < maximumPoolSize) {
-            workers.add(new Worker("Thread-" + index));
+            Worker worker = new Worker("Thread-" + index);
+            worker.setTask(task);
+            workers.add(worker);
             workers.get(workThreadSize).start();
+
         }
         if (workThreadSize == maximumPoolSize) {
             try {
                 workQueue.add(task);
             } catch (Exception e) {
-                System.out.println("Task " + task.getName() + " bi tu choi truy cap");
+                System.out.println(task.getName() + " bi tu choi xu ly!");
             }
         }
     }
 
     private void handleExecute(Task task) {
-        System.out.println("Size thread: " + workers.size() + "-- Size queue: " + workQueue.size());
+        System.out.println("Size thread: " + workers.size());
         int sizeCurrentThread = workers.size();
         for (int index = 0; index < sizeCurrentThread; index++) {
             Worker worker = workers.get(index);
