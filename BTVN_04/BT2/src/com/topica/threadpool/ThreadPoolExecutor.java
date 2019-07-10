@@ -33,7 +33,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     }
 
     private boolean isWaiting(Worker worker) {
-        return worker.getState().toString().equals(Constant.STATUS_WAITING);
+        return Constant.STATUS_WAITING.equals(worker.getState().toString());
     }
 
     private void handleThreadIsWaiting(Worker worker, Task task) {
@@ -53,13 +53,14 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private void handleThreadIsRunningAll(Task task, int index) {
         int workThreadSize = workers.size();
         System.out.println("Size: " + workThreadSize);
+
         if (workThreadSize < maximumPoolSize) {
             Worker worker = new Worker("Thread-" + index);
             worker.setTask(task);
             workers.add(worker);
             workers.get(workThreadSize).start();
-
         }
+
         if (workThreadSize == maximumPoolSize) {
             try {
                 workQueue.add(task);
