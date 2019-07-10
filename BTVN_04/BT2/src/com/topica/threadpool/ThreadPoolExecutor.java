@@ -1,7 +1,5 @@
 package com.topica.threadpool;
 
-import com.topica.threadpool.AbstractExecutorService;
-
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.IntStream;
@@ -13,9 +11,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private volatile int corePoolSize;
     private volatile int maximumPoolSize;
 
-    public ThreadPoolExecutor(int corePoolSize,
-                              int maximumPoolSize,
-                              BlockingQueue<Runnable> workQueue) {
+    ThreadPoolExecutor(int corePoolSize,
+                       int maximumPoolSize,
+                       BlockingQueue<Runnable> workQueue) {
         if (corePoolSize < 0 ||
                 maximumPoolSize <= 0 ||
                 maximumPoolSize < corePoolSize
@@ -35,10 +33,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private void initializeThread(ArrayList<Worker> workers, int corePoolSize) {
         IntStream.range(0, corePoolSize).forEach(index -> {
             workers.add(new Worker());
-            workers.get(index).start();
+            workers.get(index).run();
         });
     }
 
+    @Override
     public void execute(Runnable task) {
         if (task == null) {
             throw new NullPointerException();
@@ -52,9 +51,17 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     @Override
     public void shutdown() {
         System.out.println("Shutting down thread pool");
-        IntStream.range(0, corePoolSize).forEach(index -> {
-            workers.add(index, null);
-        });
+        IntStream.range(0, corePoolSize).forEach(index -> workers.add(index, null));
+    }
+
+    @Override
+    public boolean isShutdown() {
+        return false;
+    }
+
+    @Override
+    public boolean isTerminated() {
+        return false;
     }
 
     public int getCorePoolSize() {
@@ -73,7 +80,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         this.maximumPoolSize = maximumPoolSize;
     }
 
-    private class Worker extends Thread {
+    private final class Worker implements Runnable {
         public void run() {
             Runnable task;
 
