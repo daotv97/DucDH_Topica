@@ -1,4 +1,4 @@
-package com.topica.threadpool;
+package com.topica.threadpool.utils;
 
 public class Constant {
     public static final Integer CAPACITY = 10;

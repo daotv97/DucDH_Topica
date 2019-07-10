@@ -1,4 +1,6 @@
-package com.topica.threadpool;
+package com.topica.threadpool.api;
+
+import com.topica.threadpool.test.Task;
 
 public interface ExecutorService {
 

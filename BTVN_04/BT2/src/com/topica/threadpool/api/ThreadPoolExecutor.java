@@ -1,4 +1,7 @@
-package com.topica.threadpool;
+package com.topica.threadpool.api;
+
+import com.topica.threadpool.utils.Constant;
+import com.topica.threadpool.test.Task;
 
 import java.util.ArrayList;
 import java.util.concurrent.BlockingQueue;
@@ -11,7 +14,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private volatile int corePoolSize;
     private volatile int maximumPoolSize;
 
-    ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, BlockingQueue<Runnable> workQueue) {
+    public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, BlockingQueue<Runnable> workQueue) {
         if (corePoolSize < 0 || maximumPoolSize <= 0 || maximumPoolSize < corePoolSize) {
             throw new IllegalArgumentException();
         }
@@ -21,6 +24,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         this.corePoolSize = corePoolSize;
         this.maximumPoolSize = maximumPoolSize;
         this.workQueue = workQueue;
+
         workers = new ArrayList<>();
         initializeThread(workers, corePoolSize);
     }
@@ -32,7 +36,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         });
     }
 
-    private boolean isWaiting(Worker worker) {
+    private boolean isThreadWorkerWaiting(Worker worker) {
         return Constant.STATUS_WAITING.equals(worker.getState().toString());
     }
 
@@ -43,6 +47,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 worker.setTask(task);
             } else {
                 Task taskInQueue = (Task) workQueue.poll();
+                System.out.println("get task in queue: " + taskInQueue.getName());
                 workQueue.add(task);
                 worker.notify();
                 worker.setTask(taskInQueue);
@@ -52,15 +57,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
 
     private void handleThreadIsRunningAll(Task task, int index) {
         int workThreadSize = workers.size();
-        System.out.println("Size: " + workThreadSize);
-
         if (workThreadSize < maximumPoolSize) {
             Worker worker = new Worker("Thread-" + index);
             worker.setTask(task);
             workers.add(worker);
             workers.get(workThreadSize).start();
         }
-
         if (workThreadSize == maximumPoolSize) {
             try {
                 workQueue.add(task);
@@ -70,26 +72,22 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         }
     }
 
-    private void handleExecute(Task task) {
+    private void handle(Task task) {
         System.out.println("Size thread: " + workers.size());
-        int sizeCurrentThread = workers.size();
-        for (int index = 0; index < sizeCurrentThread; index++) {
+        int currentThreadSize = workers.size();
+        for (int index = 0; index < currentThreadSize; index++) {
             Worker worker = workers.get(index);
 
-            if (isWaiting(worker)) {
+            if (isThreadWorkerWaiting(worker)) {
                 handleThreadIsWaiting(worker, task);
                 break;
             }
 
-            if (index == sizeCurrentThread - 1) {
+            if (index == currentThreadSize - 1) {
                 handleThreadIsRunningAll(task, index);
             }
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Queue thread: " + workQueue.size());
     }
 
     @Override
@@ -97,7 +95,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         if (task == null) {
             throw new NullPointerException();
         }
-        handleExecute(task);
+        handle(task);
     }
 
     @Override

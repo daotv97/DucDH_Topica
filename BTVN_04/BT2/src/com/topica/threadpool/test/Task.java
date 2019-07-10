@@ -1,6 +1,6 @@
-package com.topica.threadpool;
+package com.topica.threadpool.test;
 
-class Task implements Runnable {
+public class Task implements Runnable {
     private static final Long TIME_SLEEP = 6000L;
     private String name;
 

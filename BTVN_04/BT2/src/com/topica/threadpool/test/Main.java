@@ -1,4 +1,7 @@
-package com.topica.threadpool;
+package com.topica.threadpool.test;
+
+import com.topica.threadpool.utils.Constant;
+import com.topica.threadpool.api.ThreadPoolExecutor;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.IntStream;
@@ -10,6 +13,11 @@ public class Main {
         IntStream.rangeClosed(1, Constant.TASKS).mapToObj(i -> new Task("Task " + i)).forEach(task -> {
             System.out.println("Created : " + task.getName());
             executor.execute(task);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         });
     }
 }
