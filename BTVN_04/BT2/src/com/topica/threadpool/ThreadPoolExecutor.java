@@ -11,13 +11,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private volatile int corePoolSize;
     private volatile int maximumPoolSize;
 
-    ThreadPoolExecutor(int corePoolSize,
-                       int maximumPoolSize,
-                       BlockingQueue<Runnable> workQueue) {
-        if (corePoolSize < 0 ||
-                maximumPoolSize <= 0 ||
-                maximumPoolSize < corePoolSize
-        ) {
+    ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, BlockingQueue<Runnable> workQueue) {
+        if (corePoolSize < 0 || maximumPoolSize <= 0 || maximumPoolSize < corePoolSize) {
             throw new IllegalArgumentException();
         }
         if (workQueue == null) {
@@ -90,9 +85,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     public void execute(Task task) {
         if (task == null) {
             throw new NullPointerException();
-        } else {
-            handleExecute(task);
         }
+        handleExecute(task);
     }
 
     @Override
@@ -136,7 +130,6 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         }
 
         public void run() {
-
             while (true) {
                 synchronized (this) {
                     try {
