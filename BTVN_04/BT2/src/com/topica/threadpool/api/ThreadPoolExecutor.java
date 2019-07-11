@@ -3,7 +3,6 @@ package com.topica.threadpool.api;
 import com.topica.threadpool.utils.Constant;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.IntStream;
 
@@ -62,11 +61,14 @@ public class ThreadPoolExecutor implements ExecutorService {
     }
 
     /**
-     * If one of the initialized threads is in a <b>waiting</b> state and in the queue list is empty,
+     * If one of the initialized threads is in a <b>waiting</b> state
+     * and in the queue list is empty,
      * this thread will take the requested task.
      * <p>
-     * If one of the threads is initialized in the <b>waiting</b> state and in the queue list is not empty,
-     * the thread will retrieve a task in the queue to process and then add the new task to the queue.
+     * If one of the threads is initialized in the <b>waiting</b> state
+     * and in the queue list is not empty,
+     * the thread will retrieve a task in the queue to process
+     * and then add the new task to the queue.
      *
      * @param worker
      * @param task
@@ -88,10 +90,12 @@ public class ThreadPoolExecutor implements ExecutorService {
 
     /**
      * When the list contains threads that handle tasks
-     * without any thread in the <b>waiting</b> state and the number of threads in that list is smaller than <b>maxPoolSize</b>,
+     * without any thread in the <b>waiting</b> state and the number of threads
+     * in that list is smaller than <b>maxPoolSize</b>,
      * a new thread will be added to that list and will handle the new task.
      * <p>
-     * If the number of threads in that list is equal to <b>maxPoolSize</b>, it will reject execution.
+     * If the number of threads in that list is equal to <b>maxPoolSize</b>,
+     * it will reject execution.
      *
      * @param task
      * @param index
@@ -140,7 +144,7 @@ public class ThreadPoolExecutor implements ExecutorService {
 
     @Override
     public void execute(Runnable runnable) {
-        if (active == false) {
+        if (!active) {
             if (runnable == null) {
                 throw new NullPointerException();
             }
@@ -269,7 +273,7 @@ public class ThreadPoolExecutor implements ExecutorService {
                         .append(" SIZE QUEUE: ")
                         .append(workQueue.size())
                         .toString());
-                for (int index=0; index<workers.size(); index++) {
+                for (int index = 0; index < workers.size(); index++) {
                     if (workQueue.isEmpty() && workers.size() > corePoolSize && isThreadWorkerWaiting(workers.get(index))) {
                         workers.get(index).interrupt();
                         if (workers.get(index).isInterrupted()) {
