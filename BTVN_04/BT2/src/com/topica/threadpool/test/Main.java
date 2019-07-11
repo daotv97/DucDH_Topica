@@ -18,6 +18,8 @@ public class Main {
                 e.printStackTrace();
             }
         });
+        System.out.println("Before shutdown: " + executor.isShutdown());
         executor.shutdown();
+        System.out.println("After shutdown: " + executor.isShutdown());
     }
 }

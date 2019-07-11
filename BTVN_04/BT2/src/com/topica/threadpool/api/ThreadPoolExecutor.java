@@ -151,19 +151,12 @@ public class ThreadPoolExecutor implements ExecutorService {
 
     @Override
     public void shutdown() {
-        System.out.println(workQueue.size());
         this.active = true;
-    }
-
-
-    @Override
-    public List<Runnable> shutdownNow() {
-        return null;
     }
 
     @Override
     public boolean isShutdown() {
-        return false;
+        return active;
     }
 
     @Override
