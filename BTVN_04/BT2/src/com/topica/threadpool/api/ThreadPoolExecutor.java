@@ -1,13 +1,14 @@
 package com.topica.threadpool.api;
 
-import com.topica.threadpool.utils.Constant;
 import com.topica.threadpool.test.Task;
+import com.topica.threadpool.utils.Constant;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.stream.IntStream;
 
-public class ThreadPoolExecutor extends AbstractExecutorService {
+public class ThreadPoolExecutor implements ExecutorService {
 
     private final BlockingQueue<Runnable> workQueue;
     private final ArrayList<Worker> workers;
@@ -40,26 +41,26 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         return Constant.STATUS_WAITING.equals(worker.getState().toString());
     }
 
-    private void handleThreadIsWaiting(Worker worker, Task task) {
+    private void handleThreadIsWaiting(Worker worker, Runnable task) {
         synchronized (worker) {
             if (workQueue.isEmpty()) {
                 worker.notify();
-                worker.setTask(task);
+                worker.setRunnable(task);
             } else {
                 Task taskInQueue = (Task) workQueue.poll();
                 System.out.println("get task in queue: " + taskInQueue.getName());
                 workQueue.add(task);
                 worker.notify();
-                worker.setTask(taskInQueue);
+                worker.setRunnable(taskInQueue);
             }
         }
     }
 
-    private void handleThreadIsRunningAll(Task task, int index) {
+    private void handleThreadIsRunningAll(Runnable task, int index) {
         int workThreadSize = workers.size();
         if (workThreadSize < maximumPoolSize) {
             Worker worker = new Worker("Thread-" + index);
-            worker.setTask(task);
+            worker.setRunnable(task);
             workers.add(worker);
             workers.get(workThreadSize).start();
         }
@@ -67,41 +68,46 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             try {
                 workQueue.add(task);
             } catch (Exception e) {
-                System.out.println(task.getName() + " bi tu choi xu ly!");
+                System.out.println("bi tu choi xu ly!");
             }
         }
     }
 
-    private void handle(Task task) {
+    private void handle(Runnable runnable) {
         System.out.println("Size thread: " + workers.size());
         int currentThreadSize = workers.size();
         for (int index = 0; index < currentThreadSize; index++) {
             Worker worker = workers.get(index);
 
             if (isThreadWorkerWaiting(worker)) {
-                handleThreadIsWaiting(worker, task);
+                handleThreadIsWaiting(worker, runnable);
                 break;
             }
 
             if (index == currentThreadSize - 1) {
-                handleThreadIsRunningAll(task, index);
+                handleThreadIsRunningAll(runnable, index);
             }
         }
         System.out.println("Queue thread: " + workQueue.size());
     }
 
     @Override
-    public void execute(Task task) {
-        if (task == null) {
+    public void execute(Runnable runnable) {
+        if (runnable == null) {
             throw new NullPointerException();
         }
-        handle(task);
+        handle(runnable);
     }
 
     @Override
     public void shutdown() {
         System.out.println("Shutting down thread pool");
-        IntStream.range(0, corePoolSize).forEach(index -> workers.add(index, null));
+        IntStream.range(0, workers.size()).forEach(index -> workers.add(index, null));
+    }
+
+    @Override
+    public List<Runnable> shutdownNow() {
+        return null;
     }
 
     @Override
@@ -109,8 +115,19 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         return false;
     }
 
+
     @Override
     public boolean isTerminated() {
+        return false;
+    }
+
+    @Override
+    public boolean isTerminating() {
+        return false;
+    }
+
+    @Override
+    public boolean remove(Runnable runnable) {
         return false;
     }
 
@@ -130,9 +147,13 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         this.maximumPoolSize = maximumPoolSize;
     }
 
+    public BlockingQueue<Runnable> getWorkQueue() {
+        return workQueue;
+    }
+
     private final class Worker extends Thread {
         private String nameThread;
-        private Task task;
+        private Runnable runnable;
 
         public Worker(String nameThread) {
             this.nameThread = nameThread;
@@ -142,11 +163,11 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             while (true) {
                 synchronized (this) {
                     try {
-                        if (task == null) {
+                        if (runnable == null) {
                             this.wait();
                         } else {
-                            this.task.run();
-                            this.task = null;
+                            this.runnable.run();
+                            this.runnable = null;
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -155,12 +176,12 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             }
         }
 
-        public Task getTask() {
-            return task;
+        public Runnable getRunnable() {
+            return runnable;
         }
 
-        public void setTask(Task task) {
-            this.task = task;
+        public void setRunnable(Runnable runnable) {
+            this.runnable = runnable;
         }
 
         public String getNameThread() {

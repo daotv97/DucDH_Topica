@@ -1,7 +1,7 @@
 package com.topica.threadpool.test;
 
-import com.topica.threadpool.utils.Constant;
 import com.topica.threadpool.api.ThreadPoolExecutor;
+import com.topica.threadpool.utils.Constant;
 
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.IntStream;

@@ -1,15 +1,20 @@
 package com.topica.threadpool.api;
 
-import com.topica.threadpool.test.Task;
+import java.util.List;
 
 public interface ExecutorService {
 
-    void execute(Task task);
+    void execute(Runnable runnable);
 
     void shutdown();
+
+    List<Runnable> shutdownNow();
 
     boolean isShutdown();
 
     boolean isTerminated();
 
+    boolean isTerminating();
+
+    boolean remove(Runnable runnable);
 }
