@@ -87,10 +87,10 @@ public class ThreadPoolExecutor implements ExecutorService {
 
     /**
      * When the list contains threads that handle tasks
-     * without any thread in the <b>waiting</b> state and the number of threads in that list is smaller than maxPoolSize,
+     * without any thread in the <b>waiting</b> state and the number of threads in that list is smaller than <b>maxPoolSize</b>,
      * a new thread will be added to that list and will handle the new task.
      * <p>
-     * If the number of threads in that list is equal to maxPoolSize, it will reject execution.
+     * If the number of threads in that list is equal to <b>maxPoolSize</b>, it will reject execution.
      *
      * @param task
      * @param index
@@ -115,7 +115,7 @@ public class ThreadPoolExecutor implements ExecutorService {
     /**
      * If there is a thread in the list that is in the <b>waiting</b> state,
      * it will call <b>handleThreadIsWaiting</b> method
-     *
+     * <p>
      * If the list does not find any thread that is in <b>waiting</b> state,
      * it will call the method <b>handleThreadIsRunningAll</b>
      *
