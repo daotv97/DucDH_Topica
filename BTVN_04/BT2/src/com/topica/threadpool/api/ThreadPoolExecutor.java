@@ -98,8 +98,15 @@ public class ThreadPoolExecutor implements ExecutorService {
 
     @Override
     public void shutdown() {
-        System.out.println("Shutting down thread pool");
-        IntStream.range(0, workers.size()).forEach(index -> workers.add(index, null));
+//        while (workQueue.size() > 0) {
+//            System.out.println("Shutting down thread pool");
+//            int bound = workers.size();
+//            for (int index = 0; index < corePoolSize; index++) {
+//                workers.add(index, null);
+//            }
+//            break;
+//        }
+        System.out.println(workQueue.size());
     }
 
     @Override
@@ -161,12 +168,12 @@ public class ThreadPoolExecutor implements ExecutorService {
                 synchronized (this) {
                     try {
                         if (runnable == null) {
-                            if (!workQueue.isEmpty()) {
+                            if (workQueue.isEmpty()) {
+                                this.wait();
+                            } else {
                                 runnable = workQueue.poll();
                                 runnable.run();
                                 runnable = null;
-                            } else {
-                                this.wait();
                             }
                         } else {
                             this.runnable.run();
