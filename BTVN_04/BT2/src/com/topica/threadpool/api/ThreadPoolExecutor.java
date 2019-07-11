@@ -14,6 +14,13 @@ public class ThreadPoolExecutor implements ExecutorService {
     private volatile int corePoolSize;
     private volatile int maximumPoolSize;
 
+    /**
+     * Constructor for ThreadPoolExecutor class and initialize thread pools.
+     *
+     * @param corePoolSize
+     * @param maximumPoolSize
+     * @param workQueue
+     */
     public ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, BlockingQueue<Runnable> workQueue) {
         if (corePoolSize < 0 || maximumPoolSize <= 0 || maximumPoolSize < corePoolSize) {
             throw new IllegalArgumentException();
@@ -29,6 +36,13 @@ public class ThreadPoolExecutor implements ExecutorService {
         initializeThread(workers, corePoolSize);
     }
 
+    /**
+     * Initialize threads with the number of <b>corePoolSize</b>,
+     * add them to the thread pool and start.
+     *
+     * @param workers
+     * @param corePoolSize
+     */
     private void initializeThread(ArrayList<Worker> workers, int corePoolSize) {
         IntStream.range(0, corePoolSize).forEach(index -> {
             workers.add(new Worker("Thread-" + index));
@@ -36,10 +50,26 @@ public class ThreadPoolExecutor implements ExecutorService {
         });
     }
 
+    /**
+     * Check if any thread is in standby mode.
+     *
+     * @param worker
+     * @return true if this thread is in standby mode.
+     */
     private boolean isThreadWorkerWaiting(Worker worker) {
         return Constant.STATUS_WAITING.equals(worker.getState().toString());
     }
 
+    /**
+     * If one of the initialized threads is in a pending state and in the queue list is empty,
+     * this thread will take the requested task.
+     * <p>
+     * If one of the threads is initialized in the pending state and in the queue list is not empty,
+     * the thread will retrieve a task in the queue to process and then add the new task to the queue.
+     *
+     * @param worker
+     * @param task
+     */
     private void handleThreadIsWaiting(Worker worker, Runnable task) {
         synchronized (worker) {
             if (workQueue.isEmpty()) {
@@ -55,6 +85,10 @@ public class ThreadPoolExecutor implements ExecutorService {
         }
     }
 
+    /**
+     * @param task
+     * @param index
+     */
     private void handleThreadIsRunningAll(Runnable task, int index) {
         int workThreadSize = workers.size();
         if (workThreadSize < maximumPoolSize) {
@@ -67,11 +101,14 @@ public class ThreadPoolExecutor implements ExecutorService {
             try {
                 workQueue.add(task);
             } catch (Exception e) {
-                System.out.println("bi tu choi xu ly!");
+                System.out.println("Reject execution!");
             }
         }
     }
 
+    /**
+     * @param runnable
+     */
     private void handle(Runnable runnable) {
         int currentThreadSize = workers.size();
         for (int index = 0; index < currentThreadSize; index++) {
@@ -96,6 +133,7 @@ public class ThreadPoolExecutor implements ExecutorService {
         handle(runnable);
     }
 
+
     @Override
     public void shutdown() {
 //        while (workQueue.size() > 0) {
@@ -109,6 +147,7 @@ public class ThreadPoolExecutor implements ExecutorService {
         System.out.println(workQueue.size());
     }
 
+
     @Override
     public List<Runnable> shutdownNow() {
         return null;
@@ -118,7 +157,6 @@ public class ThreadPoolExecutor implements ExecutorService {
     public boolean isShutdown() {
         return false;
     }
-
 
     @Override
     public boolean isTerminated() {
@@ -135,22 +173,47 @@ public class ThreadPoolExecutor implements ExecutorService {
         return false;
     }
 
+    /**
+     * Getter for property <b>corePoolSize</b>.
+     *
+     * @return Value for property <b>corePoolSize</b>.
+     */
     public int getCorePoolSize() {
         return corePoolSize;
     }
 
+    /**
+     * Setter for property <b>corePoolSize</b>.
+     *
+     * @param corePoolSize Value to set for property <b>corePoolSize</b>.
+     */
     public void setCorePoolSize(int corePoolSize) {
         this.corePoolSize = corePoolSize;
     }
 
+    /**
+     * Getter for property <b>maximumPoolSize</b>.
+     *
+     * @return Value for property <b>maximumPoolSize</b>.
+     */
     public int getMaximumPoolSize() {
         return maximumPoolSize;
     }
 
+    /**
+     * Setter for property <b>maximumPoolSize</b>.
+     *
+     * @param maximumPoolSize Value to set for property <b>maximumPoolSize</b>.
+     */
     public void setMaximumPoolSize(int maximumPoolSize) {
         this.maximumPoolSize = maximumPoolSize;
     }
 
+    /**
+     * Getter for property <b>workQueue</b>.
+     *
+     * @return Value for property <b>workQueue</b>.
+     */
     public BlockingQueue<Runnable> getWorkQueue() {
         return workQueue;
     }
@@ -159,10 +222,26 @@ public class ThreadPoolExecutor implements ExecutorService {
         private String nameThread;
         private Runnable runnable;
 
+        /**
+         * Constructor for Worker class.
+         *
+         * @param nameThread
+         */
         public Worker(String nameThread) {
             this.nameThread = nameThread;
         }
 
+        /**
+         * When an object implementing interface <code>Runnable</code> is used
+         * to create a thread, starting the thread causes the object's
+         * <code>run</code> method to be called in that separately executing
+         * thread.
+         * <p>
+         * The general contract of the method <code>run</code> is that it may
+         * take any action whatsoever.
+         *
+         * @see Thread#run()
+         */
         public void run() {
             while (true) {
                 synchronized (this) {
@@ -192,18 +271,38 @@ public class ThreadPoolExecutor implements ExecutorService {
             }
         }
 
+        /**
+         * Getter for property <b>runnable</b>.
+         *
+         * @return Value for property <b>runnable</b>.
+         */
         public Runnable getRunnable() {
             return runnable;
         }
 
+        /**
+         * Setter for property <b>runnable</b>.
+         *
+         * @param runnable Value to set for property 'runnable'.
+         */
         public void setRunnable(Runnable runnable) {
             this.runnable = runnable;
         }
 
+        /**
+         * Getter for property <b>nameThread</b>.
+         *
+         * @return Value for property <b>nameThread</b>.
+         */
         public String getNameThread() {
             return nameThread;
         }
 
+        /**
+         * Setter for property <b>nameThread</b>.
+         *
+         * @param nameThread Value to set for property <b>nameThread</b>.
+         */
         public void setNameThread(String nameThread) {
             this.nameThread = nameThread;
         }

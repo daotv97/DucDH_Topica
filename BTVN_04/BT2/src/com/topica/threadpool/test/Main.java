@@ -3,17 +3,18 @@ package com.topica.threadpool.test;
 import com.topica.threadpool.api.ThreadPoolExecutor;
 import com.topica.threadpool.utils.Constant;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) {
-        LinkedBlockingQueue blockingQueue = new LinkedBlockingQueue(Constant.CAPACITY);
+        ArrayBlockingQueue blockingQueue = new ArrayBlockingQueue(Constant.CAPACITY);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(Constant.CORE_POOL_SIZE, Constant.MAXIMUM_POOL_SIZE, blockingQueue);
+        // create and execute task
         IntStream.rangeClosed(1, Constant.TASKS).mapToObj(i -> new Task("Task " + i)).forEach(task -> {
             executor.execute(task);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(Constant.TIME_CREATE_TASK);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

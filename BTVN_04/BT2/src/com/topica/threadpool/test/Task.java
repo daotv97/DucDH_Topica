@@ -1,7 +1,8 @@
 package com.topica.threadpool.test;
 
+import com.topica.threadpool.utils.Constant;
+
 public class Task implements Runnable {
-    private static final Long TIME_SLEEP = 6000L;
     private String name;
 
     public Task(String name) {
@@ -23,7 +24,7 @@ public class Task implements Runnable {
     public void run() {
         System.out.println("Thread: " + Thread.currentThread().getName() + " Start task: " + name);
         try {
-            Thread.sleep(TIME_SLEEP);
+            Thread.sleep(Constant.TIME_EXE_TASK);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
