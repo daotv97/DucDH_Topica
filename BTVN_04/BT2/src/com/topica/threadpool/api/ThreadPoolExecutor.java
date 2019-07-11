@@ -265,20 +265,14 @@ public class ThreadPoolExecutor implements ExecutorService {
                         e.printStackTrace();
                     }
                 }
-                System.out.println(new StringBuilder()
-                        .append("SIZE THREAD: ")
-                        .append(workers.size())
-                        .append(" SIZE QUEUE: ")
-                        .append(workQueue.size())
-                        .toString());
-                for (int index = 0; index < workers.size(); index++) {
-                    if (workQueue.isEmpty() && workers.size() > corePoolSize && isThreadWorkerWaiting(workers.get(index))) {
-                        workers.get(index).interrupt();
-                        if (workers.get(index).isInterrupted()) {
-                            workers.remove(index);
-                        }
+                IntStream.range(0, workers.size())
+                        .filter(index -> workQueue.isEmpty() && (workers.size() > corePoolSize) && isThreadWorkerWaiting(workers.get(index)))
+                        .forEachOrdered(index -> {
+                    workers.get(index).interrupt();
+                    if (workers.get(index).isInterrupted()) {
+                        workers.remove(index);
                     }
-                }
+                });
             }
         }
 
