@@ -11,7 +11,6 @@ public class Main {
         LinkedBlockingQueue blockingQueue = new LinkedBlockingQueue(Constant.CAPACITY);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(Constant.CORE_POOL_SIZE, Constant.MAXIMUM_POOL_SIZE, blockingQueue);
         IntStream.rangeClosed(1, Constant.TASKS).mapToObj(i -> new Task("Task " + i)).forEach(task -> {
-            System.out.println("Created : " + task.getName());
             executor.execute(task);
             try {
                 Thread.sleep(1000);

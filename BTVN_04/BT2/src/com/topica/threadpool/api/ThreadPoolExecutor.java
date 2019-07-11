@@ -1,6 +1,5 @@
 package com.topica.threadpool.api;
 
-import com.topica.threadpool.test.Task;
 import com.topica.threadpool.utils.Constant;
 
 import java.util.ArrayList;
@@ -47,11 +46,11 @@ public class ThreadPoolExecutor implements ExecutorService {
                 worker.notify();
                 worker.setRunnable(task);
             } else {
-                Task taskInQueue = (Task) workQueue.poll();
-                System.out.println("get task in queue: " + taskInQueue.getName());
+                Runnable taskInQueue = workQueue.poll();
                 workQueue.add(task);
                 worker.notify();
                 worker.setRunnable(taskInQueue);
+                System.out.println(workQueue.size());
             }
         }
     }
@@ -74,7 +73,6 @@ public class ThreadPoolExecutor implements ExecutorService {
     }
 
     private void handle(Runnable runnable) {
-        System.out.println("Size thread: " + workers.size());
         int currentThreadSize = workers.size();
         for (int index = 0; index < currentThreadSize; index++) {
             Worker worker = workers.get(index);
@@ -88,7 +86,6 @@ public class ThreadPoolExecutor implements ExecutorService {
                 handleThreadIsRunningAll(runnable, index);
             }
         }
-        System.out.println("Queue thread: " + workQueue.size());
     }
 
     @Override
@@ -164,7 +161,13 @@ public class ThreadPoolExecutor implements ExecutorService {
                 synchronized (this) {
                     try {
                         if (runnable == null) {
-                            this.wait();
+                            if (!workQueue.isEmpty()) {
+                                runnable = workQueue.poll();
+                                runnable.run();
+                                runnable = null;
+                            } else {
+                                this.wait();
+                            }
                         } else {
                             this.runnable.run();
                             this.runnable = null;
@@ -173,6 +176,12 @@ public class ThreadPoolExecutor implements ExecutorService {
                         e.printStackTrace();
                     }
                 }
+                System.out.println(new StringBuilder()
+                        .append("SIZE THREAD: ")
+                        .append(workers.size())
+                        .append(" SIZE QUEUE: ")
+                        .append(workQueue.size())
+                        .toString());
             }
         }
 
