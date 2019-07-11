@@ -15,7 +15,7 @@ public class ThreadPoolExecutor implements ExecutorService {
     private volatile int maximumPoolSize;
 
     /**
-     * Constructor for ThreadPoolExecutor class and initialize thread pools.
+     * Constructor for ThreadPoolExecutor class and initialize thread pool.
      *
      * @param corePoolSize
      * @param maximumPoolSize
@@ -51,20 +51,20 @@ public class ThreadPoolExecutor implements ExecutorService {
     }
 
     /**
-     * Check if any thread is in standby mode.
+     * Check if any thread is in waiting state.
      *
      * @param worker
-     * @return true if this thread is in standby mode.
+     * @return true if this thread is in waiting state.
      */
     private boolean isThreadWorkerWaiting(Worker worker) {
         return Constant.STATUS_WAITING.equals(worker.getState().toString());
     }
 
     /**
-     * If one of the initialized threads is in a pending state and in the queue list is empty,
+     * If one of the initialized threads is in a waiting state and in the queue list is empty,
      * this thread will take the requested task.
      * <p>
-     * If one of the threads is initialized in the pending state and in the queue list is not empty,
+     * If one of the threads is initialized in the waiting state and in the queue list is not empty,
      * the thread will retrieve a task in the queue to process and then add the new task to the queue.
      *
      * @param worker
