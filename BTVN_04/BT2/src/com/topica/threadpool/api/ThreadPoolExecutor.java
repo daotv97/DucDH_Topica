@@ -51,10 +51,10 @@ public class ThreadPoolExecutor implements ExecutorService {
     }
 
     /**
-     * Check if any thread is in waiting state.
+     * Check if any thread is in <b>waiting</b> state.
      *
      * @param worker
-     * @return true if this thread is in waiting state.
+     * @return true if this thread is in <b>waiting</b> state.
      */
     private boolean isThreadWorkerWaiting(Worker worker) {
         return Constant.STATUS_WAITING.equals(worker.getState().toString());
@@ -90,7 +90,7 @@ public class ThreadPoolExecutor implements ExecutorService {
      * without any thread in the <b>waiting</b> state and the number of threads in that list is smaller than maxPoolSize,
      * a new thread will be added to that list and will handle the new task.
      * <p>
-     * If the number of threads in that list is equal to maxPoolSize, it will reject execution
+     * If the number of threads in that list is equal to maxPoolSize, it will reject execution.
      *
      * @param task
      * @param index
