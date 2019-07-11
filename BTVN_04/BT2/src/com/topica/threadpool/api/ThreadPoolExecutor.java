@@ -113,6 +113,12 @@ public class ThreadPoolExecutor implements ExecutorService {
     }
 
     /**
+     * If there is a thread in the list that is in the <b>waiting</b> state,
+     * it will call <b>handleThreadIsWaiting</b> method
+     *
+     * If the list does not find any thread that is in <b>waiting</b> state,
+     * it will call the method <b>handleThreadIsRunningAll</b>
+     *
      * @param runnable
      */
     private void handle(Runnable runnable) {
