@@ -79,11 +79,9 @@ public class ThreadPoolExecutor implements ExecutorService {
                 worker.notify();
                 worker.setRunnable(task);
             } else {
-                Runnable taskInQueue = workQueue.poll();
                 workQueue.add(task);
                 worker.notify();
-                worker.setRunnable(taskInQueue);
-                System.out.println(workQueue.size());
+                worker.setRunnable(workQueue.poll());
             }
         }
     }
@@ -130,12 +128,12 @@ public class ThreadPoolExecutor implements ExecutorService {
         int currentThreadSize = workers.size();
         for (int index = 0; index < currentThreadSize; index++) {
             Worker worker = workers.get(index);
-
+            // If there is a thread in the list that is in the 'waiting' state.
             if (isThreadWorkerWaiting(worker)) {
                 handleThreadIsWaiting(worker, runnable);
                 break;
             }
-
+            // If the list does not find any thread that is in 'waiting' state.
             if (index == currentThreadSize - 1) {
                 handleThreadIsRunningAll(runnable, index);
             }
