@@ -13,6 +13,7 @@ public class ThreadPoolExecutor implements ExecutorService {
     private final ArrayList<Worker> workers;
     private volatile int corePoolSize;
     private volatile int maximumPoolSize;
+    private boolean active = false;
 
     /**
      * Constructor for ThreadPoolExecutor class and initialize thread pool.
@@ -139,24 +140,19 @@ public class ThreadPoolExecutor implements ExecutorService {
 
     @Override
     public void execute(Runnable runnable) {
-        if (runnable == null) {
-            throw new NullPointerException();
+        if (active == false) {
+            if (runnable == null) {
+                throw new NullPointerException();
+            }
+            handle(runnable);
         }
-        handle(runnable);
     }
 
 
     @Override
     public void shutdown() {
-//        while (workQueue.size() > 0) {
-//            System.out.println("Shutting down thread pool");
-//            int bound = workers.size();
-//            for (int index = 0; index < corePoolSize; index++) {
-//                workers.add(index, null);
-//            }
-//            break;
-//        }
         System.out.println(workQueue.size());
+        this.active = true;
     }
 
 

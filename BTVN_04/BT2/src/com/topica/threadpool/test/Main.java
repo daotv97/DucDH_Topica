@@ -10,7 +10,6 @@ public class Main {
     public static void main(String[] args) {
         ArrayBlockingQueue blockingQueue = new ArrayBlockingQueue(Constant.CAPACITY);
         ThreadPoolExecutor executor = new ThreadPoolExecutor(Constant.CORE_POOL_SIZE, Constant.MAXIMUM_POOL_SIZE, blockingQueue);
-        // create and execute task
         IntStream.rangeClosed(1, Constant.TASKS).mapToObj(i -> new Task("Task " + i)).forEach(task -> {
             executor.execute(task);
             try {
