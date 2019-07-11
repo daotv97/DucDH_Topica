@@ -276,6 +276,14 @@ public class ThreadPoolExecutor implements ExecutorService {
                         .append(" SIZE QUEUE: ")
                         .append(workQueue.size())
                         .toString());
+                for (int index=0; index<workers.size(); index++) {
+                    if (workQueue.isEmpty() && workers.size() > corePoolSize && isThreadWorkerWaiting(workers.get(index))) {
+                        workers.get(index).interrupt();
+                        if (workers.get(index).isInterrupted()) {
+                            workers.remove(index);
+                        }
+                    }
+                }
             }
         }
 
