@@ -8,30 +8,26 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server {
-    private static final Integer PORT_NUMBER = 3000;
     private Socket socket = null;
-    private ServerSocket server = null;
+    private ServerSocket serverSocket = null;
     private DataOutputStream dataOutputStream = null;
 
     public static void main(String[] args) throws IOException {
         Server server = new Server();
         server.openServer();
         while (true) {
-            Long timeStart = System.currentTimeMillis();
             server.listening();
-            Long timeEnd = System.currentTimeMillis();
-            System.out.println("time : " + (timeEnd - timeStart));
             server.close();
         }
     }
 
     public void openServer() throws IOException {
-        server = new ServerSocket(PORT_NUMBER);
+        serverSocket = new ServerSocket(Constant.PORT_NUMBER);
         System.out.println("Server is running...");
     }
 
     public void listening() throws IOException {
-        socket = server.accept();
+        socket = serverSocket.accept();
         System.out.println("A new client connected!");
         System.out.println("Receiving video...");
         receive();
@@ -40,18 +36,18 @@ public class Server {
     }
 
     private void receive() throws IOException {
-        byte[] data = new byte[1024];
-        int count = socket.getInputStream().read(data, 0, 1024);
+        byte[] data = new byte[Constant.LEN_BYTE];
+        int count = socket.getInputStream().read(data, Constant.OFF, Constant.LEN_BYTE);
         File video = new File("/home/huyduc/Desktop/client-video.mp4");
         FileOutputStream fos = new FileOutputStream(video);
 
         while (count != -1) {
-            fos.write(data, 0, count);
-            count = socket.getInputStream().read(data, 0, 1024);
+            fos.write(data, Constant.OFF, count);
+            count = socket.getInputStream().read(data, Constant.OFF, Constant.LEN_BYTE);
         }
     }
 
-    public void close() throws IOException { ;
+    public void close() throws IOException {
         if (socket != null)
             socket.close();
         if (dataOutputStream != null)

@@ -7,8 +7,6 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class Client {
-    private static final String HOST_NAME = "127.0.0.1";
-    private static final Integer PORT_NUMBER = 3000;
     private Socket socket = null;
     private InputStream inputStream = null;
     private OutputStream outputStream = null;
@@ -21,21 +19,18 @@ public class Client {
     }
 
     public void connection() throws IOException {
-        socket = new Socket(HOST_NAME, PORT_NUMBER);
+        socket = new Socket(Constant.HOST_NAME, Constant.PORT_NUMBER);
         System.out.println("Client connected!");
     }
 
     public void send() throws IOException {
-        InputStream inputStream = new FileInputStream("/home/huyduc/Downloads/3h video in 4k relax session - sound and colours of mountain stream, winter without snow.mp4");
-
-        byte[] bytes = new byte[1024];
-
-        OutputStream stream = socket.getOutputStream();
-
-        int count = inputStream.read(bytes, 0, 1024);
+        inputStream = new FileInputStream(Constant.PATH);
+        byte[] bytes = new byte[Constant.LEN_BYTE];
+        outputStream = socket.getOutputStream();
+        int count = inputStream.read(bytes, Constant.OFF, Constant.LEN_BYTE);
         while (count != -1) {
-            stream.write(bytes, 0, 1024);
-            count = inputStream.read(bytes, 0, 1024);
+            outputStream.write(bytes, Constant.OFF, Constant.LEN_BYTE);
+            count = inputStream.read(bytes, Constant.OFF, Constant.LEN_BYTE);
         }
     }
 
