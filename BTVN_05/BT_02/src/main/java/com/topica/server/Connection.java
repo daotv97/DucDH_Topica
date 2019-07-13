@@ -1,4 +1,4 @@
-package com.topica.server.config;
+package com.topica.server;
 
 public class Connection implements Runnable {
     /**

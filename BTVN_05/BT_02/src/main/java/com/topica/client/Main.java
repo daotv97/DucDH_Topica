@@ -1,6 +1,5 @@
 package com.topica.client;
 
-import com.topica.client.config.ClientConnector;
 import com.topica.utils.Constant;
 
 import java.io.IOException;

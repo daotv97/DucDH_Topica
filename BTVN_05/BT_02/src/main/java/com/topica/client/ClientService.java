@@ -1,4 +1,4 @@
-package com.topica.client.config;
+package com.topica.client;
 
 import java.io.IOException;
 
