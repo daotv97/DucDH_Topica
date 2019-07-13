@@ -3,9 +3,9 @@ package com.topica.client;
 import java.io.IOException;
 
 public interface ClientService {
-    void createConnectToServer() throws IOException;
+    void createConnect() throws IOException;
 
-    void handleData() throws IOException, ClassNotFoundException;
+    void connection() throws IOException;
 
     void close() throws IOException;
 }

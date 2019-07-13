@@ -8,7 +8,9 @@ public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ServerConnector serverConnector = new ServerConnector(Constant.PORT_NUMBER);
         serverConnector.openServer();
-        serverConnector.listening();
-        serverConnector.close();
+        while (true) {
+            serverConnector.listening();
+            serverConnector.close();
+        }
     }
 }
