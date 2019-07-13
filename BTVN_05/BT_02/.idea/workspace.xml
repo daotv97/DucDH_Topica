@@ -2,21 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8fec150d-690b-4fc1-92d8-9c645513b303" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/topica/utils/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/client/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/server/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/server/Connection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/server/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/server/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/server/ServerConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/server/ServerConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/client/Client.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/client/ClientExecutor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/client/ClientService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/topica/client/ClientService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/server/Server.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/server/ServerExecutor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/utils/DataSource.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/client/ClientConnector.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/topica/client/ClientConnector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/client/ClientService.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/server/ServerConnector.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/topica/server/ServerConnector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/topica/server/ServerService.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -34,8 +30,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+            <state relative-caret-position="240">
+              <caret line="10" column="37" lean-forward="true" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="638">
+              <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -46,53 +54,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="96">
-              <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="158">
-              <caret line="37" column="40" lean-forward="true" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
-              <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/ServerConnector.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+            <state relative-caret-position="288">
+              <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/Connection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -100,8 +75,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+            <state relative-caret-position="144">
+              <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/ServerConnector.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1622">
+              <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -131,17 +118,20 @@
         <option value="$PROJECT_DIR$/src/main/java/com/topica/client/Client.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/utils/DataSource.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/server/Server.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/client/ClientExecutor.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/server/ServerExecutor.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/client/config/ClientService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/server/Connection.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/topica/client/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/utils/User.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/topica/server/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/server/AbstractServerConnector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/client/AbstractClientConnector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/client/Main.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/server/ClientService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/topica/server/ServerConnector.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/topica/server/Main.java" />
       </list>
     </option>
   </component>
@@ -290,18 +280,18 @@
       <workItem from="1562934723623" duration="968000" />
       <workItem from="1563011062100" duration="148000" />
       <workItem from="1563013661301" duration="4614000" />
-      <workItem from="1563028249664" duration="18976000" />
+      <workItem from="1563028249664" duration="21291000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24706000" />
+    <option name="totallyTimeSpent" value="27021000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="51" y="25" width="1869" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16236971" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23368074" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -311,7 +301,7 @@
       <window_info anchor="bottom" id="Messages" weight="0.32937366" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32937366" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32937366" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32937366" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -393,31 +383,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/Connection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="13" column="24" selection-start-line="13" selection-start-column="24" selection-end-line="13" selection-end-column="24" />
+        <state relative-caret-position="336">
+          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        <state relative-caret-position="144">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+        <state relative-caret-position="638">
+          <caret line="78" lean-forward="true" selection-start-line="78" selection-end-line="78" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -426,28 +409,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="13" column="1" lean-forward="true" selection-start-line="13" selection-start-column="1" selection-end-line="13" selection-end-column="1" />
+        <state relative-caret-position="240">
+          <caret line="10" column="37" lean-forward="true" selection-start-line="10" selection-start-column="37" selection-end-line="10" selection-end-column="37" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/client/ClientConnector.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/ServerService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="37" column="40" lean-forward="true" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="168">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/ServerConnector.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="48" column="12" selection-start-line="48" selection-start-column="12" selection-end-line="48" selection-end-column="12" />
+        <state relative-caret-position="1622">
+          <caret line="81" lean-forward="true" selection-start-line="81" selection-end-line="81" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/topica/server/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="12" column="32" lean-forward="true" selection-start-line="12" selection-start-column="32" selection-end-line="12" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

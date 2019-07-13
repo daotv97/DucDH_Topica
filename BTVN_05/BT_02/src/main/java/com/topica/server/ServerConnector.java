@@ -1,6 +1,6 @@
 package com.topica.server;
 
-import com.topica.utils.User;
+import com.topica.utils.UserAccount;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,34 +16,33 @@ public class ServerConnector implements ServerService {
     private ServerSocket server = null;
     private DataInputStream dataInputStream = null;
     private DataOutputStream dataOutputStream = null;
-    private Set<User> userList = null;
+    private Set<UserAccount> userAccountList = null;
 
     public ServerConnector(Integer port) {
         this.port = port;
-        userList = new HashSet<User>(5);
+        userAccountList = new HashSet<UserAccount>(5);
         initUser();
     }
 
-    public void openServer() throws IOException {
+    private void openServer() throws IOException {
         server = new ServerSocket(port);
         System.out.println("Server is running...");
     }
 
-    @Override
-    public void listening() throws IOException {
+    private void listening() throws IOException {
         socket = server.accept();
         System.out.println("Connecting...");
+        dataInputStream = new DataInputStream(socket.getInputStream());
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
         authenticateClient();
         System.out.println("A new client connected");
     }
 
     private void authenticateClient() throws IOException {
-        dataInputStream = new DataInputStream(socket.getInputStream());
-        dataOutputStream = new DataOutputStream(socket.getOutputStream());
         boolean isExistUser = false;
         while (!isExistUser) {
             String[] account = dataInputStream.readUTF().split("\\:");
-            if (userList.stream().anyMatch(user -> user.getUsername().equals(account[0]) && user.getPassword().equals(account[1])))
+            if (userAccountList.stream().anyMatch(userAccount -> userAccount.getUsername().equals(account[0]) && userAccount.getPassword().equals(account[1])))
                 isExistUser = true;
 
             if (isExistUser)
@@ -62,20 +61,28 @@ public class ServerConnector implements ServerService {
     }
 
     private void initUser() {
-        userList.add(new User("user1", "12345"));
-        userList.add(new User("user2", "12345"));
-        userList.add(new User("user3", "12345"));
-        userList.add(new User("user4", "12345"));
-        userList.add(new User("user5", "12345"));
+        userAccountList.add(new UserAccount("user1", "12345"));
+        userAccountList.add(new UserAccount("user2", "12345"));
+        userAccountList.add(new UserAccount("user3", "12345"));
+        userAccountList.add(new UserAccount("user4", "12345"));
+        userAccountList.add(new UserAccount("user5", "12345"));
     }
 
-    @Override
-    public void close() throws IOException {
+    private void close() throws IOException {
         if (socket != null)
             socket.close();
         if (dataInputStream != null)
             dataInputStream.close();
         if (dataOutputStream != null)
             dataOutputStream.close();
+    }
+
+    @Override
+    public void run() throws IOException {
+        openServer();
+        while (true) {
+            listening();
+            close();
+        }
     }
 }

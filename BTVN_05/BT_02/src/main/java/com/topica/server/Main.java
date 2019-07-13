@@ -5,12 +5,12 @@ import com.topica.utils.Constant;
 import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) {
         ServerConnector serverConnector = new ServerConnector(Constant.PORT_NUMBER);
-        serverConnector.openServer();
-        while (true) {
-            serverConnector.listening();
-            serverConnector.close();
+        try {
+            serverConnector.run();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

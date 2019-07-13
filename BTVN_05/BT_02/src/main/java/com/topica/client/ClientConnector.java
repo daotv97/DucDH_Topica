@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class ClientConnector implements ClientService {
     private final String hostName;
     private final Integer port;
-    private Boolean isConnected = false;
     private Socket socket = null;
     private DataOutputStream dataOutputStream = null;
     private DataInputStream dataInputStream = null;
@@ -21,20 +20,18 @@ public class ClientConnector implements ClientService {
         scanner = new Scanner(System.in);
     }
 
-    @Override
-    public void createConnect() throws IOException {
+    private void createConnect() throws IOException {
         socket = new Socket(hostName, port);
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataInputStream = new DataInputStream(socket.getInputStream());
         authenticate();
     }
 
-    @Override
-    public void connection() throws IOException {
+    private void handleData() throws IOException {
         sendDataToServer();
     }
 
     private void authenticate() throws IOException {
-        dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        dataInputStream = new DataInputStream(socket.getInputStream());
         boolean isAuthenticated = false;
         while (!isAuthenticated) {
             StringBuilder stringBuilder = new StringBuilder();
@@ -52,15 +49,13 @@ public class ClientConnector implements ClientService {
 
     private void sendDataToServer() throws IOException {
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
-
     }
 
     private void receiveDataFromServer() {
 
     }
 
-    @Override
-    public void close() throws IOException {
+    private void close() throws IOException {
         if (socket != null) {
             socket.close();
         }
@@ -70,5 +65,17 @@ public class ClientConnector implements ClientService {
         if (dataInputStream != null) {
             dataInputStream.close();
         }
+    }
+
+    @Override
+    public void connect() throws IOException {
+        createConnect();
+        handleData();
+        close();
+    }
+
+    @Override
+    public void terminate() {
+
     }
 }
