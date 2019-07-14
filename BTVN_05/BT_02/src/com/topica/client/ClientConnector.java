@@ -11,9 +11,10 @@ public class ClientConnector {
     private final String hostname;
     private final Integer port;
     private boolean stopped;
-    private Socket loginSocket = null;
-    private DataOutputStream dataOutputStream = null;
-    private DataInputStream dataInputStream = null;
+    private boolean isLogged;
+    private Socket loginSocket;
+    private DataOutputStream dataOutputStream;
+    private DataInputStream dataInputStream;
     private Scanner scanner;
 
     public ClientConnector(String hostname, Integer port) {
@@ -23,28 +24,15 @@ public class ClientConnector {
     }
 
     public void start() throws IOException {
+        stopped = false;
         login();
         listening();
         close();
     }
 
     public void terminate() {
-
-    }
-
-    public boolean isConnected() {
-        return loginSocket != null && loginSocket.isConnected();
-    }
-
-    public boolean isServerReachable() {
-        try {
-            Socket tempSocket = new Socket(hostname, port);
-            tempSocket.isConnected();
-            tempSocket.close();
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
+        stopped = true;
+        onLog("[Client] Stopping...");
     }
 
     private void listening() throws IOException {
@@ -53,30 +41,29 @@ public class ClientConnector {
 
     private void login() throws IOException {
         if (stopped) return;
-
-        onLog("[Client] Connecting...");
         if (loginSocket != null && loginSocket.isConnected()) throw new AlreadyConnectedException();
-
         loginSocket = new Socket(hostname, port);
-        onLog("[Client] Connected to " + loginSocket.getRemoteSocketAddress());
 
-        dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
-        dataInputStream = new DataInputStream(loginSocket.getInputStream());
+        while (!isLogged) {
+            onLog("[Client] Connected to " + loginSocket.getRemoteSocketAddress());
+            dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
+            dataInputStream = new DataInputStream(loginSocket.getInputStream());
 
-        StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
+            System.out.print("Username: ");
+            stringBuilder.append(scanner.nextLine());
 
-        System.out.println("====== Authentication ======");
-        System.out.print("Username: ");
+            System.out.print("Password: ");
+            stringBuilder.append(":" + scanner.nextLine());
 
-        stringBuilder.append(scanner.nextLine());
-        System.out.print("Password: ");
-        stringBuilder.append(":" + scanner.nextLine());
-        dataOutputStream.writeUTF(stringBuilder.toString());
-    }
-
-
-    private void receiveDataFromServer() {
-
+            dataOutputStream.writeUTF(stringBuilder.toString());
+            isLogged = dataInputStream.readBoolean();
+            if (!isLogged) {
+                onLog("Account authentication failed!");
+            } else {
+                onLog("Connecting to server...");
+            }
+        }
     }
 
     private void close() throws IOException {
@@ -98,5 +85,4 @@ public class ClientConnector {
     public void onLogError(String message) {
         System.err.println(message);
     }
-
 }
