@@ -10,54 +10,53 @@ import java.net.Socket;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ServerConnector implements ServerService {
+public class ServerConnector {
     private final Integer port;
     private Socket socket = null;
     private ServerSocket server = null;
     private DataInputStream dataInputStream = null;
     private DataOutputStream dataOutputStream = null;
-    private Set<UserAccount> userAccountList = null;
+    private Set<UserAccount> userAccountList;
 
     public ServerConnector(Integer port) {
         this.port = port;
-        userAccountList = new HashSet<UserAccount>(5);
+        userAccountList = new HashSet<>(5);
         initUser();
+    }
+
+    public void start() throws IOException {
+        openServer();
+        while (true) {
+            listening();
+            close();
+        }
     }
 
     private void openServer() throws IOException {
         server = new ServerSocket(port);
-        System.out.println("Server is running...");
+        onLog("Server is running...");
     }
 
     private void listening() throws IOException {
         socket = server.accept();
-        System.out.println("Connecting...");
+        onLog("Waiting client connect...");
         dataInputStream = new DataInputStream(socket.getInputStream());
         dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        authenticateClient();
+
+        authenticate();
         System.out.println("A new client connected");
     }
 
-    private void authenticateClient() throws IOException {
+    private void authenticate() throws IOException {
         boolean isExistUser = false;
-        while (!isExistUser) {
-            String[] account = dataInputStream.readUTF().split("\\:");
-            if (userAccountList.stream().anyMatch(userAccount -> userAccount.getUsername().equals(account[0]) && userAccount.getPassword().equals(account[1])))
-                isExistUser = true;
+        String[] account = dataInputStream.readUTF().split("\\:");
+        if (userAccountList.stream().anyMatch(userAccount -> userAccount.getUsername().equals(account[0]) && userAccount.getPassword().equals(account[1])))
+            isExistUser = true;
 
-            if (isExistUser)
-                dataOutputStream.writeBoolean(true);
-            else
-                dataOutputStream.writeBoolean(false);
-        }
-    }
-
-    private void receiveDataFromClient() throws IOException {
-        dataInputStream = new DataInputStream(socket.getInputStream());
-    }
-
-    private void sendDataToClient() throws IOException {
-
+        if (isExistUser)
+            dataOutputStream.writeBoolean(true);
+        else
+            dataOutputStream.writeBoolean(false);
     }
 
     private void initUser() {
@@ -77,12 +76,11 @@ public class ServerConnector implements ServerService {
             dataOutputStream.close();
     }
 
-    @Override
-    public void run() throws IOException {
-        openServer();
-        while (true) {
-            listening();
-            close();
-        }
+    public void onLog(String message) {
+        System.out.println(message);
+    }
+
+    public void onLogError(String message) {
+        System.err.println(message);
     }
 }

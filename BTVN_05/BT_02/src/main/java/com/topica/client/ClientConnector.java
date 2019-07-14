@@ -4,60 +4,84 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.channels.AlreadyConnectedException;
 import java.util.Scanner;
 
-public class ClientConnector implements ClientService {
-    private final String hostName;
+public class ClientConnector {
+    private final String hostname;
     private final Integer port;
-    private Socket socket = null;
+    private boolean stopped;
+    private Socket loginSocket = null;
     private DataOutputStream dataOutputStream = null;
     private DataInputStream dataInputStream = null;
     private Scanner scanner;
 
-    public ClientConnector(String hostName, Integer port) {
-        this.hostName = hostName;
+    public ClientConnector(String hostname, Integer port) {
+        this.hostname = hostname;
         this.port = port;
         scanner = new Scanner(System.in);
     }
 
-    private void createConnect() throws IOException {
-        socket = new Socket(hostName, port);
-        dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        dataInputStream = new DataInputStream(socket.getInputStream());
-        authenticate();
+    public void start() throws IOException {
+        login();
+        listening();
+        close();
     }
 
-    private void handleData() throws IOException {
-        sendDataToServer();
+    public void terminate() {
+
     }
 
-    private void authenticate() throws IOException {
-        boolean isAuthenticated = false;
-        while (!isAuthenticated) {
-            StringBuilder stringBuilder = new StringBuilder();
+    public boolean isConnected() {
+        return loginSocket != null && loginSocket.isConnected();
+    }
 
-            System.out.println("====== Authentication ======");
-            System.out.print("Username: ");
-
-            stringBuilder.append(scanner.nextLine());
-            System.out.print("Password: ");
-            stringBuilder.append(":" + scanner.nextLine());
-            dataOutputStream.writeUTF(stringBuilder.toString());
-            isAuthenticated = dataInputStream.readBoolean();
+    public boolean isServerReachable() {
+        try {
+            Socket tempSocket = new Socket(hostname, port);
+            tempSocket.isConnected();
+            tempSocket.close();
+            return true;
+        } catch (IOException e) {
+            return false;
         }
     }
 
-    private void sendDataToServer() throws IOException {
-        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+    private void listening() throws IOException {
+
     }
+
+    private void login() throws IOException {
+        if (stopped) return;
+
+        onLog("[Client] Connecting...");
+        if (loginSocket != null && loginSocket.isConnected()) throw new AlreadyConnectedException();
+
+        loginSocket = new Socket(hostname, port);
+        onLog("[Client] Connected to " + loginSocket.getRemoteSocketAddress());
+
+        dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
+        dataInputStream = new DataInputStream(loginSocket.getInputStream());
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        System.out.println("====== Authentication ======");
+        System.out.print("Username: ");
+
+        stringBuilder.append(scanner.nextLine());
+        System.out.print("Password: ");
+        stringBuilder.append(":" + scanner.nextLine());
+        dataOutputStream.writeUTF(stringBuilder.toString());
+    }
+
 
     private void receiveDataFromServer() {
 
     }
 
     private void close() throws IOException {
-        if (socket != null) {
-            socket.close();
+        if (loginSocket != null) {
+            loginSocket.close();
         }
         if (dataOutputStream != null) {
             dataOutputStream.close();
@@ -67,15 +91,12 @@ public class ClientConnector implements ClientService {
         }
     }
 
-    @Override
-    public void connect() throws IOException {
-        createConnect();
-        handleData();
-        close();
+    public void onLog(String message) {
+        System.out.println(message);
     }
 
-    @Override
-    public void terminate() {
-
+    public void onLogError(String message) {
+        System.err.println(message);
     }
+
 }
