@@ -43,9 +43,9 @@ public class ClientConnector {
         if (stopped) return;
         if (loginSocket != null && loginSocket.isConnected()) throw new AlreadyConnectedException();
         loginSocket = new Socket(hostname, port);
+        onLog("[Client] Connected to " + loginSocket.getRemoteSocketAddress());
 
         while (!isLogged) {
-            onLog("[Client] Connected to " + loginSocket.getRemoteSocketAddress());
             dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
             dataInputStream = new DataInputStream(loginSocket.getInputStream());
 

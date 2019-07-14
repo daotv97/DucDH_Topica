@@ -1,23 +1,29 @@
 package com.topica.server;
 
+import com.topica.server.pool.ConnectionPoolExecutor;
+import com.topica.utils.Constant;
 import com.topica.utils.UserAccount;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class ServerConnector {
     private final Integer port;
     private Socket socket;
     private ServerSocket server;
     private Set<UserAccount> userAccountList;
+    private BlockingQueue blockingQueue;
+    private ConnectionPoolExecutor connectionPoolExecutor;
 
-    public ServerConnector(Integer port) {
+    public ServerConnector(Integer port, Set<UserAccount> userAccountList) {
         this.port = port;
-        userAccountList = new HashSet<>(5);
-        initUser();
+        this.userAccountList = userAccountList;
+        blockingQueue = new ArrayBlockingQueue(Constant.CAPACITY);
+        connectionPoolExecutor = new ConnectionPoolExecutor(Constant.CORE_POOL_SIZE, Constant.MAXIMUM_POOL_SIZE, blockingQueue);
     }
 
     public void start() throws IOException {
@@ -35,15 +41,7 @@ public class ServerConnector {
     private void listening() throws IOException {
         socket = server.accept();
         Connection connection = new Connection(socket, userAccountList);
-        connection.start();
-    }
-
-    private void initUser() {
-        userAccountList.add(new UserAccount("user1", "12345"));
-        userAccountList.add(new UserAccount("user2", "12345"));
-        userAccountList.add(new UserAccount("user3", "12345"));
-        userAccountList.add(new UserAccount("user4", "12345"));
-        userAccountList.add(new UserAccount("user5", "12345"));
+        connectionPoolExecutor.execute(connection);
     }
 
     public void onLog(String message) {

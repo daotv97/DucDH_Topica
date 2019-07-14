@@ -1,5 +1,6 @@
 package com.topica.server;
 
+import com.topica.utils.Constant;
 import com.topica.utils.UserAccount;
 
 import java.io.DataInputStream;
@@ -32,9 +33,13 @@ public class Connection extends Thread {
      */
     public void run() {
         try {
+            System.out.println("Thread: " + Thread.currentThread().getName());
+            Thread.sleep(Constant.TIME_EXE_TASK);
             authenticate();
             close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
