@@ -265,14 +265,6 @@ public class ConnectionPoolExecutor implements ExecutorService {
                         e.printStackTrace();
                     }
                 }
-                IntStream.range(0, workers.size())
-                        .filter(index -> workQueue.isEmpty() && (workers.size() > corePoolSize) && isThreadWorkerWaiting(workers.get(index)))
-                        .forEachOrdered(index -> {
-                            workers.get(index).interrupt();
-                            if (workers.get(index).isInterrupted()) {
-                                workers.remove(index);
-                            }
-                        });
             }
         }
 

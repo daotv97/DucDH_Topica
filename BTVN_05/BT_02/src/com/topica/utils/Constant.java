@@ -7,6 +7,8 @@ public class Constant {
     public static final Integer TASKS = 100;
     public static final Integer CORE_POOL_SIZE = 3;
     public static final Integer MAXIMUM_POOL_SIZE = 5;
+    public static final Long TIME_KEEP_CONNECT = 500L;
+    public static final Long TIME_CONNECT = 2000L;
     public static final String STATUS_WAITING = "WAITING";
     public static final Long TIME_CREATE_TASK = 1000L;
     public static final Long TIME_EXE_TASK = 6000L;

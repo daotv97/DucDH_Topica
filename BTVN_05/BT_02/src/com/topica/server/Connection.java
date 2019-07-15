@@ -1,6 +1,5 @@
 package com.topica.server;
 
-import com.topica.utils.Constant;
 import com.topica.utils.UserAccount;
 
 import java.io.DataInputStream;
@@ -11,13 +10,13 @@ import java.util.Set;
 
 public class Connection extends Thread {
     private Socket socket;
+    private String username;
+    private boolean terminate;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
-    private Set<UserAccount> userAccountList;
 
     public Connection(Socket socket, Set<UserAccount> userAccountList) {
         this.socket = socket;
-        this.userAccountList = userAccountList;
     }
 
     /**
@@ -33,9 +32,10 @@ public class Connection extends Thread {
      */
     public void run() {
         try {
-            System.out.println("Thread: " + Thread.currentThread().getName());
-            Thread.sleep(Constant.TIME_EXE_TASK);
-            authenticate();
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            onLog("Thread: " + Thread.currentThread().getName());
+            listening();
             close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,22 +44,28 @@ public class Connection extends Thread {
         }
     }
 
-    private void authenticate() throws IOException {
-        boolean isExistUser = false;
+    private void listening() throws InterruptedException, IOException {
+        int response = 1;
+        while (response > 0) {
+            response = dataInputStream.readInt();
+            onLog(new StringBuilder()
+                    .append("Receive response data from client-[")
+                    .append(username).append("] : ")
+                    .append(response)
+                    .toString());
 
-        while (!isExistUser) {
-            dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            dataInputStream = new DataInputStream(socket.getInputStream());
-            String[] account = dataInputStream.readUTF().split("\\:");
-            if (userAccountList.stream().anyMatch(userAccount -> userAccount.getUsername().equals(account[0]) && userAccount.getPassword().equals(account[1])))
-                isExistUser = true;
-
-            if (isExistUser) {
-                onLog("[Client {" + account[0] + "}]: connected.");
-                dataOutputStream.writeBoolean(true);
-            } else
-                dataOutputStream.writeBoolean(false);
+            if (response <= 0) {
+                continue;
+            }
+            Thread.sleep(3000);
+            dataOutputStream.writeInt(response);
+            onLog(new StringBuilder()
+                    .append("Send data to client-[")
+                    .append(username).append("] : ")
+                    .append(response)
+                    .toString());
         }
+        onLog("[Client - {" + username + "}]: disconnected.");
     }
 
     private void close() throws IOException {

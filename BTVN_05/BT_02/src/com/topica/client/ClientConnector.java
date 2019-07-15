@@ -30,30 +30,41 @@ public class ClientConnector {
         close();
     }
 
-    public void terminate() {
+    public void terminate() throws IOException {
         stopped = true;
-        onLog("[Client] Stopping...");
+        onLog("... [Client] disconnecting...");
+        dataOutputStream.writeInt(0);
     }
 
     private void listening() throws IOException {
+        int response = 1;
+        dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
+        dataInputStream = new DataInputStream(loginSocket.getInputStream());
+        while (response > 0 && !stopped) {
 
+            onLog("++++++ Send data to server: " + response);
+            dataOutputStream.writeInt(response);
+
+            response = dataInputStream.readInt();
+            onLog("------ Response from server: " + response);
+        }
+        onLog("===> [Client] disconnected. <===");
     }
 
     private void login() throws IOException {
         if (stopped) return;
         if (loginSocket != null && loginSocket.isConnected()) throw new AlreadyConnectedException();
         loginSocket = new Socket(hostname, port);
-        onLog("[Client] Connected to " + loginSocket.getRemoteSocketAddress());
+        onLog("[+] [Client] Connected to " + loginSocket.getRemoteSocketAddress());
 
         while (!isLogged) {
             dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
             dataInputStream = new DataInputStream(loginSocket.getInputStream());
-
             StringBuilder stringBuilder = new StringBuilder();
-            System.out.print("Username: ");
+            onLog("Username: ");
             stringBuilder.append(scanner.nextLine());
 
-            System.out.print("Password: ");
+            onLog("Password: ");
             stringBuilder.append(":" + scanner.nextLine());
 
             dataOutputStream.writeUTF(stringBuilder.toString());
