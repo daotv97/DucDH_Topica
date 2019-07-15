@@ -15,8 +15,9 @@ public class Connection extends Thread {
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
 
-    public Connection(Socket socket, Set<UserAccount> userAccountList) {
+    public Connection(Socket socket, String username) {
         this.socket = socket;
+        this.username = username;
     }
 
     /**
