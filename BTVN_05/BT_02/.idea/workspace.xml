@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="f04b3937-513c-4b3e-882f-704afeb0371f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/topica/client/ClientConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/topica/client/ClientConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/com/topica/server/Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/topica/server/Connection.java" afterDir="false" />
-    </list>
+    <list default="true" id="f04b3937-513c-4b3e-882f-704afeb0371f" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,8 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/topica/client/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+            <state relative-caret-position="187">
+              <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -100,7 +96,6 @@
       <list>
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/com/topica/utils/Constant.java" />
-        <option value="$PROJECT_DIR$/src/com/topica/client/Main.java" />
         <option value="$PROJECT_DIR$/src/com/topica/server/Authentication.java" />
         <option value="$PROJECT_DIR$/src/com/topica/client/ClientService.java" />
         <option value="$PROJECT_DIR$/src/com/topica/server/Main.java" />
@@ -109,6 +104,7 @@
         <option value="$PROJECT_DIR$/src/com/topica/server/ServerConnector.java" />
         <option value="$PROJECT_DIR$/src/com/topica/server/Connection.java" />
         <option value="$PROJECT_DIR$/src/com/topica/client/ClientConnector.java" />
+        <option value="$PROJECT_DIR$/src/com/topica/client/Main.java" />
       </list>
     </option>
   </component>
@@ -147,20 +143,6 @@
               <item name="BT_02" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="topica" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BT_02" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BT_02" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="topica" type="462c0819:PsiDirectoryNode" />
-              <item name="client" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="BT_02" type="b2602c69:ProjectViewProjectNode" />
-              <item name="BT_02" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="topica" type="462c0819:PsiDirectoryNode" />
-              <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -247,12 +229,12 @@
       <workItem from="1563194997424" duration="9042000" />
       <workItem from="1563242547736" duration="331000" />
       <workItem from="1563244447237" duration="9934000" />
-      <workItem from="1563257846103" duration="5835000" />
+      <workItem from="1563257846103" duration="6037000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71193000" />
+    <option name="totallyTimeSpent" value="71395000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="47" y="25" width="1319" height="743" extended-state="6" />
@@ -267,7 +249,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49960724" visible="true" weight="0.3257329" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49960724" weight="0.3257329" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.54885995" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -386,8 +368,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/topica/client/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="14" column="5" lean-forward="true" selection-start-line="14" selection-start-column="5" selection-end-line="14" selection-end-column="5" />
+        <state relative-caret-position="187">
+          <caret line="13" column="9" lean-forward="true" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
         </state>
       </provider>
     </entry>
