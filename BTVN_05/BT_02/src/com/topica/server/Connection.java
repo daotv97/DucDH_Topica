@@ -1,17 +1,13 @@
 package com.topica.server;
 
-import com.topica.utils.UserAccount;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Set;
 
 public class Connection extends Thread {
     private Socket socket;
     private String username;
-    private boolean terminate;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
 
@@ -20,23 +16,13 @@ public class Connection extends Thread {
         this.username = username;
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
+    @Override
     public void run() {
         try {
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataInputStream = new DataInputStream(socket.getInputStream());
             onLog("Thread: " + Thread.currentThread().getName());
-            listening();
+            processing();
             close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,7 +31,7 @@ public class Connection extends Thread {
         }
     }
 
-    private void listening() throws InterruptedException, IOException {
+    private void processing() throws InterruptedException, IOException {
         int response = 1;
         while (response > 0) {
             response = dataInputStream.readInt();
@@ -55,9 +41,7 @@ public class Connection extends Thread {
                     .append(response)
                     .toString());
 
-            if (response <= 0) {
-                continue;
-            }
+            if (response <= 0) continue;
             Thread.sleep(3000);
             dataOutputStream.writeInt(response);
             onLog(new StringBuilder()
@@ -70,12 +54,9 @@ public class Connection extends Thread {
     }
 
     private void close() throws IOException {
-        if (socket != null)
-            socket.close();
-        if (dataOutputStream != null)
-            dataOutputStream.close();
-        if (dataInputStream != null)
-            dataInputStream.close();
+        if (socket != null) socket.close();
+        if (dataOutputStream != null) dataOutputStream.close();
+        if (dataInputStream != null) dataInputStream.close();
     }
 
     public void onLog(String message) {

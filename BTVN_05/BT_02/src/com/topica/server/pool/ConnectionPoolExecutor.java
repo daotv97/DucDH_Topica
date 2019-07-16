@@ -176,6 +176,21 @@ public class ConnectionPoolExecutor implements ExecutorService {
         return false;
     }
 
+    @Override
+    public boolean isFullQueue() {
+        return workQueue.size() == workQueue.remainingCapacity();
+    }
+
+    @Override
+    public boolean isFullThreadPool() {
+        boolean isWaiting = workers.stream()
+                .noneMatch(worker -> worker
+                        .getState()
+                        .toString()
+                        .equals(Constant.STATUS_WAITING));
+        return workers.size() == maximumPoolSize && isWaiting;
+    }
+
     /**
      * Getter for property <b>corePoolSize</b>.
      *

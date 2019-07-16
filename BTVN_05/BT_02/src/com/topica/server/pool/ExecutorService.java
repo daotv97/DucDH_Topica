@@ -12,4 +12,8 @@ public interface ExecutorService {
     boolean isTerminating();
 
     boolean remove(Runnable runnable);
+
+    boolean isFullQueue();
+
+    boolean isFullThreadPool();
 }

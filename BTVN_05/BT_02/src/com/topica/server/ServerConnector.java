@@ -15,9 +15,11 @@ import java.util.concurrent.BlockingQueue;
 
 public class ServerConnector {
     private final Integer port;
-    private Socket socket;
     private ServerSocket server;
+    private Socket socket;
     private Set<UserAccount> userAccountList;
+    private DataOutputStream dataOutputStream;
+    private DataInputStream dataInputStream;
     private BlockingQueue blockingQueue;
     private ConnectionPoolExecutor connectionPoolExecutor;
 
@@ -42,30 +44,44 @@ public class ServerConnector {
 
     private void listening() throws IOException {
         socket = server.accept();
-        Authentication authentication = new Authentication(socket, userAccountList);
-        authentication.start();
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataInputStream = new DataInputStream(socket.getInputStream());
+
+        if (dataInputStream.readUTF().equals("login")) {
+            ConnectionThread connectionThread = new ConnectionThread(socket, userAccountList, dataInputStream, dataOutputStream);
+            connectionThread.start();
+        }
     }
 
-    private class Authentication extends Thread {
+    private class ConnectionThread extends Thread {
         private Socket socket;
         private String username;
         private DataOutputStream dataOutputStream;
         private DataInputStream dataInputStream;
         private Set<UserAccount> userAccountList;
 
-        public Authentication(Socket socket, Set<UserAccount> userAccountList) {
+        public ConnectionThread(Socket socket
+                , Set<UserAccount> userAccountList
+                , DataInputStream dataInputStream
+                , DataOutputStream dataOutputStream) {
             this.socket = socket;
             this.userAccountList = userAccountList;
+            this.dataInputStream = dataInputStream;
+            this.dataOutputStream = dataOutputStream;
         }
 
         @Override
         public void run() {
             try {
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                authenticate();
-                Connection connection = new Connection(socket, username);
-                connectionPoolExecutor.execute(connection);
+                if (!connectionPoolExecutor.isFullQueue() && !connectionPoolExecutor.isFullThreadPool()) {
+                    dataOutputStream.writeBoolean(false);
+                    authenticate();
+                    Connection connection = new Connection(socket, username);
+                    connectionPoolExecutor.execute(connection);
+                } else {
+                    dataOutputStream.writeBoolean(true);
+                    onLog("Server is full!");
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -76,7 +92,10 @@ public class ServerConnector {
 
             while (!isUserExist) {
                 String[] account = dataInputStream.readUTF().split("\\:");
-                if (userAccountList.stream().anyMatch(userAccount -> userAccount.getUsername().equals(account[0]) && userAccount.getPassword().equals(account[1])))
+                if (userAccountList.stream().anyMatch(userAccount -> userAccount
+                        .getUsername()
+                        .equals(account[0]) && userAccount
+                        .getPassword().equals(account[1])))
                     isUserExist = true;
 
                 if (isUserExist) {
