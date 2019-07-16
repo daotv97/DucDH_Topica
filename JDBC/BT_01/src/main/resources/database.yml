@@ -1,0 +1,6 @@
+# Database
+database:
+  user: root
+  password: huyducc4
+  url: jdbc:mysql://localhost/callable
+  driver: com.mysql.jdbc.Driver
