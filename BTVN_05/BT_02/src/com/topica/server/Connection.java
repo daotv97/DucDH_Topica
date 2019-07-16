@@ -23,11 +23,12 @@ public class Connection extends Thread {
             dataInputStream = new DataInputStream(socket.getInputStream());
             onLog("Thread: " + Thread.currentThread().getName());
             processing();
-            close();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            close();
         }
     }
 
@@ -53,10 +54,14 @@ public class Connection extends Thread {
         onLog("[Client - {" + username + "}]: disconnected.");
     }
 
-    private void close() throws IOException {
-        if (socket != null) socket.close();
-        if (dataOutputStream != null) dataOutputStream.close();
-        if (dataInputStream != null) dataInputStream.close();
+    private void close() {
+        try {
+            if (socket != null) socket.close();
+            if (dataOutputStream != null) dataOutputStream.close();
+            if (dataInputStream != null) dataInputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void onLog(String message) {

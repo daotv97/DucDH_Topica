@@ -64,7 +64,6 @@ public class ClientConnector {
             onLogError("500 Error!");
         } else {
             onLog("[+] [Client] Connected to " + loginSocket.getRemoteSocketAddress());
-
             while (!isLogged) {
                 dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
                 dataInputStream = new DataInputStream(loginSocket.getInputStream());
