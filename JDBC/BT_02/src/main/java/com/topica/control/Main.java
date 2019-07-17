@@ -10,21 +10,15 @@ import java.sql.SQLException;
 import java.util.Set;
 
 public class Main {
-    public static void main(String[] args) {
-        Connection connection = null;
-        try {
-            connection = Connector.getConnect();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+    public static void main(String[] args) throws SQLException, IOException, ClassNotFoundException {
+        Connection connection = Connector.getConnect();
         if (connection != null) {
             UserRepository userRepository = new UserRepository(connection);
-            Set<User> users = userRepository.findAll();
-            formatTableOutput(users);
+            connection.setAutoCommit(false);
+            User user = new User(0L, "duc2", "12345", 13, "duc@gmail.com", false);
+            User user1 = userRepository.save(user);
+//            formatTableOutput(users);
+//            userRepository.delete();
         }
     }
 

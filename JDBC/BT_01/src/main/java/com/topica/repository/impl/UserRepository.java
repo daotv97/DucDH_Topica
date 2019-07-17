@@ -20,30 +20,55 @@ public class UserRepository implements CrudRepository<User, Long> {
     }
 
     @Override
-    public Set<User> findAll() throws SQLException {
+    public Set<User> findAll() {
         String query = "{CALL findAll()}";
         Set<User> users = new HashSet<>();
-        CallableStatement callableStatement = connection.prepareCall(query);
-        ResultSet resultSet = callableStatement.executeQuery();
-        while (resultSet.next()) {
-            User user = dataTransferObject(resultSet);
-            users.add(user);
+        CallableStatement callableStatement = null;
+        try {
+            callableStatement = connection.prepareCall(query);
+            ResultSet resultSet = callableStatement.executeQuery();
+            while (resultSet.next()) {
+                User user = dataTransferObject(resultSet);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        callableStatement.close();
         return users;
     }
 
     @Override
-    public Optional<User> findById(Long id) throws SQLException {
+    public Optional<User> findById(Long id) {
         String query = "{CALL findById(?)}";
-        CallableStatement callableStatement = connection.prepareCall(query);
-        callableStatement.setString(1, String.valueOf(id));
-        ResultSet resultSet = callableStatement.executeQuery();
+        CallableStatement callableStatement = null;
         User user = null;
-        while (resultSet.next()) {
-            user = dataTransferObject(resultSet);
+        try {
+            callableStatement = connection.prepareCall(query);
+            callableStatement.setString(1, String.valueOf(id));
+            ResultSet resultSet = callableStatement.executeQuery();
+            while (resultSet.next()) {
+                user = dataTransferObject(resultSet);
+            }
+            callableStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (callableStatement != null) {
+                try {
+                    callableStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-        callableStatement.close();
         return Optional.ofNullable(user);
     }
 
