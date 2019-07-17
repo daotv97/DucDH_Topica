@@ -1,8 +1,6 @@
 package com.topica.client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.nio.channels.AlreadyConnectedException;
 import java.util.Scanner;
@@ -12,7 +10,9 @@ public class ClientConnector {
     private final Integer port;
     private boolean stopped;
     private boolean isLogged;
-    private Socket loginSocket;
+    private Socket socket;
+    private InputStream inputStream;
+    private OutputStream outputStream;
     private DataOutputStream dataOutputStream;
     private DataInputStream dataInputStream;
     private Scanner scanner;
@@ -26,8 +26,23 @@ public class ClientConnector {
     public void start() throws IOException {
         stopped = false;
         login();
-        processing();
-        close();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    processing();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        }).start();
     }
 
     public void terminate() throws IOException {
@@ -49,13 +64,21 @@ public class ClientConnector {
         onLog("===> [Client] disconnected. <===");
     }
 
+    private void sendMessage(String msg) {
+        try {
+            outputStream = socket.getOutputStream();
+        } catch (IOException ex) {
+            System.err.println("ERROR: error sending data");
+        }
+    }
+
     private void login() throws IOException {
         if (stopped) return;
-        if (loginSocket != null && loginSocket.isConnected()) throw new AlreadyConnectedException();
+        if (socket != null && socket.isConnected()) throw new AlreadyConnectedException();
 
-        loginSocket = new Socket(hostname, port);
-        dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
-        dataInputStream = new DataInputStream(loginSocket.getInputStream());
+        socket = new Socket(hostname, port);
+        dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        dataInputStream = new DataInputStream(socket.getInputStream());
 
         dataOutputStream.writeUTF("login");
 
@@ -63,10 +86,10 @@ public class ClientConnector {
         if (isServerFull) {
             onLogError("500 Error!");
         } else {
-            onLog("[+] [Client] Connected to " + loginSocket.getRemoteSocketAddress());
+            onLog("[+] [Client] Connected to " + socket.getRemoteSocketAddress());
             while (!isLogged) {
-                dataOutputStream = new DataOutputStream(loginSocket.getOutputStream());
-                dataInputStream = new DataInputStream(loginSocket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                dataInputStream = new DataInputStream(socket.getInputStream());
                 StringBuilder stringBuilder = new StringBuilder();
                 onLog("Username: ");
                 stringBuilder.append(scanner.nextLine());
@@ -82,7 +105,7 @@ public class ClientConnector {
     }
 
     private void close() throws IOException {
-        if (loginSocket != null) loginSocket.close();
+        if (socket != null) socket.close();
         if (dataOutputStream != null) dataOutputStream.close();
         if (dataInputStream != null) dataInputStream.close();
     }

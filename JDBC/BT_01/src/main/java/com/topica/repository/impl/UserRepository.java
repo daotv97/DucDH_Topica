@@ -26,7 +26,7 @@ public class UserRepository implements CrudRepository<User, Long> {
         CallableStatement callableStatement = connection.prepareCall(query);
         ResultSet resultSet = callableStatement.executeQuery();
         while (resultSet.next()) {
-            User user = transferData(resultSet);
+            User user = dataTransferObject(resultSet);
             users.add(user);
         }
         callableStatement.close();
@@ -41,7 +41,7 @@ public class UserRepository implements CrudRepository<User, Long> {
         ResultSet resultSet = callableStatement.executeQuery();
         User user = null;
         while (resultSet.next()) {
-            user = transferData(resultSet);
+            user = dataTransferObject(resultSet);
         }
         callableStatement.close();
         return Optional.ofNullable(user);
@@ -62,7 +62,7 @@ public class UserRepository implements CrudRepository<User, Long> {
 
     }
 
-    private User transferData(ResultSet resultSet) throws SQLException {
+    private User dataTransferObject(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setId(resultSet.getLong(1));
         user.setUsername(resultSet.getString(2));
