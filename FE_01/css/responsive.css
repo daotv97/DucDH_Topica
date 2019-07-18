@@ -1,0 +1,26 @@
+@media only screen and (max-width: 576px) {
+    /* Unit list */
+    .hotline .hotline__title, .language-locate li {
+        font-size: 10px;
+    }
+
+    .menu__logo img {
+        max-width: 110px;
+    }
+
+    .menu__item li a {
+        font-size: 10px;
+    }
+
+    .card-title {
+        font-size: 14px;
+    }
+
+    .card-text {
+        font-size: 11px;
+    }
+
+    .card-bottom a {
+        font-size: 12px;
+    }
+}

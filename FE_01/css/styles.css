@@ -356,6 +356,12 @@ textarea {
     padding: 0.2em 0;
 }
 
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
 /* ========== LOGIN ========== */
 
 #login {
@@ -533,12 +539,64 @@ body#unit-list {
     color: #AAAAAA;
 }
 
+.menu__item li a:hover {
+    color: #DBAC69;
+}
+
 .menu-active {
     color: #DBAC69 !important;
     border-bottom: 2px solid #DBAC69;
 }
 
 /* Card */
+
+figure {
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    overflow: hidden;
+}
+
+figure:hover+span {
+    bottom: -36px;
+    opacity: 1;
+}
+
+.hover figure {
+    position: relative;
+}
+
+.hover figure::before {
+    position: absolute;
+    top: 0;
+    left: -75%;
+    z-index: 2;
+    display: block;
+    content: '';
+    width: 50%;
+    height: 100%;
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .3) 100%);
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .3) 100%);
+    -webkit-transform: skewX(-25deg);
+    transform: skewX(-25deg);
+}
+
+.hover figure:hover::before {
+    -webkit-animation: shine .7s;
+    animation: shine .7s;
+}
+
+@-webkit-keyframes shine {
+    100% {
+        left: 125%;
+    }
+}
+
+@keyframes shine {
+    100% {
+        left: 125%;
+    }
+}
 
 .content {
     padding: 40px 0 30px;
@@ -547,34 +605,62 @@ body#unit-list {
 .content-card {
     width: 100%;
     margin-bottom: 30px;
+    border-radius: 5px;
+    -o-transition: .3s all ease;
+    -webkit-transition: .3s all ease;
+    -moz-transition: .3s all ease;
+    transition: .3s all ease;
+}
+
+.content-card:hover {
+    box-shadow: 0px 4px 15px rgba(33, 33, 33, 0.25);
+    -o-transition: .5s all ease;
+    -webkit-transition: .3s all ease;
+    -moz-transition: .3s all ease;
+    transition: .3s all ease;
 }
 
 .card-img {
-    padding: 1.1rem;
+    padding: 1rem;
+}
+
+.card-img-top {
+    height: 188px;
 }
 
 .card-title {
     font-style: normal;
     font-weight: bold;
+    margin-bottom: 9px;
     font-size: 16px;
     line-height: 19px;
     color: #333333;
 }
 
 .content-card__body {
-    padding: 0 1.1rem 2.5rem !important;
+    padding: 0 1rem 2.5rem !important;
 }
 
 .card-bottom {
     text-align: center;
-    border-top: 3px solid #E5E5E5;
-    padding: 1.1rem;
+    border-top: 1px solid #E5E5E5;
+}
+
+.card-body {
+    padding: 0;
+}
+
+.content-card:hover .card-bottom {
+    border-top: 1px solid #DBAC69;
 }
 
 .card-bottom a {
     font-style: normal;
     font-weight: bold;
+    display: block;
+    height: 100%;
     font-size: 14px;
+    padding: 1.25rem;
     line-height: 16px;
     color: #DBAC69;
 }
@@ -583,7 +669,7 @@ body#unit-list {
     font-style: normal;
     font-weight: normal;
     font-size: 13px;
-    line-height: 15px;
+    line-height: 18px;
     color: #333333;
 }
 
@@ -591,8 +677,87 @@ body#unit-list {
 
 .footer {
     width: 100%;
-    height: 84px;
+    padding: 15px 0;
     background-color: #000;
+}
+
+.footer__logo {
+    display: inline-block;
+    line-height: 60px;
+}
+
+.footer__logo img {
+    width: 75%;
+}
+
+.footer__text li {
+    color: #DBAC69;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 18px;
+}
+
+/* Model */
+
+.item-course {
+    background: #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 3px;
+    padding: 11px 20px;
+    display: flex;
+}
+
+.modal-title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #333333;
+}
+.modal-body {
+    padding: 20px 20px 40px;
+}
+.modal-body__content .data-content li{
+    background: #FFFFFF;
+    position: relative;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    border: 3px solid #FFFFFF;
+    border-radius: 3px;
+    transition: .3s ease all;
+}
+
+.modal-body__content .data-content li > div {
+    display: inline-block;
+}
+
+.modal-body__content .data-content li:hover {
+    border: 3px solid #E5E5E5;
+    transition: .3s ease all;
+}
+
+.arw {
+    position: absolute;
+    top: 20px;
+    left: 95%;
+    color: #DBAC69;
+}
+
+.descript-model h6 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 19px;
+    color: #333333;
+}
+
+.descript-model p {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    color: #333333;
 }
 
 /* ========== END UNIT LIST ========== */
