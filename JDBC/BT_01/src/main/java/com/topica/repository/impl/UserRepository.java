@@ -52,7 +52,7 @@ public class UserRepository implements CrudRepository<User, Long> {
         User user = null;
         try {
             callableStatement = connection.prepareCall(query);
-            callableStatement.setString(1, String.valueOf(id));
+            callableStatement.setLong(1, Long.parseLong(String.valueOf(id)));
             ResultSet resultSet = callableStatement.executeQuery();
             while (resultSet.next()) {
                 user = dataTransferObject(resultSet);
@@ -70,21 +70,6 @@ public class UserRepository implements CrudRepository<User, Long> {
             }
         }
         return Optional.ofNullable(user);
-    }
-
-    @Override
-    public User save(User entity) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Long aLong) {
-
-    }
-
-    @Override
-    public void delete(User entity) {
-
     }
 
     private User dataTransferObject(ResultSet resultSet) throws SQLException {
