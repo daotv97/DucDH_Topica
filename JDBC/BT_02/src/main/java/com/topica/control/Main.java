@@ -15,7 +15,7 @@ public class Main {
         if (connection != null) {
             UserRepository userRepository = new UserRepository(connection);
             connection.setAutoCommit(false);
-            User user = new User(0L, "duc2", "12345", 13, "duc@gmail.com", false);
+            User user = new User(0L, "duc9", "12345", 13, "duc@gmail.com", false);
             User user1 = userRepository.save(user);
 //            formatTableOutput(users);
 //            userRepository.delete();

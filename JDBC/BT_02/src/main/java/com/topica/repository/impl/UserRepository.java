@@ -19,6 +19,88 @@ public class UserRepository implements CrudRepository<User, Long> {
         this.connection = connection;
     }
 
+    /**
+     * Test rollback save new user account
+     *
+     * @param entity
+     * @return
+     */
+    @Override
+    public User save(User entity) {
+        String sql = "INSERT INTO user(id, username, password, age, email, status) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, entity.getId());
+            preparedStatement.setString(2, entity.getUsername());
+            preparedStatement.setString(3, entity.getPassword());
+            preparedStatement.setInt(4, entity.getAge());
+            preparedStatement.setString(5, entity.getEmail());
+            preparedStatement.setBoolean(6, entity.isStatus());
+            preparedStatement.executeUpdate();
+            connection.rollback();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return entity;
+    }
+
+    /**
+     *  Test commit, savepoint, rollback for delete user account
+     */
+    @Override
+    public void delete() {
+        String sql = "DELETE FROM user WHERE id = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, 1);
+            preparedStatement.executeUpdate();
+            connection.commit();
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, 2);
+            preparedStatement.executeUpdate();
+            connection.commit();
+            connection.setSavepoint();
+
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setLong(1, 3);
+            preparedStatement.executeUpdate();
+            connection.rollback();
+            connection.commit();
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     @Override
     public Set<User> findAll() {
         String sql = "SELECT * FROM user";
@@ -81,79 +163,6 @@ public class UserRepository implements CrudRepository<User, Long> {
             }
         }
         return Optional.ofNullable(user);
-    }
-
-    @Override
-    public void delete() {
-        String sql = "DELETE FROM user WHERE id = ?";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, 1);
-            preparedStatement.executeUpdate();
-            connection.commit();
-
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, 2);
-            preparedStatement.executeUpdate();
-            connection.commit();
-            connection.setSavepoint();
-
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, 3);
-            preparedStatement.executeUpdate();
-            connection.rollback();
-            connection.commit();
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Override
-    public User save(User entity) {
-        String sql = "INSERT INTO user(id, username, password, age, email, status) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setLong(1, entity.getId());
-            preparedStatement.setString(2, entity.getUsername());
-            preparedStatement.setString(3, entity.getPassword());
-            preparedStatement.setInt(4, entity.getAge());
-            preparedStatement.setString(5, entity.getEmail());
-            preparedStatement.setBoolean(6, entity.isStatus());
-            preparedStatement.executeUpdate();
-            connection.rollback();
-            connection.commit();
-        } catch (SQLException e) {
-            try {
-                connection.rollback();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            e.printStackTrace();
-        } finally {
-            if (preparedStatement != null) {
-                try {
-                    preparedStatement.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return entity;
     }
 
     private User dataTransferObject(ResultSet resultSet) throws SQLException {
