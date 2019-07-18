@@ -26,3 +26,18 @@ END;
 
 
 -- SAVE POINT - COMMIT - AND ROLLBACK
+
+create
+    definer = root@localhost procedure deleteByIds()
+BEGIN
+    SET AUTOCOMMIT = 0;
+    DELETE FROM user WHERE id = 3;
+    COMMIT;
+    DELETE FROM user WHERE id = 5;
+    COMMIT;
+    SAVEPOINT VT1;
+    DELETE FROM user WHERE id = 16;
+    ROLLBACK TO VT1;
+    COMMIT;
+    SELECT * FROM user;
+END
