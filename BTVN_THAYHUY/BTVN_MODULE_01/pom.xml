@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.topica</groupId>
+    <artifactId>spoj</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <cdi.api.version>2.0</cdi.api.version>
+        <weld.se.version>2.2.6.Final</weld.se.version>
+        <mail.version>1.4.7</mail.version>
+        <jms.version>1.1</jms.version>
+    </properties>
+
+    <!--    library   -->
+    <dependencies>
+
+        <!--  cdi api -->
+        <dependency>
+            <groupId>javax.enterprise</groupId>
+            <artifactId>cdi-api</artifactId>
+            <version>${cdi.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--   weld se     -->
+        <dependency>
+            <groupId>org.jboss.weld.se</groupId>
+            <artifactId>weld-se</artifactId>
+            <version>${weld.se.version}</version>
+        </dependency>
+
+        <!--    mail    -->
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+
+        <!--    jms    -->
+        <dependency>
+            <groupId>javax.jms</groupId>
+            <artifactId>jms</artifactId>
+            <version>${jms.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
