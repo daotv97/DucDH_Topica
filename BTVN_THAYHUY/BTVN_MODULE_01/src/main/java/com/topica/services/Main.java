@@ -1,6 +1,6 @@
 package com.topica.services;
 
-import com.topica.imap.FetchingEmail;
+import com.topica.fetch.FetchingEmail;
 
 public class Main {
     public static void main(String[] args) {
