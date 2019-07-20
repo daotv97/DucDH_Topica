@@ -120,7 +120,7 @@ class DownloadProvider {
      * @param username
      * @param password
      */
-    void downloadEmails(String protocol, String hostname, String port, String username, String password) {
+    void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password) {
         LOGGER.debug("Info: {" +
                 "protocol: " +
                 protocol +

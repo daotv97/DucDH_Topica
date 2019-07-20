@@ -10,6 +10,6 @@ public class ImapProtocol implements EmailDownloader {
 
     public void download(String username, String password) {
         DownloadProvider downloadProvider = new DownloadProvider();
-        downloadProvider.downloadEmails(PROTOCOL, HOST_NAME, PORT, username, password);
+        downloadProvider.downloadEmailAttachments(PROTOCOL, HOST_NAME, PORT, username, password);
     }
 }
