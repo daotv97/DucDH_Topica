@@ -1,0 +1,16 @@
+
+ysquid:S2068"V'password' detected in this expression, review this potentially hard-coded credential.(õ™±ïşÿÿÿÿ8‹ÓçËÀ-
+Ysquid:S1481
+"6Remove this unused "imapFetchingEmail" local variable.(Èí–úÿÿÿÿ8ÙÇèÎÀ-
+Lsquid:S1481")Remove this unused "host" local variable.(ÔÑµºùÿÿÿÿ8ÙÇèÎÀ-
+Qsquid:S1481".Remove this unused "storeName" local variable.(ÖÓâ½ÿÿÿÿÿ8ÙÇèÎÀ-
+Usquid:S1481"2Remove this unused "mailStoreType" local variable.(„Šüùÿÿÿÿ8ÙÇèÎÀ-
+Ksquid:S1481"-Remove this unused "username" local variable.(¢³ëĞ8ÙÇèÎÀ-
+Psquid:S1481"-Remove this unused "password" local variable.(õ™±ïşÿÿÿÿ8ÙÇèÎÀ-
+_squid:S1854"<Remove this useless assignment to local variable "password".(õ™±ïşÿÿÿÿ8ÙÇèÎÀ-
+Zsquid:S1854"<Remove this useless assignment to local variable "username".(¢³ëĞ8ÙÇèÎÀ-
+dsquid:S1854"ARemove this useless assignment to local variable "mailStoreType".(„Šüùÿÿÿÿ8ÙÇèÎÀ-
+`squid:S1854"=Remove this useless assignment to local variable "storeName".(ÖÓâ½ÿÿÿÿÿ8ÙÇèÎÀ-
+[squid:S1854"8Remove this useless assignment to local variable "host".(ÔÑµºùÿÿÿÿ8ÙÇèÎÀ-
+hsquid:S1854
+"ERemove this useless assignment to local variable "imapFetchingEmail".(Èí–úÿÿÿÿ8ÙÇèÎÀ-
