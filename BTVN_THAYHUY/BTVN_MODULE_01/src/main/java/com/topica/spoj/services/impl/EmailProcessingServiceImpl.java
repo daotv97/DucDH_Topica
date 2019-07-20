@@ -13,7 +13,7 @@ public class EmailProcessingServiceImpl implements EmailProcessingService {
     private static final Logger LOGGER = Logger.getLogger(EmailProcessingServiceImpl.class.getName());
 
     @Inject
-    @Named("pop3Protocol")
+    @Named("imapProtocol")
     private EmailDownloader downloader;
 
     public void download(String username, String password) throws DataTransmissionException {

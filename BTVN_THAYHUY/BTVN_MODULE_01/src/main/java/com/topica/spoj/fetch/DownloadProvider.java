@@ -80,10 +80,10 @@ class DownloadProvider {
     private void messageInfo(Message message, int index) throws MessagingException, IOException {
         Address[] fromAddress = message.getFrom();
         LOGGER.info("== Email #" + (index + 1) + ": ====================================================");
+        LOGGER.info("\t Subject: " + message.getSubject());
         LOGGER.info("\t From: " + fromAddress[0].toString());
         LOGGER.info("\t To: " + parseAddresses(message.getRecipients(RecipientType.TO)));
         LOGGER.info("\t CC: " + parseAddresses(message.getRecipients(RecipientType.CC)));
-        LOGGER.info("\t Subject: " + message.getSubject());
         LOGGER.info("\t Sent Date: " + message.getSentDate().toString());
         LOGGER.info("\t Message: " + message.getContent());
         LOGGER.info("================================================================\n");
@@ -121,6 +121,18 @@ class DownloadProvider {
      * @param password
      */
     void downloadEmails(String protocol, String hostname, String port, String username, String password) {
+        LOGGER.debug("Info: {" +
+                "protocol: " +
+                protocol +
+                ", hostname: " +
+                hostname +
+                ", port: " +
+                port +
+                ", username: " +
+                username +
+                ", password: " +
+                password +
+                "}");
         Properties properties = getServerProperties(protocol, hostname, port, username, password);
         Session session = Session.getDefaultInstance(properties);
         try {
