@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
+import java.io.IOException;
 import java.util.Properties;
 
 class DownloadProvider {
@@ -59,8 +60,9 @@ class DownloadProvider {
      *
      * @param folder
      * @throws MessagingException
+     * @throws IOException
      */
-    private void fetchNewMessages(Folder folder) throws MessagingException {
+    private void fetchNewMessages(Folder folder) throws MessagingException, IOException {
         Message[] messages = folder.getMessages();
         for (int i = 0; i < messages.length; i++) {
             messageInfo(messages[i], i);
@@ -73,34 +75,17 @@ class DownloadProvider {
      * @param message
      * @param index
      * @throws MessagingException
+     * @throws IOException
      */
-    private void messageInfo(Message message, int index) throws MessagingException {
+    private void messageInfo(Message message, int index) throws MessagingException, IOException {
         Address[] fromAddress = message.getFrom();
-        String from = fromAddress[0].toString();
-        String subject = message.getSubject();
-        String toList = parseAddresses(message.getRecipients(RecipientType.TO));
-        String ccList = parseAddresses(message.getRecipients(RecipientType.CC));
-        String sentDate = message.getSentDate().toString();
-        String contentType = message.getContentType();
-        String messageContent = "";
-        if (contentType.contains("text/plain") || contentType.contains("text/html")) {
-            try {
-                Object content = message.getContent();
-                if (content != null) {
-                    messageContent = content.toString();
-                }
-            } catch (Exception ex) {
-                messageContent = "[Error downloading content]";
-                LOGGER.error(ex.getMessage());
-            }
-        }
         LOGGER.info("== Email #" + (index + 1) + ": ====================================================");
-        LOGGER.info("\t From: " + from);
-        LOGGER.info("\t To: " + toList);
-        LOGGER.info("\t CC: " + ccList);
-        LOGGER.info("\t Subject: " + subject);
-        LOGGER.info("\t Sent Date: " + sentDate);
-        LOGGER.info("\t Message: " + messageContent);
+        LOGGER.info("\t From: " + fromAddress[0].toString());
+        LOGGER.info("\t To: " + parseAddresses(message.getRecipients(RecipientType.TO)));
+        LOGGER.info("\t CC: " + parseAddresses(message.getRecipients(RecipientType.CC)));
+        LOGGER.info("\t Subject: " + message.getSubject());
+        LOGGER.info("\t Sent Date: " + message.getSentDate().toString());
+        LOGGER.info("\t Message: " + message.getContent());
         LOGGER.info("================================================================\n");
     }
 
@@ -142,9 +127,7 @@ class DownloadProvider {
             Store store = connect(session, protocol, hostname, username, password);
             Folder folderInbox = store.getFolder(Constant.FOLDER);
             folderInbox.open(Folder.READ_ONLY);
-
             fetchNewMessages(folderInbox);
-
             folderInbox.close(false);
             store.close();
         } catch (NoSuchProviderException ex) {
@@ -152,6 +135,9 @@ class DownloadProvider {
             LOGGER.error(ex.getMessage());
         } catch (MessagingException ex) {
             LOGGER.error("Could not connect to the message store");
+            LOGGER.error(ex.getMessage());
+        } catch (IOException ex) {
+            LOGGER.error("[Error downloading content]");
             LOGGER.error(ex.getMessage());
         }
     }
