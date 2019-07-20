@@ -132,13 +132,10 @@ class DownloadProvider {
             store.close();
         } catch (NoSuchProviderException ex) {
             LOGGER.error("No provider for protocol: " + protocol);
-            LOGGER.error(ex.getMessage());
         } catch (MessagingException ex) {
             LOGGER.error("Could not connect to the message store");
-            LOGGER.error(ex.getMessage());
         } catch (IOException ex) {
             LOGGER.error("[Error downloading content]");
-            LOGGER.error(ex.getMessage());
         }
     }
 }
