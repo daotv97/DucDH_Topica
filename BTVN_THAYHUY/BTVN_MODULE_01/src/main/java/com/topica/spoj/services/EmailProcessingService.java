@@ -1,4 +1,7 @@
 package com.topica.spoj.services;
 
-public class EmailProcessingService {
+import com.topica.spoj.exception.DataTransmissionException;
+
+public interface EmailProcessingService {
+    void download(String username, String password) throws DataTransmissionException;
 }

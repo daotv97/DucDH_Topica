@@ -1,4 +1,5 @@
 package com.topica.spoj.fetch;
 
-public interface EmailDowloader {
+public interface EmailDownloader {
+    void download(String username, String password);
 }
