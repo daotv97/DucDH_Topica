@@ -48,12 +48,7 @@ class DownloadProvider {
      * @return a message store
      * @throws MessagingException
      */
-    private Store connect(Session session
-            , String protocol
-            , String hostname
-            , String username
-            , String password)
-            throws MessagingException {
+    private Store connect(Session session, String protocol, String hostname, String username, String password) throws MessagingException {
         Store store = session.getStore(protocol);
         store.connect(hostname, username, password);
         return store;
@@ -67,43 +62,46 @@ class DownloadProvider {
      */
     private void fetchNewMessages(Folder folder) throws MessagingException {
         Message[] messages = folder.getMessages();
-
         for (int i = 0; i < messages.length; i++) {
-            Message message = messages[i];
-            Address[] fromAddress = message.getFrom();
-            String from = fromAddress[0].toString();
-
-            String subject = message.getSubject();
-
-            String toList = parseAddresses(message.getRecipients(RecipientType.TO));
-            String ccList = parseAddresses(message.getRecipients(RecipientType.CC));
-
-            String sentDate = message.getSentDate().toString();
-
-            String contentType = message.getContentType();
-            String messageContent = "";
-
-            if (contentType.contains("text/plain") || contentType.contains("text/html")) {
-                try {
-                    Object content = message.getContent();
-                    if (content != null) {
-                        messageContent = content.toString();
-                    }
-                } catch (Exception ex) {
-                    messageContent = "[Error downloading content]";
-                    LOGGER.error(ex.getMessage());
-                }
-            }
-            // print out details of each message
-            LOGGER.info("== Email #" + (i + 1) + ": ====================================================");
-            LOGGER.info("\t From: " + from);
-            LOGGER.info("\t To: " + toList);
-            LOGGER.info("\t CC: " + ccList);
-            LOGGER.info("\t Subject: " + subject);
-            LOGGER.info("\t Sent Date: " + sentDate);
-            LOGGER.info("\t Message: " + messageContent);
-            LOGGER.info("================================================================\n");
+            messageInfo(messages[i], i);
         }
+    }
+
+    /**
+     * Info messages
+     *
+     * @param message
+     * @param index
+     * @throws MessagingException
+     */
+    private void messageInfo(Message message, int index) throws MessagingException {
+        Address[] fromAddress = message.getFrom();
+        String from = fromAddress[0].toString();
+        String subject = message.getSubject();
+        String toList = parseAddresses(message.getRecipients(RecipientType.TO));
+        String ccList = parseAddresses(message.getRecipients(RecipientType.CC));
+        String sentDate = message.getSentDate().toString();
+        String contentType = message.getContentType();
+        String messageContent = "";
+        if (contentType.contains("text/plain") || contentType.contains("text/html")) {
+            try {
+                Object content = message.getContent();
+                if (content != null) {
+                    messageContent = content.toString();
+                }
+            } catch (Exception ex) {
+                messageContent = "[Error downloading content]";
+                LOGGER.error(ex.getMessage());
+            }
+        }
+        LOGGER.info("== Email #" + (index + 1) + ": ====================================================");
+        LOGGER.info("\t From: " + from);
+        LOGGER.info("\t To: " + toList);
+        LOGGER.info("\t CC: " + ccList);
+        LOGGER.info("\t Subject: " + subject);
+        LOGGER.info("\t Sent Date: " + sentDate);
+        LOGGER.info("\t Message: " + messageContent);
+        LOGGER.info("================================================================\n");
     }
 
     /**
