@@ -4,7 +4,10 @@ import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
+import javax.mail.internet.MimeBodyPart;
+import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Properties;
 
 class DownloadProvider {
@@ -69,6 +72,42 @@ class DownloadProvider {
         }
     }
 
+    private void getAttachments(Message message, String subjectRegex) throws MessagingException, IOException {
+        String contentType = message.getContentType();
+        Address from = message.getFrom()[0];
+
+    }
+
+    /**
+     * Downloads new messages and fetches details for each message.
+     *
+     * @param protocol
+     * @param hostname
+     * @param port
+     * @param username
+     * @param password
+     */
+    void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password) {
+        LOGGER.debug(String.format("Info: '{'protocol: %s, hostname: %s, port: %s, username: %s, password: %s'}'", protocol, hostname, port, username, password));
+        Properties properties = getServerProperties(protocol, hostname, port, username, password);
+        Session session = Session.getDefaultInstance(properties);
+        try {
+            Store store = connect(session, protocol, hostname, username, password);
+            Folder folderInbox = store.getFolder(Constant.FOLDER);
+            folderInbox.open(Folder.READ_ONLY);
+            fetchNewMessages(folderInbox);
+            folderInbox.close(false);
+            store.close();
+        } catch (NoSuchProviderException ex) {
+            LOGGER.error(String.format("No provider for protocol: %s", protocol));
+        } catch (MessagingException ex) {
+            LOGGER.error("Could not connect to the message store");
+        } catch (IOException ex) {
+            LOGGER.error("[Error downloading content]");
+        }
+    }
+
+
     /**
      * Info messages
      *
@@ -79,13 +118,13 @@ class DownloadProvider {
      */
     private void messageInfo(Message message, int index) throws MessagingException, IOException {
         Address[] fromAddress = message.getFrom();
-        LOGGER.info("== Email #" + (index + 1) + ": ====================================================");
-        LOGGER.info("\t Subject: " + message.getSubject());
-        LOGGER.info("\t From: " + fromAddress[0].toString());
-        LOGGER.info("\t To: " + parseAddresses(message.getRecipients(RecipientType.TO)));
-        LOGGER.info("\t CC: " + parseAddresses(message.getRecipients(RecipientType.CC)));
-        LOGGER.info("\t Sent Date: " + message.getSentDate().toString());
-        LOGGER.info("\t Message: " + message.getContent());
+        LOGGER.info(String.format("== Email #%d: ====================================================", index + 1));
+        LOGGER.info(String.format("\t Subject: %s", message.getSubject()));
+        LOGGER.info(String.format("\t From: %s", fromAddress[0].toString()));
+        LOGGER.info(String.format("\t To: %s", parseAddresses(message.getRecipients(RecipientType.TO))));
+        LOGGER.info(String.format("\t CC: %s", parseAddresses(message.getRecipients(RecipientType.CC))));
+        LOGGER.info(String.format("\t Sent Date: %s", message.getSentDate().toString()));
+        LOGGER.info(String.format("\t Message: %s", message.getContent()));
         LOGGER.info("================================================================\n");
     }
 
@@ -111,43 +150,4 @@ class DownloadProvider {
         return listAddress;
     }
 
-    /**
-     * Downloads new messages and fetches details for each message.
-     *
-     * @param protocol
-     * @param hostname
-     * @param port
-     * @param username
-     * @param password
-     */
-    void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password) {
-        LOGGER.debug("Info: {" +
-                "protocol: " +
-                protocol +
-                ", hostname: " +
-                hostname +
-                ", port: " +
-                port +
-                ", username: " +
-                username +
-                ", password: " +
-                password +
-                "}");
-        Properties properties = getServerProperties(protocol, hostname, port, username, password);
-        Session session = Session.getDefaultInstance(properties);
-        try {
-            Store store = connect(session, protocol, hostname, username, password);
-            Folder folderInbox = store.getFolder(Constant.FOLDER);
-            folderInbox.open(Folder.READ_ONLY);
-            fetchNewMessages(folderInbox);
-            folderInbox.close(false);
-            store.close();
-        } catch (NoSuchProviderException ex) {
-            LOGGER.error("No provider for protocol: " + protocol);
-        } catch (MessagingException ex) {
-            LOGGER.error("Could not connect to the message store");
-        } catch (IOException ex) {
-            LOGGER.error("[Error downloading content]");
-        }
-    }
 }

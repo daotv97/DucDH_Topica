@@ -16,18 +16,12 @@ public class EmailProcessingServiceImpl implements EmailProcessingService {
     @Named("imapProtocol")
     private EmailDownloader downloader;
 
-    public void download(String username, String password) throws DataTransmissionException {
-        if (username == null || password == null) {
-            LOGGER.error(new StringBuilder()
-                    .append("Username or password is null: ")
-                    .append("{ username: ")
-                    .append(username)
-                    .append(", password: ")
-                    .append(password)
-                    .append(" }")
-                    .toString());
-            throw new DataTransmissionException("Username or password is null.");
+    public void download(String username, String password, String subject, String expired) throws DataTransmissionException {
+        if (username == null || password == null || subject == null || expired == null) {
+            LOGGER.error(String.format("Data is not allowed to be null : { username: %s, password: %s, subject: %s, expired: %s }", username, password, subject, expired));
+            throw new DataTransmissionException("Data is not allowed to be null.");
         }
+        LOGGER.debug(String.format("{username: %s, password: %s}", username, password));
         downloader.download(username, password);
     }
 }

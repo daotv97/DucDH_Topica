@@ -14,6 +14,7 @@ class Constant {
     static final String SOCKET_FALLBACK_VALUE = "false";
     static final String START_TLS_VALUE = "true";
     static final String FOLDER = "INBOX";
+    static final String MULTIPART = "multipart";
 
     private Constant() {
 

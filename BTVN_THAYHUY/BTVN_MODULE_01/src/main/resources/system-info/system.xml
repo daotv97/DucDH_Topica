@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<homework>
+    <system.info name="ITLAB-HOMEWORK">
+        <expired>2019-02-02</expired>
+        <username>ittalent@topica.edu.vn</username>
+        <password>topica123</password>
+        <subject>ITLAB-HOMEWORK</subject>
+    </system.info>
+
+    <system.info name="ITLAB-HOMEWORK1">
+        <expired>2019-05-02</expired>
+        <username>ittalent@topica.edu.vn</username>
+        <password>topica123</password>
+        <subject>ITLAB-HOMEWORK</subject>
+    </system.info>
+
+    <system.info name="ITLAB-HOMEWORK2">
+        <expired>2019-09-01</expired>
+        <username>ittalent@topica.edu.vn</username>
+        <password>topica123</password>
+        <subject>ITLAB-HOMEWORK</subject>
+    </system.info>
+</homework>
+
