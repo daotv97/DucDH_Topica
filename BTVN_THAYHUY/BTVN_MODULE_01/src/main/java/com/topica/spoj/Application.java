@@ -42,14 +42,12 @@ public class Application {
             LOGGER.info("Find homework by name: ");
             Element element = readDataFromXml(new Scanner(System.in).nextLine());
             if (element != null) {
-                String username = element.getElementsByTagName(ELEMENT_TAG_USERNAME).item(0).getTextContent();
-                String password = element.getElementsByTagName(ELEMENT_TAG_PASS).item(0).getTextContent();
-                String subject = element.getElementsByTagName(ELEMENT_TAG_SUBJECT).item(0).getTextContent();
-                String expired = element.getElementsByTagName(ELEMENT_TAG_EXPIRED).item(0).getTextContent();
+                String username = getDataElement(ELEMENT_TAG_USERNAME, element);
+                String password = getDataElement(ELEMENT_TAG_PASS, element);
+                String subject = getDataElement(ELEMENT_TAG_SUBJECT, element);
+                String expired = getDataElement(ELEMENT_TAG_EXPIRED, element);
                 jdbc.download(username, password, subject, expired);
-            } else {
-                LOGGER.info("Not found! Try again.");
-            }
+            } else LOGGER.info("Not found! Try again.");
         } catch (DataTransmissionException e) {
             LOGGER.error(e.getMessage());
         } catch (Exception e) {
@@ -68,11 +66,13 @@ public class Application {
             Node nNode = nodeList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element element = (Element) nNode;
-                if (element.getAttribute(ELEMENT_ATTRIBUTE_NAME).equals(nameHomework)) {
-                    return element;
-                }
+                if (element.getAttribute(ELEMENT_ATTRIBUTE_NAME).equals(nameHomework)) return element;
             }
         }
         return null;
+    }
+
+    private static String getDataElement(String name, Element element) {
+        return element.getElementsByTagName(name).item(0).getTextContent();
     }
 }
