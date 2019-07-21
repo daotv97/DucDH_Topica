@@ -1,5 +1,7 @@
 package com.topica.spoj.core.store;
 
+import com.topica.spoj.core.exception.FileStorageException;
+import com.topica.spoj.core.utils.FileHandler;
 import org.apache.log4j.Logger;
 
 import javax.mail.*;
@@ -8,6 +10,7 @@ import javax.mail.search.FlagTerm;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,7 +73,7 @@ public class DownloadProvider {
      * @throws MessagingException
      * @throws IOException
      */
-    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String username, String subject, String expired) throws MessagingException, IOException {
+    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String username, String subject, String expired) throws MessagingException, IOException, FileStorageException {
         Message[] messages = folder.search(flagTerm);
         for (int i = 0; i < messages.length; i++) {
             if (isValidMessage(messages[i], subject, expired)) {
@@ -88,22 +91,29 @@ public class DownloadProvider {
      * @param username
      * @param subject
      */
-    private void getAttachments(Message message, String username, String subject) throws IOException, MessagingException {
+    private void getAttachments(Message message, String username, String subject) throws IOException, MessagingException, FileStorageException {
         Multipart multiPart = (Multipart) message.getContent();
         int numberOfParts = multiPart.getCount();
         boolean isFileZip = false;
+        String dir = String.format("%s/%s/%s/%s", ROOT_PATCH, username, subject, message.getFrom()[0].toString());
 
         for (int partCount = 0; partCount < numberOfParts; partCount++) {
             BodyPart part = multiPart.getBodyPart(partCount);
             if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                Optional<String> extension = getFileExtension(part.getFileName());
+                String fileName = part.getFileName();
+                Optional<String> extension = getFileExtension(fileName);
+
                 if (extension.isPresent() && extension.get().equals(Constant.ZIP)) {
                     isFileZip = true;
-                    store(part, username + "/" + subject, message.getFrom()[0].toString(), part.getFileName());
+                    String pathFileDownloaded = MessageFormat.format("{0}/{1}", dir, fileName);
+                    String pathFileUnzip = MessageFormat.format("{0}/{1}", dir, Constant.UNZIP);
+
+                    boolean stored = storeAttachments(part, dir, fileName);
+                    if (stored) unzipAttachments(dir, fileName,  pathFileUnzip);
+                    else throw new FileStorageException("Can't storage attachment");
                 }
             }
         }
-
         if (!isFileZip) {
             LOGGER.error("Yeu cau gui file dinh kem co duoi zip.");
         }
@@ -140,6 +150,8 @@ public class DownloadProvider {
             LOGGER.error("Could not connect to the message store.");
         } catch (IOException e) {
             LOGGER.error("Load content failed.");
+        } catch (FileStorageException e) {
+            LOGGER.error(e.getMessage());
         }
     }
 
@@ -183,14 +195,13 @@ public class DownloadProvider {
      * Store attachments
      *
      * @param part
-     * @param pathExe
-     * @param pathStd
+     * @param dir
      * @param fileName
      * @throws IOException
      * @throws MessagingException
      */
-    private void store(BodyPart part, String pathExe, String pathStd, String fileName) throws IOException, MessagingException {
-        File tmpDir = new File(String.format("%s/%s/%s", ROOT_PATCH, pathExe, pathStd));
+    private boolean storeAttachments(BodyPart part, String dir, String fileName) throws IOException, MessagingException {
+        File tmpDir = new File(dir);
         if (!tmpDir.exists()) {
             boolean isSuccess = tmpDir.mkdirs();
             LOGGER.info(String.format("Directory %%s created? %%s%s%s", tmpDir, isSuccess));
@@ -206,8 +217,22 @@ public class DownloadProvider {
                 LOGGER.debug(count);
                 outputStream.write(data, 0, count);
             }
-            LOGGER.debug(String.format("%s/%s", tmpDir, fileName));
+            LOGGER.debug(String.format("File download: %s/%s", tmpDir, fileName));
+            return new File(String.format("%s/%s", tmpDir.getPath(), fileName)).isFile();
         }
+    }
+
+    /**
+     * Unzip file downloaded
+     *
+     * @param dir
+     * @param fileName
+     * @throws IOException
+     */
+    private void unzipAttachments(String dir, String fileName, String destDir) throws IOException {
+        FileHandler fileHandler = new FileHandler();
+        fileHandler.unzip(String.format("%s/%s", dir, fileName), destDir);
+        LOGGER.debug(String.format("File unzip: %s%s", destDir, fileName));
     }
 
     /**
