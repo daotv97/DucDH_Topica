@@ -11,6 +11,6 @@ public class ImapProtocol implements EmailDownloader {
     @Override
     public void download(String username, String password, String subject, String expired) {
         DownloadProvider downloadProvider = new DownloadProvider();
-        downloadProvider.downloadEmailAttachments(PROTOCOL, HOST_NAME, PORT, username, password);
+        downloadProvider.downloadEmailAttachments(PROTOCOL, HOST_NAME, PORT, username, password, subject, expired);
     }
 }

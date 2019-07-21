@@ -23,7 +23,7 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class Application {
-    private static final Logger LOGGER = Logger.getLogger(Application.class);
+    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
     private static final String PATH_FILE_SYSTEM = "src/main/resources/system-info/system.xml";
     private static final String SYSTEM_INFO = "system";
     private static final String ELEMENT_ATTRIBUTE_NAME = "name";

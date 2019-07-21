@@ -10,7 +10,7 @@ import java.util.Properties;
 
 class DownloadProvider {
 
-    private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class);
+    private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class.getName());
 
     /**
      * Returns a properties object which is configured for a POP3/IMAP server
@@ -63,16 +63,17 @@ class DownloadProvider {
      * @throws MessagingException
      * @throws IOException
      */
-    private void fetchNewMessages(Folder folder, FlagTerm flagTerm) throws MessagingException, IOException {
+    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String subject, String expired) throws MessagingException, IOException {
         Message[] messages = folder.search(flagTerm);
         for (int i = 0; i < messages.length; i++) {
-            if (messages[i].getContentType().equals(Constant.CONTENT_TYPE_MULTIPART)) {
+            if (messages[i].getSubject().startsWith(subject) && messages[i].getContentType().contains(Constant.CONTENT_TYPE_MULTIPART)) {
                 messageInfo(messages[i], i);
+                messages[i].setFlag(Flags.Flag.SEEN, true);
             }
         }
     }
 
-    private void getAttachments(Message message, String subjectRegex) throws MessagingException, IOException {
+    private void getAttachments(Message message, String subjectRegex) throws MessagingException {
         String contentType = message.getContentType();
         Address from = message.getFrom()[0];
 
@@ -87,27 +88,27 @@ class DownloadProvider {
      * @param username
      * @param password
      */
-    void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password) {
+    void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password, String subject, String expired) {
         LOGGER.debug(String.format("Info: '{'protocol: %s, hostname: %s, port: %s, username: %s, password: %s'}'", protocol, hostname, port, username, password));
         Properties properties = getServerProperties(protocol, hostname, port, username, password);
         Session session = Session.getDefaultInstance(properties);
         try {
             Store store = connect(session, protocol, hostname, username, password);
             Folder folderInbox = store.getFolder(Constant.FOLDER);
-            folderInbox.open(Folder.READ_ONLY);
+            folderInbox.open(Folder.READ_WRITE);
 
             Flags seen = new Flags(Flags.Flag.SEEN);
             FlagTerm unseenFlagTerm = new FlagTerm(seen, Constant.FLAG_TERM);
-            fetchNewMessages(folderInbox, unseenFlagTerm);
+            fetchNewMessages(folderInbox, unseenFlagTerm, subject, expired);
 
             folderInbox.close(false);
             store.close();
         } catch (NoSuchProviderException ex) {
             LOGGER.error(String.format("No provider for protocol: %s", protocol));
         } catch (MessagingException ex) {
-            LOGGER.error("Could not connect to the message store");
-        } catch (IOException ex) {
-            LOGGER.error("[Error downloading content]");
+            LOGGER.error("Could not connect to the message store.");
+        } catch (IOException e) {
+            LOGGER.error("Load content failed.");
         }
     }
 
