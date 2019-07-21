@@ -20,6 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Application {
     private static final Logger LOGGER = Logger.getLogger(Application.class);
@@ -58,18 +59,15 @@ public class Application {
     private static Element readDataFromXml(String nameHomework) throws ParserConfigurationException, IOException, SAXException {
         File xmlFile = new File(PATH_FILE_SYSTEM);
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = factory.newDocumentBuilder();
-        Document doc = documentBuilder.parse(xmlFile);
+        Document doc = factory.newDocumentBuilder().parse(xmlFile);
         doc.getDocumentElement().normalize();
         NodeList nodeList = doc.getElementsByTagName(SYSTEM_INFO);
-        for (int temp = 0; temp < nodeList.getLength(); temp++) {
-            Node nNode = nodeList.item(temp);
-            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                Element element = (Element) nNode;
-                if (element.getAttribute(ELEMENT_ATTRIBUTE_NAME).equals(nameHomework)) return element;
-            }
-        }
-        return null;
+        return IntStream.range(0, nodeList.getLength())
+                .mapToObj(nodeList::item)
+                .filter(node -> node.getNodeType() == Node.ELEMENT_NODE)
+                .map(node -> (Element) node)
+                .filter(element -> element.getAttribute(ELEMENT_ATTRIBUTE_NAME).equals(nameHomework))
+                .findFirst().orElse(null);
     }
 
     private static String getDataElement(String name, Element element) {

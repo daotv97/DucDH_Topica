@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.stream.IntStream;
 
 class DownloadProvider {
 
