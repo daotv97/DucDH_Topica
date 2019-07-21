@@ -8,7 +8,8 @@ public class ImapProtocol implements EmailDownloader {
     private static final String HOST_NAME = "imap.googlemail.com";
     private static final String PORT = "993";
 
-    public void download(String username, String password) {
+    @Override
+    public void download(String username, String password, String subject, String expired) {
         DownloadProvider downloadProvider = new DownloadProvider();
         downloadProvider.downloadEmailAttachments(PROTOCOL, HOST_NAME, PORT, username, password);
     }

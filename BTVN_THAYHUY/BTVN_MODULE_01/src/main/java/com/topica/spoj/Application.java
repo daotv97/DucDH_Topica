@@ -35,8 +35,8 @@ public class Application {
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();
         BeanManager bm = container.getBeanManager();
-        Bean<EmailProcessingServiceImpl> bean = (Bean<EmailProcessingServiceImpl>) bm.getBeans("emailProcessingServiceImpl").iterator().next();
-        CreationalContext<EmailProcessingServiceImpl> ctx = bm.createCreationalContext(bean);
+        Bean<?> bean =  bm.getBeans("emailProcessingServiceImpl").iterator().next();
+        CreationalContext<?> ctx = bm.createCreationalContext(bean);
         EmailProcessingServiceImpl jdbc = (EmailProcessingServiceImpl) bm.getReference(bean, EmailProcessingServiceImpl.class, ctx);
         try {
             LOGGER.info("Find homework by name: ");

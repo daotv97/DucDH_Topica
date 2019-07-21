@@ -21,7 +21,7 @@ public class EmailProcessingServiceImpl implements EmailProcessingService {
             LOGGER.error(String.format("Data is not allowed to be null : { username: %s, password: %s, subject: %s, expired: %s }", username, password, subject, expired));
             throw new DataTransmissionException("Data is not allowed to be null.");
         }
-        LOGGER.debug(String.format("{username: %s, password: %s}", username, password));
-        downloader.download(username, password);
+        LOGGER.debug(String.format("{username: %s, password: %s, subject: %s, expired: %s}", username, password, subject, expired));
+        downloader.download(username, password, subject, expired);
     }
 }
