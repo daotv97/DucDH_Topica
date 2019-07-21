@@ -4,12 +4,9 @@ import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
-import javax.mail.internet.MimeBodyPart;
-import java.io.File;
+import javax.mail.search.FlagTerm;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.Properties;
-import java.util.stream.IntStream;
 
 class DownloadProvider {
 
@@ -66,10 +63,12 @@ class DownloadProvider {
      * @throws MessagingException
      * @throws IOException
      */
-    private void fetchNewMessages(Folder folder) throws MessagingException, IOException {
-        Message[] messages = folder.getMessages();
+    private void fetchNewMessages(Folder folder, FlagTerm flagTerm) throws MessagingException, IOException {
+        Message[] messages = folder.search(flagTerm);
         for (int i = 0; i < messages.length; i++) {
-            messageInfo(messages[i], i);
+            if (messages[i].getContentType().equals(Constant.CONTENT_TYPE_MULTIPART)) {
+                messageInfo(messages[i], i);
+            }
         }
     }
 
@@ -96,7 +95,11 @@ class DownloadProvider {
             Store store = connect(session, protocol, hostname, username, password);
             Folder folderInbox = store.getFolder(Constant.FOLDER);
             folderInbox.open(Folder.READ_ONLY);
-            fetchNewMessages(folderInbox);
+
+            Flags seen = new Flags(Flags.Flag.SEEN);
+            FlagTerm unseenFlagTerm = new FlagTerm(seen, Constant.FLAG_TERM);
+            fetchNewMessages(folderInbox, unseenFlagTerm);
+
             folderInbox.close(false);
             store.close();
         } catch (NoSuchProviderException ex) {
