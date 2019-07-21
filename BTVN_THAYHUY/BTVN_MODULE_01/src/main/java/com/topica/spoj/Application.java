@@ -14,7 +14,6 @@ import org.xml.sax.SAXException;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
@@ -36,7 +35,7 @@ public class Application {
         Weld weld = new Weld();
         WeldContainer container = weld.initialize();
         BeanManager bm = container.getBeanManager();
-        Bean<?> bean =  bm.getBeans("emailProcessingServiceImpl").iterator().next();
+        Bean<?> bean = bm.getBeans("emailProcessingServiceImpl").iterator().next();
         CreationalContext<?> ctx = bm.createCreationalContext(bean);
         EmailProcessingServiceImpl jdbc = (EmailProcessingServiceImpl) bm.getReference(bean, EmailProcessingServiceImpl.class, ctx);
         try {

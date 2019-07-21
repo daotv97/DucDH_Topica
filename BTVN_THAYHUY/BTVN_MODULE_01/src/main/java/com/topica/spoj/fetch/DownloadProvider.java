@@ -6,6 +6,9 @@ import javax.mail.*;
 import javax.mail.Message.RecipientType;
 import javax.mail.search.FlagTerm;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Properties;
 
 class DownloadProvider {
@@ -66,7 +69,7 @@ class DownloadProvider {
     private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String subject, String expired) throws MessagingException, IOException {
         Message[] messages = folder.search(flagTerm);
         for (int i = 0; i < messages.length; i++) {
-            if (messages[i].getSubject().startsWith(subject) && messages[i].getContentType().contains(Constant.CONTENT_TYPE_MULTIPART)) {
+            if (isValidMessage(messages[i], subject, expired)) {
                 messageInfo(messages[i], i);
                 messages[i].setFlag(Flags.Flag.SEEN, true);
             }
@@ -112,7 +115,39 @@ class DownloadProvider {
         }
     }
 
+    /**
+     * Check valid messages
+     *
+     * @param message
+     * @param subject
+     * @param expired
+     * @return
+     * @throws MessagingException
+     */
+    private boolean isValidMessage(Message message, String subject, String expired) throws MessagingException {
+        return message.getSubject().startsWith(subject) && message.getContentType().contains(Constant.CONTENT_TYPE_MULTIPART) && isExpiredMessage(message.getSentDate(), expired);
+    }
 
+    /**
+     * Check the expiry date of the homework
+     *
+     * @param sendDate
+     * @param expired
+     * @return
+     */
+    private boolean isExpiredMessage(Date sendDate, String expired) {
+        Date dateExpired;
+        try {
+            dateExpired = new SimpleDateFormat("dd/MM/yyyy").parse(expired);
+        } catch (ParseException e) {
+            LOGGER.error(e.getMessage());
+            return false;
+        }
+        LOGGER.debug("Send date: " + sendDate.toString());
+        LOGGER.debug("Expired date: " + dateExpired.toString());
+        return sendDate.getTime() < dateExpired.getTime();
+    }
+    
     /**
      * Info messages
      *
@@ -154,5 +189,4 @@ class DownloadProvider {
         listAddress = listAddress.substring(0, listAddress.length() - 2);
         return listAddress;
     }
-
 }
