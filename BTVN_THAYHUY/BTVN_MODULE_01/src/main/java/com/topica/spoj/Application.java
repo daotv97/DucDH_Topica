@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class Application {
     private static final Logger LOGGER = Logger.getLogger(Application.class);
     private static final String PATH_FILE_SYSTEM = "src/main/resources/system-info/system.xml";
-    private static final String SYSTEM_INFO = "system.info";
+    private static final String SYSTEM_INFO = "system";
     private static final String ELEMENT_ATTRIBUTE_NAME = "name";
     private static final String ELEMENT_TAG_USERNAME = "username";
     private static final String ELEMENT_TAG_PASS = "password";
