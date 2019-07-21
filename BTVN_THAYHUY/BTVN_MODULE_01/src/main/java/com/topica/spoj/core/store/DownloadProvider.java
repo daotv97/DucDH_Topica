@@ -88,28 +88,24 @@ public class DownloadProvider {
      * @param username
      * @param subject
      */
-    private void getAttachments(Message message, String username, String subject) {
-        try {
-            Multipart multiPart = (Multipart) message.getContent();
-            int numberOfParts = multiPart.getCount();
-            boolean isFileZip = false;
+    private void getAttachments(Message message, String username, String subject) throws IOException, MessagingException {
+        Multipart multiPart = (Multipart) message.getContent();
+        int numberOfParts = multiPart.getCount();
+        boolean isFileZip = false;
 
-            for (int partCount = 0; partCount < numberOfParts; partCount++) {
-                BodyPart part = multiPart.getBodyPart(partCount);
-                if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
-                    Optional<String> extension = getFileExtension(part.getFileName());
-                    if (extension.isPresent() && extension.get().equals(Constant.ZIP)) {
-                        isFileZip = true;
-                        store(part, username + "/" + subject, message.getFrom()[0].toString(), part.getFileName());
-                    }
+        for (int partCount = 0; partCount < numberOfParts; partCount++) {
+            BodyPart part = multiPart.getBodyPart(partCount);
+            if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
+                Optional<String> extension = getFileExtension(part.getFileName());
+                if (extension.isPresent() && extension.get().equals(Constant.ZIP)) {
+                    isFileZip = true;
+                    store(part, username + "/" + subject, message.getFrom()[0].toString(), part.getFileName());
                 }
             }
+        }
 
-            if (!isFileZip) {
-                LOGGER.error("Yeu cau gui file dinh kem co duoi zip.");
-            }
-        } catch (IOException | MessagingException e) {
-            LOGGER.error(e.getMessage());
+        if (!isFileZip) {
+            LOGGER.error("Yeu cau gui file dinh kem co duoi zip.");
         }
     }
 
