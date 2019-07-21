@@ -1,24 +1,24 @@
 <?xml version="1.0"?>
-<homework>
-    <system name="ITLAB-HOMEWORK">
+<system>
+    <homework name="ITLAB-HOMEWORK">
+        <subject>ITLAB-HOMEWORK</subject>
         <expired>22/07/2019</expired>
         <username>ittalent@topica.edu.vn</username>
         <password>topica123</password>
-        <subject>ITLAB-HOMEWORK</subject>
-    </system>
+    </homework>
 
-    <system name="ITLAB-HOMEWORK1">
+    <homework name="ITLAB-HOMEWORK1">
+        <subject>ITLAB-HOMEWORK1</subject>
         <expired>2019-05-02</expired>
         <username>ittalent@topica.edu.vn</username>
         <password>topica123</password>
-        <subject>ITLAB-HOMEWORK</subject>
-    </system>
+    </homework>
 
-    <system name="ITLAB-HOMEWORK2">
+    <homework name="ITLAB-HOMEWORK2">
+        <subject>ITLAB-HOMEWORK</subject>
         <expired>2019-09-01</expired>
         <username>ittalent@topica.edu.vn</username>
         <password>topica123</password>
-        <subject>ITLAB-HOMEWORK</subject>
-    </system>
-</homework>
+    </homework>
+</system>
 

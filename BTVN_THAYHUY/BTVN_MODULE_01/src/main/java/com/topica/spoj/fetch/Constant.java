@@ -16,6 +16,8 @@ class Constant {
     static final String FOLDER = "INBOX";
     static final String CONTENT_TYPE_MULTIPART = "multipart";
     static final boolean FLAG_TERM = false;
+    static final String ZIP = "zip";
+    static final Integer BYTE = 1024;
 
     private Constant() {
 

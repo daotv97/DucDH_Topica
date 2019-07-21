@@ -1,19 +1,25 @@
 package com.topica.spoj.fetch;
 
+import com.topica.spoj.exception.FileStorageException;
 import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.search.FlagTerm;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Properties;
 
 class DownloadProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class.getName());
+    private static final Path ROOT_PATCH = Paths.get(System.getProperty("user.home") + "/homework/");
 
     /**
      * Returns a properties object which is configured for a POP3/IMAP server
@@ -66,20 +72,39 @@ class DownloadProvider {
      * @throws MessagingException
      * @throws IOException
      */
-    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String subject, String expired) throws MessagingException, IOException {
+    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String username, String subject, String expired) throws MessagingException, IOException {
         Message[] messages = folder.search(flagTerm);
         for (int i = 0; i < messages.length; i++) {
             if (isValidMessage(messages[i], subject, expired)) {
                 messageInfo(messages[i], i);
+                getAttachments(messages[i], username, subject);
                 messages[i].setFlag(Flags.Flag.SEEN, true);
             }
         }
     }
 
-    private void getAttachments(Message message, String subjectRegex) throws MessagingException {
-        String contentType = message.getContentType();
-        Address from = message.getFrom()[0];
-
+    /**
+     * Get Attachments from messages
+     *
+     * @param message
+     * @param username
+     * @param subject
+     */
+    private void getAttachments(Message message, String username, String subject) {
+        try {
+            Multipart multiPart = (Multipart) message.getContent();
+            int numberOfParts = multiPart.getCount();
+            for (int partCount = 0; partCount < numberOfParts; partCount++) {
+                MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
+                if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
+                    Optional<String> extension = getFileExtension(part.getFileName());
+                    if (extension.isPresent() && !extension.get().equals(Constant.ZIP))
+                        store(part, username + "\\" + subject, message.getFrom()[0].toString(), part.getFileName());
+                }
+            }
+        } catch (IOException | MessagingException | FileStorageException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
@@ -102,7 +127,7 @@ class DownloadProvider {
 
             Flags seen = new Flags(Flags.Flag.SEEN);
             FlagTerm unseenFlagTerm = new FlagTerm(seen, Constant.FLAG_TERM);
-            fetchNewMessages(folderInbox, unseenFlagTerm, subject, expired);
+            fetchNewMessages(folderInbox, unseenFlagTerm, username, subject, expired);
 
             folderInbox.close(false);
             store.close();
@@ -125,7 +150,9 @@ class DownloadProvider {
      * @throws MessagingException
      */
     private boolean isValidMessage(Message message, String subject, String expired) throws MessagingException {
-        return message.getSubject().startsWith(subject) && message.getContentType().contains(Constant.CONTENT_TYPE_MULTIPART) && isExpiredMessage(message.getSentDate(), expired);
+        return message.getSubject().startsWith(subject)
+                && message.getContentType().contains(Constant.CONTENT_TYPE_MULTIPART)
+                && isExpiredMessage(message.getSentDate(), expired);
     }
 
     /**
@@ -147,7 +174,38 @@ class DownloadProvider {
         LOGGER.debug("Expired date: " + dateExpired.toString());
         return sendDate.getTime() < dateExpired.getTime();
     }
-    
+
+    private void store(MimeBodyPart part, String pathExe, String pathStd, String fileName) throws FileStorageException, IOException, MessagingException {
+        File tmpDir = new File(String.format("%s\\%s\\%s", ROOT_PATCH, pathExe, pathStd));
+        if (!tmpDir.exists()) {
+            boolean isCreated = tmpDir.mkdirs();
+            if (isCreated) {
+                File fileSave = new File(fileName);
+                InputStream inputStream = part.getInputStream();
+                try (OutputStream outputStream = new FileOutputStream(fileSave)) {
+                    byte[] data = new byte[Constant.BYTE];
+                    int count;
+                    while ((count = inputStream.read(data)) > 0) {
+                        outputStream.write(data, 0, count);
+                    }
+                }
+            } else {
+                throw new FileStorageException("Can't store file.");
+            }
+        }
+    }
+
+    /**
+     * Get extension file
+     *
+     * @param fileName
+     * @return
+     */
+    private Optional<String> getFileExtension(String fileName) {
+        int lastIndex = fileName.lastIndexOf('.');
+        return lastIndex == -1 ? Optional.empty() : Optional.of(fileName.substring(lastIndex + 1));
+    }
+
     /**
      * Info messages
      *
