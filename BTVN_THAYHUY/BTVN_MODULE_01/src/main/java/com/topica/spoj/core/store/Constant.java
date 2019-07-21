@@ -1,6 +1,6 @@
-package com.topica.spoj.fetch;
+package com.topica.spoj.core.store;
 
-class Constant {
+public class Constant {
     static final String SOCKET_CLASS_PROPERTY = "mail.%s.socketFactory.class";
     static final String SOCKET_FALLBACK_PROPERTY = "mail.%s.socketFactory.fallback";
     static final String SOCKET_FALLBACK_PORT = "mail.%s.socketFactory.port";

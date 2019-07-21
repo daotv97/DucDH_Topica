@@ -1,7 +1,7 @@
 package com.topica.spoj.services.impl;
 
-import com.topica.spoj.exception.DataTransmissionException;
-import com.topica.spoj.fetch.EmailDownloader;
+import com.topica.spoj.core.exception.DataTransmissionException;
+import com.topica.spoj.core.EmailDownloader;
 import com.topica.spoj.services.EmailProcessingService;
 import org.apache.log4j.Logger;
 

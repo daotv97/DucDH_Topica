@@ -1,4 +1,4 @@
-package com.topica.spoj.exception;
+package com.topica.spoj.core.exception;
 
 public class DataTransmissionException extends Exception {
 

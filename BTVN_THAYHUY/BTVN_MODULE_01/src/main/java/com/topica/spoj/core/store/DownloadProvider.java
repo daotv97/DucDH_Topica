@@ -1,4 +1,4 @@
-package com.topica.spoj.fetch;
+package com.topica.spoj.core.store;
 
 import org.apache.log4j.Logger;
 
@@ -14,7 +14,7 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Properties;
 
-class DownloadProvider {
+public class DownloadProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class.getName());
     private static final Path ROOT_PATCH = Paths.get(System.getProperty("user.home") + "/homework");
@@ -93,6 +93,7 @@ class DownloadProvider {
             Multipart multiPart = (Multipart) message.getContent();
             int numberOfParts = multiPart.getCount();
             boolean isFileZip = false;
+
             for (int partCount = 0; partCount < numberOfParts; partCount++) {
                 BodyPart part = multiPart.getBodyPart(partCount);
                 if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
@@ -103,6 +104,7 @@ class DownloadProvider {
                     }
                 }
             }
+
             if (!isFileZip) {
                 LOGGER.error("Yeu cau gui file dinh kem co duoi zip.");
             }
@@ -120,10 +122,11 @@ class DownloadProvider {
      * @param username
      * @param password
      */
-    void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password, String subject, String expired) {
+    public void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password, String subject, String expired) {
         LOGGER.debug(String.format("Info: '{'protocol: %s, hostname: %s, port: %s, username: %s, password: %s'}'", protocol, hostname, port, username, password));
         Properties properties = getServerProperties(protocol, hostname, port, username, password);
         Session session = Session.getDefaultInstance(properties);
+
         try {
             Store store = connect(session, protocol, hostname, username, password);
             Folder folderInbox = store.getFolder(Constant.FOLDER);
@@ -174,16 +177,27 @@ class DownloadProvider {
             LOGGER.error(e.getMessage());
             return false;
         }
+
         LOGGER.debug("Send date: " + sendDate.toString());
         LOGGER.debug("Expired date: " + dateExpired.toString());
         return sendDate.getTime() < dateExpired.getTime();
     }
 
+    /**
+     * Store attachments
+     *
+     * @param part
+     * @param pathExe
+     * @param pathStd
+     * @param fileName
+     * @throws IOException
+     * @throws MessagingException
+     */
     private void store(BodyPart part, String pathExe, String pathStd, String fileName) throws IOException, MessagingException {
         File tmpDir = new File(String.format("%s/%s/%s", ROOT_PATCH, pathExe, pathStd));
         if (!tmpDir.exists()) {
             boolean isSuccess = tmpDir.mkdirs();
-            LOGGER.info("Directory %s created? %s" + tmpDir + isSuccess);
+            LOGGER.info(String.format("Directory %%s created? %%s%s%s", tmpDir, isSuccess));
         }
 
         InputStream inputStream = part.getInputStream();
@@ -196,7 +210,7 @@ class DownloadProvider {
                 LOGGER.debug(count);
                 outputStream.write(data, 0, count);
             }
-            LOGGER.debug(tmpDir + "/" + fileName);
+            LOGGER.debug(String.format("%s/%s", tmpDir, fileName));
         }
     }
 
