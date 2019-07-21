@@ -1,11 +1,9 @@
 package com.topica.spoj.fetch;
 
-import com.topica.spoj.exception.FileStorageException;
 import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.search.FlagTerm;
 import java.io.*;
 import java.nio.file.Path;
@@ -19,7 +17,7 @@ import java.util.Properties;
 class DownloadProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class.getName());
-    private static final Path ROOT_PATCH = Paths.get(System.getProperty("user.home") + "/homework/");
+    private static final Path ROOT_PATCH = Paths.get(System.getProperty("user.home") + "/homework");
 
     /**
      * Returns a properties object which is configured for a POP3/IMAP server
@@ -94,15 +92,21 @@ class DownloadProvider {
         try {
             Multipart multiPart = (Multipart) message.getContent();
             int numberOfParts = multiPart.getCount();
+            boolean isFileZip = false;
             for (int partCount = 0; partCount < numberOfParts; partCount++) {
-                MimeBodyPart part = (MimeBodyPart) multiPart.getBodyPart(partCount);
+                BodyPart part = multiPart.getBodyPart(partCount);
                 if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {
                     Optional<String> extension = getFileExtension(part.getFileName());
-                    if (extension.isPresent() && !extension.get().equals(Constant.ZIP))
-                        store(part, username + "\\" + subject, message.getFrom()[0].toString(), part.getFileName());
+                    if (extension.isPresent() && extension.get().equals(Constant.ZIP)) {
+                        isFileZip = true;
+                        store(part, username + "/" + subject, message.getFrom()[0].toString(), part.getFileName());
+                    }
                 }
             }
-        } catch (IOException | MessagingException | FileStorageException e) {
+            if (!isFileZip) {
+                LOGGER.error("Yeu cau gui file dinh kem co duoi zip.");
+            }
+        } catch (IOException | MessagingException e) {
             LOGGER.error(e.getMessage());
         }
     }
@@ -175,23 +179,24 @@ class DownloadProvider {
         return sendDate.getTime() < dateExpired.getTime();
     }
 
-    private void store(MimeBodyPart part, String pathExe, String pathStd, String fileName) throws FileStorageException, IOException, MessagingException {
-        File tmpDir = new File(String.format("%s\\%s\\%s", ROOT_PATCH, pathExe, pathStd));
+    private void store(BodyPart part, String pathExe, String pathStd, String fileName) throws IOException, MessagingException {
+        File tmpDir = new File(String.format("%s/%s/%s", ROOT_PATCH, pathExe, pathStd));
         if (!tmpDir.exists()) {
-            boolean isCreated = tmpDir.mkdirs();
-            if (isCreated) {
-                File fileSave = new File(fileName);
-                InputStream inputStream = part.getInputStream();
-                try (OutputStream outputStream = new FileOutputStream(fileSave)) {
-                    byte[] data = new byte[Constant.BYTE];
-                    int count;
-                    while ((count = inputStream.read(data)) > 0) {
-                        outputStream.write(data, 0, count);
-                    }
-                }
-            } else {
-                throw new FileStorageException("Can't store file.");
+            boolean isSuccess = tmpDir.mkdirs();
+            LOGGER.info("Directory %s created? %s" + tmpDir + isSuccess);
+        }
+
+        InputStream inputStream = part.getInputStream();
+        File file = new File(String.format("%s%s%s", tmpDir.getPath(), File.separator, fileName));
+
+        try (OutputStream outputStream = new FileOutputStream(file)) {
+            byte[] data = new byte[Constant.BYTE];
+            int count;
+            while ((count = inputStream.read(data)) > 0) {
+                LOGGER.debug(count);
+                outputStream.write(data, 0, count);
             }
+            LOGGER.debug(tmpDir + "/" + fileName);
         }
     }
 
