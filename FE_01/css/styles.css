@@ -954,6 +954,13 @@ input[type="radio"]+label span, input[type="radio"]:checked+label span {
     overflow: hidden;
 }
 
+.icon-bar {
+    width: 75px;
+    position: absolute;
+    bottom: 100%;
+    left: 60%;
+}
+
 .bar {
     position: absolute;
     height: 100%;
