@@ -27,11 +27,7 @@ public class DownloadProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class.getName());
     private static final Path ROOT_PATCH = Paths.get(System.getProperty("user.home") + "/homework");
-    private MailReply mailReply;
-
-    public DownloadProvider() {
-        this.mailReply = new MailReply();
-    }
+    private MailReply mailReply = new MailReply();
 
     /**
      * Returns a properties object which is configured for a POP3/IMAP server
@@ -89,7 +85,7 @@ public class DownloadProvider {
      * @throws IOException
      * @throws FileStorageException
      */
-    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String username, String subject, String expired) throws MessagingException, IOException, FileStorageException {
+    private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String username, String subject, String expired) throws MessagingException, IOException, FileStorageException, InterruptedException {
         Message[] messages = folder.search(flagTerm);
         for (int i = 0; i < messages.length; i++) {
             if (isValidMessage(messages[i], subject, expired)) {
@@ -110,7 +106,7 @@ public class DownloadProvider {
      * @throws MessagingException
      * @throws FileStorageException
      */
-    private void getAttachments(Message message, String username, String subject) throws IOException, MessagingException, FileStorageException {
+    private void getAttachments(Message message, String username, String subject) throws IOException, MessagingException, FileStorageException, InterruptedException {
         Multipart multiPart = (Multipart) message.getContent();
         int numberOfParts = multiPart.getCount();
         boolean isFileZip = false;
@@ -137,7 +133,7 @@ public class DownloadProvider {
         }
     }
 
-    private void handleAttachment(BodyPart part, String dir, String pathFileUnzip, String fileName) throws FileStorageException, IOException, MessagingException {
+    private void handleAttachment(BodyPart part, String dir, String pathFileUnzip, String fileName) throws FileStorageException, IOException, MessagingException, InterruptedException {
         boolean stored = storeAttachments(part, dir, fileName);
         if (stored) {
             String pathUnzipped = unzipAttachments(dir, fileName, pathFileUnzip);
@@ -150,14 +146,10 @@ public class DownloadProvider {
         } else throw new FileStorageException("Can't storage attachment");
     }
 
-    private void unitTest(String pathFileUnzip, String pathUnzipped) throws IOException {
+    private void unitTest(String pathFileUnzip, String pathUnzipped) throws IOException, InterruptedException {
         Process process = Runtime.getRuntime().exec("javac -cp src " + pathUnzipped);
-        try {
-            process.waitFor();
-            Runtime.getRuntime().exec("java -cp " + pathFileUnzip + "/ Main");
-        } catch (InterruptedException e) {
-            LOGGER.error(e.getMessage());
-        }
+        process.waitFor();
+        Runtime.getRuntime().exec("java -cp " + pathFileUnzip + "/ Main");
     }
 
     /**
@@ -169,7 +161,7 @@ public class DownloadProvider {
      * @param username
      * @param password
      */
-    public void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password, String subject, String expired) {
+    public void downloadEmailAttachments(String protocol, String hostname, String port, String username, String password, String subject, String expired) throws InterruptedException {
         LOGGER.debug(String.format("Info: '{'protocol: %s, hostname: %s, port: %s, username: %s, password: %s'}'", protocol, hostname, port, username, password));
         Properties properties = getServerProperties(protocol, hostname, port, username, password);
         Session session = Session.getDefaultInstance(properties);
