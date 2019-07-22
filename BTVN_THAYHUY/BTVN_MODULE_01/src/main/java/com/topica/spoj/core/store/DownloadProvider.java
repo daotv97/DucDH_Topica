@@ -148,6 +148,7 @@ public class DownloadProvider {
             LOGGER.error(String.format("No provider for protocol: %s", protocol));
         } catch (MessagingException ex) {
             LOGGER.error("Could not connect to the message store.");
+            ex.printStackTrace();
         } catch (IOException e) {
             LOGGER.error("Load content failed.");
         } catch (FileStorageException e) {

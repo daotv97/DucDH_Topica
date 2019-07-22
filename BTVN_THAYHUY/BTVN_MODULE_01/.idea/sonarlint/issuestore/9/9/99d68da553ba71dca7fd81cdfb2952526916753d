@@ -1,0 +1,4 @@
+
+Usquid:S1481l"7Remove this unused "pathFileDownloaded" local variable.(Þ¸’Ù8Ö‚Œ»Á-
+dsquid:S1854l"FRemove this useless assignment to local variable "pathFileDownloaded".(Þ¸’Ù8Ö‚Œ»Á-
+Bsquid:S1148—"#Use a logger to log this exception.(Ç’Çê8ƒ’Á¼Á-

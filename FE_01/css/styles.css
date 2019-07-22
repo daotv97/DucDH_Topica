@@ -939,27 +939,101 @@ input[type="radio"]+label span, input[type="radio"]:checked+label span {
 
 /* Footer */
 
+.footer-test {
+    margin-top: 10%;
+    position: relative;
+}
+
 .progress {
-    height: 35px;
+    position: relative;
+    width: 100%;
+    height: 0px;
+    background-color: #e0e0e0;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
 }
 
-.progress .skill {
-    font: normal 12px "Open Sans Web";
-    line-height: 35px;
-    padding: 0;
-    margin: 0 0 0 20px;
-    text-transform: uppercase;
+.bar {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    transition: width 2s ease;
 }
 
-.progress .skill .val {
-    float: right;
+.value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}
+
+.img-top {
+    position: absolute;
+    bottom: 100%;
+    left: 20px;
+}
+
+.bottom-test {
+    margin: 30px 0 103px 0;
+    text-align: center;
+}
+
+.btn-test {
+    background: #E5E5E5;
+    border: 4px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 10px;
     font-style: normal;
-    margin: 0 20px 0 0;
+    font-weight: 900;
+    font-size: 16px;
+    line-height: 17px;
+    margin-right: 25px;
+    width: 140px;
+    height: 50px;
 }
 
-.progress-bar {
+.btn-prev {
+    padding: 12px 30px 12px 10px;
     text-align: left;
-    transition-duration: 3s;
+    color: #999999;
+}
+
+.btn-test .btn-prev i {
+    font-style: normal;
+    font-weight: 900;
+    font-size: 16px;
+    line-height: 18px;
+    color: #999999;
+}
+
+.btn-next {
+    background: #68C52E;
+    border: 4px solid #5CAD2A;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: bold;
+    text-align: center;
+    font-size: 16px;
+    line-height: 19px;
+    padding: 12px 10px 12px 33px;
+    color: #FFFFFF;
+}
+
+.result-test {
+    padding: 20px;
+}
+
+.result-test h2 {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 52px;
+    margin-bottom: 50px;
+    color: #333333;
 }
 
 /* END TEST */
