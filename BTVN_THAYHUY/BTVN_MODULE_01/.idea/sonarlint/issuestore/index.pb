@@ -15,3 +15,5 @@ d
 4src/main/java/com/topica/spoj/core/ImapProtocol.java,5/d/5d1f468f2e5ce3ad79d238a27ac3104d471f92c6
 n
 >src/main/java/com/topica/spoj/core/store/DownloadProvider.java,9/9/99d68da553ba71dca7fd81cdfb2952526916753d
+v
+Fsrc/main/java/com/topica/spoj/core/exception/FileStorageException.java,6/f/6f18cd8311395eaa8d8e07ceabd679b72a74a610

@@ -19,6 +19,9 @@ public class Constant {
     static final String ZIP = "zip";
     static final String UNZIP = "unzip";
     static final Integer BYTE = 1024;
+    static final String MESSAGE_FILE_ZIP = "Yeu cau gui file dinh kem co duoi zip.";
+    static final String MESSAGE_FILE_MAIN_JAVA = "Yeu cau gui file dinh kem co duoi zip.";
+
 
     private Constant() {
 

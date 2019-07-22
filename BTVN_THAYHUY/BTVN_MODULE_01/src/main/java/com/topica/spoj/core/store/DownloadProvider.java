@@ -2,20 +2,26 @@ package com.topica.spoj.core.store;
 
 import com.topica.spoj.core.exception.FileStorageException;
 import com.topica.spoj.core.utils.FileHandler;
+import com.topica.spoj.core.utils.MailReply;
 import org.apache.log4j.Logger;
 
 import javax.mail.*;
 import javax.mail.Message.RecipientType;
+import javax.mail.internet.InternetAddress;
 import javax.mail.search.FlagTerm;
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DownloadProvider {
 
@@ -70,8 +76,13 @@ public class DownloadProvider {
      * Fetches new messages from server
      *
      * @param folder
+     * @param flagTerm
+     * @param username
+     * @param subject
+     * @param expired
      * @throws MessagingException
      * @throws IOException
+     * @throws FileStorageException
      */
     private void fetchNewMessages(Folder folder, FlagTerm flagTerm, String username, String subject, String expired) throws MessagingException, IOException, FileStorageException {
         Message[] messages = folder.search(flagTerm);
@@ -85,17 +96,20 @@ public class DownloadProvider {
     }
 
     /**
-     * Get Attachments from messages
+     * Get Attachments from messages.
      *
      * @param message
      * @param username
      * @param subject
+     * @throws IOException
+     * @throws MessagingException
+     * @throws FileStorageException
      */
     private void getAttachments(Message message, String username, String subject) throws IOException, MessagingException, FileStorageException {
         Multipart multiPart = (Multipart) message.getContent();
         int numberOfParts = multiPart.getCount();
         boolean isFileZip = false;
-        String dir = String.format("%s/%s/%s/%s", ROOT_PATCH, username, subject, message.getFrom()[0].toString());
+        String dir = String.format("%s/%s/%s/%s", ROOT_PATCH, username, subject, ((InternetAddress) message.getFrom()[0]).getAddress());
 
         for (int partCount = 0; partCount < numberOfParts; partCount++) {
             BodyPart part = multiPart.getBodyPart(partCount);
@@ -105,18 +119,40 @@ public class DownloadProvider {
 
                 if (extension.isPresent() && extension.get().equals(Constant.ZIP)) {
                     isFileZip = true;
-                    String pathFileDownloaded = MessageFormat.format("{0}/{1}", dir, fileName);
+
                     String pathFileUnzip = MessageFormat.format("{0}/{1}", dir, Constant.UNZIP);
 
-                    boolean stored = storeAttachments(part, dir, fileName);
-                    if (stored) unzipAttachments(dir, fileName,  pathFileUnzip);
-                    else throw new FileStorageException("Can't storage attachment");
+                    handleAttachment(part, dir, pathFileUnzip, fileName);
                 }
             }
         }
         if (!isFileZip) {
-            LOGGER.error("Yeu cau gui file dinh kem co duoi zip.");
+            LOGGER.error(Constant.MESSAGE_FILE_ZIP);
+            new MailReply(Constant.MESSAGE_FILE_MAIN_JAVA);
         }
+    }
+
+    private void handleAttachment(BodyPart part, String dir, String pathFileUnzip, String fileName) throws FileStorageException, IOException, MessagingException {
+        boolean stored = storeAttachments(part, dir, fileName);
+        if (stored) {
+            String pathUnzip = unzipAttachments(dir, fileName, pathFileUnzip);
+            if (!checkFile(pathUnzip)) {
+                LOGGER.error(Constant.MESSAGE_FILE_MAIN_JAVA);
+                new MailReply(Constant.MESSAGE_FILE_MAIN_JAVA);
+            }
+
+            // TEST RUN CMD
+            LOGGER.info(pathFileUnzip + "/ Main");
+            // xu ly tiep
+            Process process = Runtime.getRuntime().exec("javac -cp src " + pathUnzip);
+            try {
+                process.waitFor();
+                process = Runtime.getRuntime().exec("java -cp " + pathFileUnzip + "/ Main");
+            } catch (InterruptedException e) {
+                LOGGER.error(e.getMessage());
+            }
+
+        } else throw new FileStorageException("Can't storage attachment");
     }
 
     /**
@@ -148,7 +184,6 @@ public class DownloadProvider {
             LOGGER.error(String.format("No provider for protocol: %s", protocol));
         } catch (MessagingException ex) {
             LOGGER.error("Could not connect to the message store.");
-            ex.printStackTrace();
         } catch (IOException e) {
             LOGGER.error("Load content failed.");
         } catch (FileStorageException e) {
@@ -156,8 +191,9 @@ public class DownloadProvider {
         }
     }
 
+
     /**
-     * Check valid messages
+     * Check valid messages.
      *
      * @param message
      * @param subject
@@ -230,11 +266,26 @@ public class DownloadProvider {
      * @param fileName
      * @throws IOException
      */
-    private void unzipAttachments(String dir, String fileName, String destDir) throws IOException {
+    private String unzipAttachments(String dir, String fileName, String destDir) throws IOException {
         FileHandler fileHandler = new FileHandler();
-        fileHandler.unzip(String.format("%s/%s", dir, fileName), destDir);
-        LOGGER.debug(String.format("File unzip: %s%s", destDir, fileName));
+        return fileHandler.unzip(String.format("%s/%s", dir, fileName), destDir);
     }
+
+    private boolean checkFile(String dirUnzip) {
+        try (Stream<Path> walk = Files.walk(Paths.get(dirUnzip))) {
+            List<String> result = walk.map(Path::toString)
+                    .filter(f -> f.contains("Main.java"))
+                    .collect(Collectors.toList());
+            if (result.isEmpty()) {
+                return false;
+            }
+        } catch (IOException e) {
+            LOGGER.error("Tap tin khong duoc nen tu file Main.java");
+            return false;
+        }
+        return true;
+    }
+
 
     /**
      * Get extension file
