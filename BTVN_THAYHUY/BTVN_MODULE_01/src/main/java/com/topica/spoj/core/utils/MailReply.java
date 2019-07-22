@@ -14,8 +14,9 @@ public class MailReply {
     private static final String EMAIL_SERVER = "smtp.gmail.com";
     private static final String EMAIL_PORT = "587";
     private static final String STORE = "pop3s";
+    private String message;
 
-    public MailReply(String repliedText) {
+    public void reply(String message) {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -33,7 +34,6 @@ public class MailReply {
             folder.open(Folder.READ_ONLY);
 
             Message[] messages = folder.getMessages();
-            LOGGER.info(String.format("Total Message - %d", messages.length));
 
             BufferedReader reader =
                     new BufferedReader(new InputStreamReader(System.in));
@@ -54,7 +54,7 @@ public class MailReply {
             Message mimeMessage;
             mimeMessage = emailMessage.reply(false);
             mimeMessage.setFrom(new InternetAddress(USERNAME));
-            mimeMessage.setText(repliedText);
+            mimeMessage.setText(message);
             mimeMessage.setSubject("RE: " + mimeMessage.getSubject());
             mimeMessage.addRecipient(Message.RecipientType.TO,
                     emailMessage.getFrom()[0]);
@@ -68,6 +68,14 @@ public class MailReply {
         } catch (Exception e) {
             LOGGER.info("Error in replying email.");
         }
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     private class SMTPAuthenticator extends javax.mail.Authenticator {

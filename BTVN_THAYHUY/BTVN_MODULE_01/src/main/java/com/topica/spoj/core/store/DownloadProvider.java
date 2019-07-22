@@ -27,6 +27,11 @@ public class DownloadProvider {
 
     private static final Logger LOGGER = Logger.getLogger(DownloadProvider.class.getName());
     private static final Path ROOT_PATCH = Paths.get(System.getProperty("user.home") + "/homework");
+    private MailReply mailReply;
+
+    public DownloadProvider() {
+        this.mailReply = new MailReply();
+    }
 
     /**
      * Returns a properties object which is configured for a POP3/IMAP server
@@ -128,31 +133,31 @@ public class DownloadProvider {
         }
         if (!isFileZip) {
             LOGGER.error(Constant.MESSAGE_FILE_ZIP);
-            new MailReply(Constant.MESSAGE_FILE_MAIN_JAVA);
+            mailReply.reply(Constant.MESSAGE_FILE_MAIN_JAVA);
         }
     }
 
     private void handleAttachment(BodyPart part, String dir, String pathFileUnzip, String fileName) throws FileStorageException, IOException, MessagingException {
         boolean stored = storeAttachments(part, dir, fileName);
         if (stored) {
-            String pathUnzip = unzipAttachments(dir, fileName, pathFileUnzip);
-            if (!checkFile(pathUnzip)) {
+            String pathUnzipped = unzipAttachments(dir, fileName, pathFileUnzip);
+            if (!checkFile(pathUnzipped)) {
                 LOGGER.error(Constant.MESSAGE_FILE_MAIN_JAVA);
-                new MailReply(Constant.MESSAGE_FILE_MAIN_JAVA);
+                mailReply.reply(Constant.MESSAGE_FILE_MAIN_JAVA);
             }
-
             // TEST RUN CMD
-            LOGGER.info(pathFileUnzip + "/ Main");
-            // xu ly tiep
-            Process process = Runtime.getRuntime().exec("javac -cp src " + pathUnzip);
-            try {
-                process.waitFor();
-                process = Runtime.getRuntime().exec("java -cp " + pathFileUnzip + "/ Main");
-            } catch (InterruptedException e) {
-                LOGGER.error(e.getMessage());
-            }
-
+            unitTest(pathFileUnzip, pathUnzipped);
         } else throw new FileStorageException("Can't storage attachment");
+    }
+
+    private void unitTest(String pathFileUnzip, String pathUnzipped) throws IOException {
+        Process process = Runtime.getRuntime().exec("javac -cp src " + pathUnzipped);
+        try {
+            process.waitFor();
+            Runtime.getRuntime().exec("java -cp " + pathFileUnzip + "/ Main");
+        } catch (InterruptedException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
 
     /**
