@@ -116,4 +116,83 @@ Có thể mô tả code như sau:
      
     }
 
+------------
+
+
+**
+Source code demo tìm giá trị lớn nhất của một phần tử dử dụng fork/join**
+
+    public class FindMax {
+    	//
+    	// Threshold value: when a range of the array contains more than
+    	// this many elements, we will fork tasks to divide the array
+    	// into smaller ranges.
+    	//
+    	private static final int THRESHOLD = 100000;
+    	
+    	//
+    	// Task class.  Represents a range of an array to be searched
+    	// to find the maximum value.
+    	//
+    	static class FindMaxTask extends RecursiveTask<Integer> {
+    		private static final long serialVersionUID = 1L;
+    
+    		private int[] arr;
+    		private int start, end;
+    		
+    		public FindMaxTask(int[] arr, int start, int end) {
+    			this.arr = arr;
+    			this.start = start;
+    			this.end = end;
+    		}
+    		
+    		@Override
+    		protected Integer compute() {
+    			if (end - start <= THRESHOLD) {
+    				// number of elements is at or below the threshold - compute directly
+    				return computeDirectly();
+    			} else {
+    				// number of elements is above the threshold - split into subtasks
+    				int mid = start + (end-start) / 2;
+    				FindMaxTask left = new FindMaxTask(arr, start, mid);
+    				FindMaxTask right = new FindMaxTask(arr, mid, end);
+    				
+    				// invoke the tasks in parallel and wait for them to complete
+    				invokeAll(left, right);
+    				
+    				// maximum of overall range is maximum of sub-ranges
+    				return Math.max(left.join(), right.join());
+    			}
+    		}
+    
+    		private Integer computeDirectly() {
+    			int max = Integer.MIN_VALUE;
+    			for (int i = start; i < end; i++) {
+    				if (arr[i] > max) {
+    					max = arr[i];
+    				}
+    			}
+    			return max;
+    		}
+    	}
+    	
+    	private static final int ARR_SIZE = 20000000;
+    	
+    	public static void main(String[] args) throws InterruptedException, ExecutionException {
+    		// create large array of random integer values
+    		int[] data = Util.makeRandomArray(ARR_SIZE);
+    		
+    		ForkJoinPool pool = new ForkJoinPool();
+    		FindMaxTask rootTask = new FindMaxTask(data, 0, data.length);
+    		Integer result = pool.invoke(rootTask);
+    		
+    		System.out.println("Max is " + result);
+    		
+    		// sequentially verify that result is correct
+    		if (result.intValue() != Util.findMax(data)) {
+    			System.out.println("ERROR: parallel search did not find correct maximum");
+    		}
+    	}
+    }
+
 
