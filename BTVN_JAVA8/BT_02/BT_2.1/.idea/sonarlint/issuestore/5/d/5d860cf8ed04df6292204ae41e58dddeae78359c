@@ -1,9 +1,5 @@
 
-V
-squid:S106"9Replace this use of System.out or System.err by a logger.(Îšó©8²İ‰õÁ-
-U
-squid:S106""9Replace this use of System.out or System.err by a logger.(À«Ç8²İ‰õÁ-
-V
-squid:S106#"9Replace this use of System.out or System.err by a logger.(–“æñ8²İ‰õÁ-
-[
-squid:S106'"9Replace this use of System.out or System.err by a logger.(¸òªÒùÿÿÿÿ8²İ‰õÁ-
+zsquid:S2629."\Invoke method(s) only conditionally. Use the built-in formatting to construct this argument.(£‡Ñœ8ÈËÂÂ-
+osquid:S1192""LDefine a constant instead of duplicating this literal "Sum point: " 3 times.(ŠîŠıÿÿÿÿ8ÈçæÂ-
+Zsquid:S2629$"7Use the built-in formatting to construct this argument.(ğ”¾ºüÿÿÿÿ8ÎòÂ-
+Zsquid:S26298"7Use the built-in formatting to construct this argument.(ÛÛ¥€ıÿÿÿÿ8ÏœöÂ-

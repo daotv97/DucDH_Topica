@@ -4,7 +4,6 @@ import vn.edu.topica.beans.Role;
 import vn.edu.topica.beans.User;
 import vn.edu.topica.services.UserServiceImpl;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -29,9 +28,12 @@ public class Application {
         users.add(new User(9L, "user9", "123", 18, 9, true, roleStudent));
         users.add(new User(10L, "user1", "123", 18, 9, true, roleTeacher));
 
-        // sum
         UserServiceImpl userService = new UserServiceImpl();
+        long streamStart = System.currentTimeMillis();
+        // sum
         LOGGER.info("Sum point: " + userService.getSumPoint(users));
+        long streamEnd = System.currentTimeMillis();
+        LOGGER.info("Time ( Stream ): " + (streamEnd - streamStart));
 
         // group
         Map<Role, List<User>> userMap = userService.getUsersByRole(users);
@@ -44,6 +46,13 @@ public class Application {
         LOGGER.info("Count student have point >= 4: " + userService.count(users));
         Map<Long, User> afterConvertList = userService.convertToMapByPoint(users, POINT);
         afterConvertList.forEach((aLong, user) -> LOGGER.info("Key: " + aLong + "- Value: " + user));
+        LOGGER.info("Sum point: " + userService.getSumPoint(users));
 
+
+        // parallel loop
+        long parallelStreamStart = System.currentTimeMillis();
+        LOGGER.info("Sum point: " + userService.getSumPoint(users));
+        long parallelStreamEnd = System.currentTimeMillis();
+        LOGGER.info("Time ( Parallel Stream): " + (parallelStreamEnd - parallelStreamStart));
     }
 }

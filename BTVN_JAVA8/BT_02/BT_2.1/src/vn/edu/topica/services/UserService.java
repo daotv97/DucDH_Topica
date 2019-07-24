@@ -11,5 +11,7 @@ public interface UserService<K, V> {
     long count(List<V> vList);
 
     Map<Long, V> convertToMapByPoint(List<V> vList, int point);
+
+    int getSumPointParallelLoop(List<V> vList);
 }
 

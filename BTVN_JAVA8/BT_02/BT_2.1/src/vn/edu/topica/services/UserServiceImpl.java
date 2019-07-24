@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserServiceImpl implements UserService<Role, User> {
+
     @Override
     public int getSumPoint(List<User> vList) {
         return vList.stream()
@@ -32,6 +33,14 @@ public class UserServiceImpl implements UserService<Role, User> {
     @Override
     public Map<Long, User> convertToMapByPoint(List<User> users, int point) {
         return users.stream().collect(Collectors.toMap(User::getId, user -> user));
+    }
+
+    @Override
+    public int getSumPointParallelLoop(List<User> vList) {
+        return vList.parallelStream()
+                .map(User::getPoint)
+                .mapToInt(Integer::intValue)
+                .sum();
     }
 
 
