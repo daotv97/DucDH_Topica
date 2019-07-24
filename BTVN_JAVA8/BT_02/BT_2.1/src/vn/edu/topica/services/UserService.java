@@ -10,6 +10,6 @@ public interface UserService<K, V> {
 
     long count(List<V> vList);
 
-    Map<Integer, V> convertToMapByPoint(List<V> vList, int point);
+    Map<Long, V> convertToMapByPoint(List<V> vList, int point);
 }
 

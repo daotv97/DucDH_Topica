@@ -3,7 +3,6 @@ package vn.edu.topica.services;
 import vn.edu.topica.beans.Role;
 import vn.edu.topica.beans.User;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,8 +30,8 @@ public class UserServiceImpl implements UserService<Role, User> {
     }
 
     @Override
-    public Map<Integer, User> convertToMapByPoint(List<User> users, int point) {
-        return users.stream().collect(Collectors.groupingBy(User::getAge));
+    public Map<Long, User> convertToMapByPoint(List<User> users, int point) {
+        return users.stream().collect(Collectors.toMap(User::getId, user -> user));
     }
 
 

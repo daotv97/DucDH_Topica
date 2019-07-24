@@ -4,11 +4,16 @@ import vn.edu.topica.beans.Role;
 import vn.edu.topica.beans.User;
 import vn.edu.topica.services.UserServiceImpl;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class Application {
+    private static final Logger LOGGER = Logger.getLogger(Application.class.getName());
+    private static final int POINT = 4;
+
     public static void main(String[] args) {
         List<User> users = new ArrayList<>();
         Role roleStudent = new Role(1L, "student");
@@ -26,17 +31,19 @@ public class Application {
 
         // sum
         UserServiceImpl userService = new UserServiceImpl();
-        System.out.println("Sum point: " + userService.getSumPoint(users));
+        LOGGER.info("Sum point: " + userService.getSumPoint(users));
 
         // group
         Map<Role, List<User>> userMap = userService.getUsersByRole(users);
         userMap.forEach((role, users1) -> {
-            System.out.println("Role: " + role.getRoleName());
-            users1.forEach(System.out::println);
+            LOGGER.info("Role: " + role.getRoleName());
+            users1.forEach(itemUser -> LOGGER.info(itemUser.toString()));
         });
 
         // count
-        System.out.println("Count student have point >= 4: " + userService.count(users));
+        LOGGER.info("Count student have point >= 4: " + userService.count(users));
+        Map<Long, User> afterConvertList = userService.convertToMapByPoint(users, POINT);
+        afterConvertList.forEach((aLong, user) -> LOGGER.info("Key: " + aLong + "- Value: " + user));
 
     }
 }
